@@ -1,0 +1,3797 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.3.1",
+    "title": "NoCode API",
+    "description": "NoCode builder API - Dart",
+    "termsOfService": "https://boodskap.io/terms-conditions",
+    "contact": {
+      "name": "Boodskap Team"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "host": "nocode.boodskap.io",
+  "basePath": "/rest/nocode",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/NoCode/del/cleanup": {
+      "delete": {
+        "description": "Cleanup all data",
+        "operationId": "cleanup",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ],
+        "summary": "Cleanup entire data",
+        "tags": [
+          "No Code"
+        ]
+      }
+    },
+    "/NoCode/post/create_template": {
+      "post": {
+        "summary": "Create NoCode component dart  code",
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Create NoCode component template",
+        "operationId": "createTemplate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NoCodeTemplate"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "tags": [
+          "No Code"
+        ],
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/NoCode/post/create_property": {
+      "post": {
+        "summary": "Create NoCode property dartcode",
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Create NoCode property template",
+        "operationId": "createProperty",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NoCodeTemplate"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "tags": [
+          "No Code"
+        ],
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Profile/get": {
+      "get": {
+        "description": "Get profile info",
+        "operationId": "getAppProfile",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/AppProfile"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ],
+        "summary": "Get profile info",
+        "tags": [
+          "Profile"
+        ]
+      }
+    },
+    "/Profile/update/{id}": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Update user profile",
+        "operationId": "updateMyProfile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProfileInfo"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ProfileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ],
+        "summary": "Update user profile",
+        "tags": [
+          "Profile"
+        ]
+      }
+    },
+    "/Organization/create": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Create new organization",
+        "description": "Create new organization",
+        "operationId": "createNewOrganization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/update/{orgId}": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Update organization",
+        "description": "Update organization",
+        "operationId": "updateOrganization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/get/{orgId}": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Get organization",
+        "description": "Get organization",
+        "operationId": "getOrganization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/remove/{orgId}": {
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Delete organization",
+        "description": "UpdaDelete organization",
+        "operationId": "deleteOrganization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/search": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Search organizations",
+        "description": "Search organizations",
+        "operationId": "searchOrganizations",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/list": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "List organizations",
+        "description": "List organizations",
+        "operationId": "listOrganizations",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrganizationArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Subscription/subscribe/{orgId}/{profileId}": {
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Create new subscription",
+        "description": "Create new subscription",
+        "operationId": "createNewSubscription",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "Org User Profile ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Subscription/unsubscribe/{orgId}/{profileId}": {
+      "delete": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Delete subscription",
+        "description": "UpdaDelete subscription",
+        "operationId": "deleteSubscription",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "Org User Profile ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/user/add/{orgId}/{userId}": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Add user to organization",
+        "description": "Add user to organization",
+        "operationId": "addOrganizationuser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgProfileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/user/remove/{orgId}/{userId}": {
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Delete user from organization",
+        "description": "Delete user to organization",
+        "operationId": "deleteOrganizationuser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgProfileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/user/list/{orgId}": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "List organization users",
+        "description": "List organization uses",
+        "operationId": "listOrganizationUsers",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgProfileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Organization/user/search/{orgId}": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Search organization users",
+        "description": "Search organization uses",
+        "operationId": "searchOrganizationUsers",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgProfileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/create/{orgId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Create new team",
+        "description": "Create new team",
+        "operationId": "createNewTeam",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "organization id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TeamInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/update/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Update team",
+        "description": "Update team",
+        "operationId": "updateTeam",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TeamInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/remove/{orgId}/{teamId}": {
+      "delete": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Delete team",
+        "description": "UpdaDelete team",
+        "operationId": "deleteTeam",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/search/{orgId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Search teams",
+        "description": "Search teams",
+        "operationId": "searchTeams",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/list/{orgId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "List teams",
+        "description": "List teams",
+        "operationId": "listTeams",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/user/add/{orgId}/{teamId}/{userId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Add user to team",
+        "description": "Add user to team",
+        "operationId": "addTeamUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamProfileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/user/remove/{orgId}/{teamId}/{userId}": {
+      "delete": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Delete user from team",
+        "description": "Delete user to team",
+        "operationId": "deleteTeamUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamProfileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/user/list/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "List team users",
+        "description": "List team uses",
+        "operationId": "listTeamUsers",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamProfileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Team/user/search/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Search team users",
+        "description": "Search team uses",
+        "operationId": "searchTeamUsers",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TeamProfileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/create/{target}/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Create new application",
+        "description": "Create new application",
+        "operationId": "createNewApplication",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "description": "application target type",
+            "type": "string",
+            "enum": [
+              "NOCODEAPP",
+              "IOTAPP"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "organization id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "team id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApplicationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/update/{orgId}/{teamId}/{appId}": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Update application",
+        "description": "Update application",
+        "operationId": "updateApplication",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApplicationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/remove/{orgId}/{teamId}/{appId}": {
+      "delete": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Delete application",
+        "description": "Delete application",
+        "operationId": "deleteApplication",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApplicationEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/search/{target}/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Search applications",
+        "description": "Search applications",
+        "operationId": "searchApplications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "description": "Target ID",
+            "type": "string",
+            "enum": [
+              "NOCODEAPP",
+              "IOTAPP"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApplicationArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/list/{target}/{orgId}/{teamId}": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "List applications",
+        "description": "List applications",
+        "operationId": "listApplications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "description": "Target ID",
+            "type": "string",
+            "enum": [
+              "NOCODEAPP",
+              "IOTAPP"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApplicationArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Application/save/{orgId}/{teamId}/{appId}": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Save application",
+        "description": "save application",
+        "operationId": "saveApplication",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/create/{orgId}/{teamId}/{appId}": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Create new page",
+        "description": "Create new page",
+        "operationId": "createNewPage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "organization id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "team id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "application id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/update/{orgId}/{teamId}/{appId}/{pageId}": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Update page",
+        "description": "Update page",
+        "operationId": "updatePage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "pageId",
+            "in": "path",
+            "description": "Page ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/remove/{orgId}/{teamId}/{appId}/{pageId}": {
+      "delete": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Delete page",
+        "description": "Delete page",
+        "operationId": "deletePage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "pageId",
+            "in": "path",
+            "description": "Page ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/search/{orgId}/{teamId}/{appId}": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Search pages",
+        "description": "Search pages",
+        "operationId": "searchPages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/list/{orgId}/{teamId}/{appId}": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "List pages",
+        "description": "List pages",
+        "operationId": "listPages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "Application ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PageArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Page/save/{orgId}/{teamId}/{appId}/{pageId}": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Save page",
+        "description": "save page",
+        "operationId": "savePage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "Team ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "App ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "pageId",
+            "in": "path",
+            "description": "Page ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Image/upload/{imageType}": {
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "summary": "Upload image",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Upload image",
+        "operationId": "uploadImage",
+        "parameters": [
+          {
+            "name": "imageType",
+            "in": "path",
+            "type": "string",
+            "enum": [
+              "ORGIMAGE",
+              "ORGBANNER",
+              "ORGICON",
+              "TEAMIMAGE",
+              "TEAMBANNER",
+              "TEAMICON",
+              "APPIMAGE",
+              "APPBANNER",
+              "APPICON",
+              "PAGEBANNER",
+              "PAGEIMAGE",
+              "PAGEICON",
+              "ASSETIMAGE"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "header",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "header",
+            "description": "Team ID. required for **team, app, page or asset** images",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "appId",
+            "in": "header",
+            "description": "Application ID. required for **team, app, page or asset** images",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "pageId",
+            "in": "header",
+            "description": "Application ID. required for **page** images",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "file",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ImageFileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Image/remove/{id}": {
+      "delete": {
+        "tags": [
+          "Image"
+        ],
+        "summary": "Delete image",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete image",
+        "operationId": "deleteImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Image ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ImageFileEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Image/download/{domainKey}/{id}": {
+      "get": {
+        "tags": [
+          "Image"
+        ],
+        "summary": "Get image",
+        "description": "Download image",
+        "operationId": "domanloadImage",
+        "parameters": [
+          {
+            "name": "domainKey",
+            "in": "path",
+            "description": "Image ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Image ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        }
+      }
+    },
+    "/Image/search/{imageType}": {
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "summary": "Search images",
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Search images",
+        "operationId": "searchImages",
+        "parameters": [
+          {
+            "name": "imageType",
+            "in": "path",
+            "type": "string",
+            "enum": [
+              "ORGIMAGE",
+              "ORGBANNER",
+              "ORGICON",
+              "TEAMIMAGE",
+              "TEAMBANNER",
+              "TEAMICON",
+              "APPIMAGE",
+              "APPBANNER",
+              "APPICON",
+              "PAGEBANNER",
+              "PAGEIMAGE",
+              "PAGEICON",
+              "ASSETIMAGE"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "header",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "header",
+            "description": "Team ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "appId",
+            "in": "header",
+            "description": "Application ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "pageId",
+            "in": "header",
+            "description": "Page ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ImageFileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Image/list/{imageType}": {
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "summary": "List images",
+        "consumes": [
+          "application/json"
+        ],
+        "description": "List asset images",
+        "operationId": "listImages",
+        "parameters": [
+          {
+            "name": "imageType",
+            "in": "path",
+            "type": "string",
+            "enum": [
+              "ORGIMAGE",
+              "ORGBANNER",
+              "ORGICON",
+              "TEAMIMAGE",
+              "TEAMBANNER",
+              "TEAMICON",
+              "APPIMAGE",
+              "APPBANNER",
+              "APPICON",
+              "PAGEBANNER",
+              "PAGEIMAGE",
+              "PAGEICON",
+              "ASSETIMAGE"
+            ],
+            "required": true
+          },
+          {
+            "name": "orgId",
+            "in": "header",
+            "description": "Origanization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "teamId",
+            "in": "header",
+            "description": "Team ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "appId",
+            "in": "header",
+            "description": "Application ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "pageId",
+            "in": "header",
+            "description": "Page ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ImageFileArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "authtoken": {
+      "in": "header",
+      "name": "TOKEN",
+      "type": "apiKey"
+    }
+  },
+  "definitions": {
+    "NoCodeTemplate": {
+      "properties": {
+        "className": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "className"
+      ],
+      "type": "object"
+    },
+    "BaseEntity": {
+      "type": "object",
+      "discriminator": "baseEntityType",
+      "required": [
+        "id",
+        "rtype",
+        "createdBy",
+        "createdStamp",
+        "updatedBy",
+        "updatedStamp",
+        "domainKey"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "rtype": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "createdStamp": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "updatedStamp": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "domainKey": {
+          "type": "string"
+        }
+      }
+    },
+    "BaseRes": {
+      "type": "object",
+      "required": [
+        "ok"
+      ],
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "trace": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        }
+      }
+    },
+    "BaseListRes": {
+      "type": "object",
+      "required": [
+        "ok"
+      ],
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "trace": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "size": {
+          "type": "integer"
+        }
+      }
+    },
+    "ListReq": {
+      "type": "object",
+      "required": [
+        "page",
+        "size"
+      ],
+      "properties": {
+        "page": {
+          "type": "integer",
+          "default": 0
+        },
+        "size": {
+          "type": "integer",
+          "default": 100
+        }
+      }
+    },
+    "SearchReq": {
+      "type": "object",
+      "required": [
+        "search",
+        "page",
+        "size"
+      ],
+      "properties": {
+        "search": {
+          "type": "string",
+          "default": "*"
+        },
+        "page": {
+          "type": "integer",
+          "default": 0
+        },
+        "size": {
+          "type": "integer",
+          "default": 10
+        }
+      }
+    },
+    "ProfileInfo": {
+      "type": "object",
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "landscapeBanner": {
+          "type": "string"
+        },
+        "portraitBanner": {
+          "type": "string"
+        },
+        "settings": {
+          "$ref": "#/definitions/ProfileSettings"
+        }
+      }
+    },
+    "Profile": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProfileInfo"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ProfileEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Profile"
+        }
+      }
+    },
+    "ProfileEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProfileEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrgProfileBase": {
+      "type": "object",
+      "required": [
+        "subscribed",
+        "orgId",
+        "profileId"
+      ],
+      "properties": {
+        "subscribed": {
+          "type": "boolean",
+          "default": false
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "profileId": {
+          "type": "string"
+        }
+      }
+    },
+    "OrgProfile": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Profile"
+        },
+        {
+          "$ref": "#/definitions/OrgProfileBase"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrgProfileEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/OrgProfile"
+        }
+      }
+    },
+    "OrgProfileEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrgProfileEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrgProfileArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrgProfile"
+          }
+        }
+      }
+    },
+    "OrgProfileArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrgProfileArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TeamProfileBase": {
+      "type": "object",
+      "required": [
+        "teamId"
+      ],
+      "properties": {
+        "teamId": {
+          "type": "string"
+        }
+      }
+    },
+    "TeamProfile": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrgProfile"
+        },
+        {
+          "$ref": "#/definitions/TeamProfileBase"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TeamProfileEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/TeamProfile"
+        }
+      }
+    },
+    "TeamProfileEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TeamProfileEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TeamProfileArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TeamProfile"
+          }
+        }
+      }
+    },
+    "TeamProfileArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TeamProfileArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrganizationInfo": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "landscapeBanner": {
+          "type": "string"
+        },
+        "portraitBanner": {
+          "type": "string"
+        },
+        "settings": {
+          "$ref": "#/definitions/OrganizationSettings"
+        }
+      }
+    },
+    "Organization": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrganizationInfo"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object",
+          "required": [
+            "profileId",
+            "organizationState"
+          ],
+          "properties": {
+            "profileId": {
+              "type": "string"
+            },
+            "organizationState": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "DISABLED"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "OrganizationEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Organization"
+        }
+      }
+    },
+    "OrganizationEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrganizationEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrganizationArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Organization"
+          }
+        }
+      }
+    },
+    "OrganizationArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrganizationArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "Subscription": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object",
+          "required": [
+            "orgId",
+            "profileId",
+            "subscriptionState",
+            "subscriptionType"
+          ],
+          "properties": {
+            "orgId": {
+              "type": "string"
+            },
+            "profileId": {
+              "type": "string"
+            },
+            "subscriptionState": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "DISABLED"
+              ]
+            },
+            "subscriptionType": {
+              "type": "string",
+              "enum": [
+                "FREE",
+                "PAID"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "SubscriptionEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Subscription"
+        }
+      }
+    },
+    "SubscriptionEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SubscriptionEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TeamInfo": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "landscapeBanner": {
+          "type": "string"
+        },
+        "portraitBanner": {
+          "type": "string"
+        },
+        "settings": {
+          "$ref": "#/definitions/TeamSettings"
+        }
+      }
+    },
+    "Team": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TeamInfo"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object",
+          "required": [
+            "orgId",
+            "profileId"
+          ],
+          "properties": {
+            "orgId": {
+              "type": "string"
+            },
+            "profileId": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "TeamEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Team"
+        }
+      }
+    },
+    "TeamEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TeamEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TeamArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Team"
+          }
+        }
+      }
+    },
+    "TeamArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TeamArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ApplicationInfo": {
+      "type": "object",
+      "discriminator": "appInfoType",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "landscapeBanner": {
+          "type": "string"
+        },
+        "portraitBanner": {
+          "type": "string"
+        },
+        "settings": {
+          "$ref": "#/definitions/ApplicationSettings"
+        }
+      }
+    },
+    "ApplicationModel": {
+      "type": "object",
+      "discriminator": "appModelType",
+      "required": [
+        "modelJson"
+      ],
+      "properties": {
+        "modelJson": {
+          "type": "string"
+        }
+      }
+    },
+    "Application": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ApplicationInfo"
+        },
+        {
+          "type": "object",
+          "required": [
+            "fcmToken",
+            "id",
+            "rtype",
+            "createdBy",
+            "createdStamp",
+            "updatedBy",
+            "updatedStamp",
+            "domainKey",
+            "orgId",
+            "teamId",
+            "target",
+            "applicationState",
+            "freePages",
+            "paidPages",
+            "modelJson"
+          ],
+          "properties": {
+            "orgId": {
+              "type": "string"
+            },
+            "teamId": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "NOCODEAPP",
+                "IOTAPP"
+              ]
+            },
+            "applicationState": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "DISABLED"
+              ]
+            },
+            "freePages": {
+              "type": "integer"
+            },
+            "paidPages": {
+              "type": "integer"
+            },
+            "canBuildAndroid": {
+              "type": "boolean",
+              "default": false
+            },
+            "canBuildIoS": {
+              "type": "boolean",
+              "default": false
+            },
+            "canBuildLinux": {
+              "type": "boolean",
+              "default": false
+            },
+            "canBuildMacos": {
+              "type": "boolean",
+              "default": false
+            },
+            "canBuildWindows": {
+              "type": "boolean",
+              "default": false
+            },
+            "canBuildWeb": {
+              "type": "boolean",
+              "default": true
+            },
+            "canExport": {
+              "type": "boolean",
+              "default": true
+            },
+            "canDeploy": {
+              "type": "boolean",
+              "default": true
+            },
+            "modelJson": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "rtype": {
+              "type": "string"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "createdStamp": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "updatedBy": {
+              "type": "string"
+            },
+            "updatedStamp": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "domainKey": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ApplicationEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Application"
+        }
+      }
+    },
+    "ApplicationEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ApplicationEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ApplicationArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Application"
+          }
+        }
+      }
+    },
+    "ApplicationArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ApplicationArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "PageInfo": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "landscapeBanner": {
+          "type": "string"
+        },
+        "portraitBanner": {
+          "type": "string"
+        },
+        "desktopBgImage": {
+          "type": "string"
+        },
+        "tabBgImage": {
+          "type": "string"
+        },
+        "mobileBgImage": {
+          "type": "string"
+        },
+        "bgColor": {
+          "type": "integer"
+        },
+        "settings": {
+          "$ref": "#/definitions/PageSettings"
+        }
+      }
+    },
+    "PageModel": {
+      "type": "object",
+      "required": [
+        "modelJson"
+      ],
+      "properties": {
+        "modelJson": {
+          "type": "string"
+        }
+      }
+    },
+    "Page": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PageInfo"
+        },
+        {
+          "$ref": "#/definitions/PageModel"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object",
+          "required": [
+            "orgId",
+            "teamId",
+            "appId",
+            "pageState",
+            "lockedBy"
+          ],
+          "properties": {
+            "orgId": {
+              "type": "string"
+            },
+            "teamId": {
+              "type": "string"
+            },
+            "appId": {
+              "type": "string"
+            },
+            "pageState": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "DISABLED",
+                "ARCHIVED",
+                "HIDDEN"
+              ]
+            },
+            "lockedBy": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "PageEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Page"
+        }
+      }
+    },
+    "PageEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PageEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "PageArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Page"
+          }
+        }
+      }
+    },
+    "PageArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PageArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ImageFileInfo": {
+      "type": "object",
+      "required": [
+        "imageType",
+        "imageTarget",
+        "name",
+        "orgId"
+      ],
+      "properties": {
+        "imageType": {
+          "type": "string",
+          "enum": [
+            "BANNER",
+            "IMAGE",
+            "ICON"
+          ]
+        },
+        "imageTarget": {
+          "type": "string",
+          "enum": [
+            "ORG",
+            "TEAM",
+            "APP",
+            "PAGE",
+            "ASSET"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "teamId": {
+          "type": "string"
+        },
+        "appId": {
+          "type": "string"
+        },
+        "pageId": {
+          "type": "string"
+        }
+      }
+    },
+    "ImageFile": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ImageFileInfo"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object",
+          "required": [
+            "contentType"
+          ],
+          "properties": {
+            "contentType": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ImageFileEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/ImageFile"
+        }
+      }
+    },
+    "ImageFileEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ImageFileEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ImageFileArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageFile"
+          }
+        }
+      }
+    },
+    "ImageFileArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ImageFileArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrgTeam": {
+      "type": "object",
+      "required": [
+        "ok"
+      ],
+      "properties": {
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        },
+        "subscription": {
+          "$ref": "#/definitions/Subscription"
+        },
+        "teams": {
+          "items": {
+            "$ref": "#/definitions/Team"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "AppProfile": {
+      "type": "object",
+      "required": [
+        "ok"
+      ],
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "trace": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "profile": {
+          "$ref": "#/definitions/Profile"
+        },
+        "orgTeams": {
+          "items": {
+            "$ref": "#/definitions/OrgTeam"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "BaseSettings": {
+      "type": "object",
+      "required": [
+        "font",
+        "fontSize",
+        "fontColor"
+      ],
+      "properties": {
+        "font": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "integer"
+        },
+        "fontColor": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ProfileSettings": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSettings"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "stripeCustomerId": {
+              "type": "string"
+            },
+            "stripeNoCodeSubscriptionId": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "OrganizationSettings": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSettings"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "applicationTitle": {
+              "type": "string"
+            },
+            "applicationTheme": {
+              "type": "string"
+            },
+            "selfRegistrationDomain": {
+              "type": "string"
+            },
+            "enableSelfRegistration": {
+              "type": "boolean",
+              "default": false
+            },
+            "autoApproveSelfRegistration": {
+              "type": "boolean",
+              "default": true
+            },
+            "twinDomainKey": {
+              "type": "string"
+            },
+            "twinApiKey": {
+              "type": "string"
+            },
+            "twinAccountId": {
+              "type": "string"
+            },
+            "twinPlanId": {
+              "type": "string"
+            },
+            "stripeCustomerId": {
+              "type": "string"
+            },
+            "stripeNoCodeDeveloperSubscriptionId": {
+              "type": "string"
+            },
+            "stripeNoCodeMemberSubscriptionIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stripeNoCodeAppInvoiceIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stripeNoCodePageInvoiceIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stripeTwinUserSubscriptionIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stripeTwinDeviceSubscriptionIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TeamSettings": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSettings"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "ApplicationSettings": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSettings"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "stripeInvoiceId": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "PageSettings": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSettings"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "stripeInvoiceId": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
