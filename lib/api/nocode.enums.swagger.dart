@@ -161,6 +161,46 @@ enum ImageFileImageTarget {
   const ImageFileImageTarget(this.value);
 }
 
+enum PlanInfoPlanType {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('BASIC')
+  basic('BASIC'),
+  @JsonValue('STANDARD')
+  standard('STANDARD'),
+  @JsonValue('PROFESSIONAL')
+  professional('PROFESSIONAL'),
+  @JsonValue('ENTERPRISE')
+  enterprise('ENTERPRISE'),
+  @JsonValue('CUSTOM')
+  custom('CUSTOM');
+
+  final String? value;
+
+  const PlanInfoPlanType(this.value);
+}
+
+enum PlanPlanType {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('BASIC')
+  basic('BASIC'),
+  @JsonValue('STANDARD')
+  standard('STANDARD'),
+  @JsonValue('PROFESSIONAL')
+  professional('PROFESSIONAL'),
+  @JsonValue('ENTERPRISE')
+  enterprise('ENTERPRISE'),
+  @JsonValue('CUSTOM')
+  custom('CUSTOM');
+
+  final String? value;
+
+  const PlanPlanType(this.value);
+}
+
 enum ApplicationCreateTargetOrgIdTeamIdPostTarget {
   @JsonValue(null)
   swaggerGeneratedUnknown(null),

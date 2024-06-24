@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.3.1",
+    "version": "1.3.2",
     "title": "NoCode API",
     "description": "NoCode builder API - Dart",
     "termsOfService": "https://boodskap.io/terms-conditions",
@@ -12,7 +12,7 @@
       "name": "MIT"
     }
   },
-  "host": "nocode.boodskap.io",
+  "host": "lbdev.boodskap.io",
   "basePath": "/rest/nocode",
   "schemes": [
     "https"
@@ -2477,6 +2477,999 @@
           }
         ]
       }
+    },
+    "/Plan/create": {
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Create new plan",
+        "description": "Create new plan",
+        "operationId": "createNewPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlanInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Plan/update/{planId}": {
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Update plan",
+        "description": "Update plan",
+        "operationId": "updatePlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "Plan ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlanInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Plan/search": {
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Search plans",
+        "description": "Search plans",
+        "operationId": "searchPlans",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "includeCustomPlans",
+            "in": "header",
+            "description": "Include Custom Plans (required admin access)",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Plan/get/{planId}": {
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Get plan",
+        "description": "Get plan",
+        "operationId": "getPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "Plan ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Plan/remove/{planId}": {
+      "delete": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Delete plan",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete plan",
+        "operationId": "deletePlan",
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "Plan ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/OrgPlan/upsert": {
+      "post": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Create or update org plan",
+        "description": "Create or update org plan",
+        "operationId": "createOrUpdateOrgPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlanChangeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/OrgPlan/component/add": {
+      "post": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Add components to a plan",
+        "description": "Add components to a plan",
+        "operationId": "addComponentsToPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddComponentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/OrgPlan/get/{orgId}": {
+      "get": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Get organization plan",
+        "description": "Get organization plan",
+        "operationId": "getOrgPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Invoice/search": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Search invoices",
+        "description": "Search invoices",
+        "operationId": "searchInvoices",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "header",
+            "description": "Organization ID (empty id requires admin access)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "paymentStatus",
+            "in": "header",
+            "description": "PaymentStatus enum name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InvoiceArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Invoice/get/{invoiceId}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Get invoice",
+        "description": "Get invoice",
+        "operationId": "getInvoice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "Invoice ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InvoiceEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Invoice/set/status/{paymentStatus}": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Set invoice payment status",
+        "description": "Set invoice payment status",
+        "operationId": "setPaymentStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "paymentStatus",
+            "in": "path",
+            "description": "PaymentStatus enum name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaidInvoiceRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InvoiceEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Invoice/paid": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Invoice paid",
+        "description": "Invoide paid",
+        "operationId": "invoicePaid",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaidInvoiceRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InvoiceEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Invoice/remove/{invoiceId}": {
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Delete invoice",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete invoice",
+        "operationId": "deleteInvoice",
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "Invoice ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InvoiceEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/create": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create new order",
+        "description": "Create new order",
+        "operationId": "createNewOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/update/{orderId}": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Update order",
+        "description": "Update order",
+        "operationId": "updateOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/search": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Search orders",
+        "description": "Search orders",
+        "operationId": "searchOrders",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "header",
+            "description": "Organization ID (empty id requires admin access)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "orderStatus",
+            "in": "header",
+            "description": "OrderStatus enum name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderArrayRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/get/{orderId}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get order",
+        "description": "Get order",
+        "operationId": "getOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/cancel/{orderId}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Cancel order",
+        "description": "Cancel order",
+        "operationId": "cancelOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/paid": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Order paid",
+        "description": "Order paid",
+        "operationId": "orderPaid",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaidOrderRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/remove/{orderId}": {
+      "delete": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Delete order",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete order",
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/Orders/stripe/payment/secrete": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create payment secret",
+        "description": "Create payment secret",
+        "operationId": "createStripePaymentSecret",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StripePaymentSecretArgs"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -2905,6 +3898,9 @@
           ],
           "properties": {
             "profileId": {
+              "type": "string"
+            },
+            "planId": {
               "type": "string"
             },
             "organizationState": {
@@ -3792,6 +4788,900 @@
           }
         }
       ]
+    },
+    "PlanInfo": {
+      "type": "object",
+      "required": [
+        "name",
+        "planType",
+        "planFee",
+        "defaultDeviceModelCount",
+        "defaultDevicesCount",
+        "defaultDataPointsCount",
+        "defaultClientCount",
+        "defaultUserCount",
+        "defaultArchivalYears",
+        "defaultDashboardCount",
+        "defaultModelParametersCount",
+        "extraDeviceFee",
+        "extraDeviceModelFee",
+        "extraDataPointsFee",
+        "extraClientFee",
+        "extraUserFee",
+        "extraArchivalFee",
+        "extraDashboardFee",
+        "extraModelParametersFee",
+        "planPrice",
+        "deviceModelPrice",
+        "devicePrice",
+        "dataPrice",
+        "clientPrice",
+        "userPrice",
+        "archivePrice",
+        "dashboardPrice",
+        "modelParameterPrice"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "planFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "defaultDeviceModelCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultDevicesCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultDataPointsCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultClientCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultUserCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultArchivalYears": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultDashboardCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "defaultModelParametersCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "extraDeviceFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraDeviceModelFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraDataPointsFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraClientFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraUserFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraArchivalFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraDashboardFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "extraModelParametersFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "planType": {
+          "type": "string",
+          "enum": [
+            "BASIC",
+            "STANDARD",
+            "PROFESSIONAL",
+            "ENTERPRISE",
+            "CUSTOM"
+          ]
+        }
+      }
+    },
+    "PlanBase": {
+      "type": "object",
+      "required": [
+        "customPlan"
+      ],
+      "properties": {
+        "customPlan": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Plan": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PlanInfo"
+        },
+        {
+          "$ref": "#/definitions/PlanBase"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "required": [
+        "customPlan"
+      ],
+      "properties": {
+        "customPlan": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PlanEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Plan"
+        }
+      }
+    },
+    "PlanEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PlanEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "PlanArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Plan"
+          }
+        }
+      }
+    },
+    "PlanArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PlanArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "InvoiceInfo": {
+      "type": "object",
+      "required": [
+        "name",
+        "orgId",
+        "dueOn"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "dueOn": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "InvoiceBase": {
+      "type": "object",
+      "required": [
+        "invoiceAmount",
+        "paymentStatus",
+        "reconciled"
+      ],
+      "properties": {
+        "invoiceAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "billedAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "reconciled": {
+          "type": "boolean"
+        },
+        "planId": {
+          "type": "string"
+        },
+        "planFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "deviceModelFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "modelParametersFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "deviceFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "clientFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "userFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "dataFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "archivalFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "dashboardFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "deviceModelCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "modelParametersCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "deviceCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "clientCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "userCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "dataCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "archivalCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "dashboardCount": {
+          "type": "number",
+          "format": "double"
+        },
+        "paidOn": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "transactionStamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "metaData": {
+          "type": "object"
+        },
+        "graceDays": {
+          "type": "integer"
+        },
+        "paymentMode": {
+          "type": "string"
+        },
+        "paymentGateway": {
+          "type": "string"
+        },
+        "paymentStatus": {
+          "type": "string"
+        }
+      }
+    },
+    "Invoice": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/InvoiceInfo"
+        },
+        {
+          "$ref": "#/definitions/InvoiceBase"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "InvoiceEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Invoice"
+        }
+      }
+    },
+    "InvoiceEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/InvoiceEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "InvoiceArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Invoice"
+          }
+        }
+      }
+    },
+    "InvoiceArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/InvoiceArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "PlanChangeRequest": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "planId"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "planId": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        }
+      }
+    },
+    "AddComponentRequest": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "orderId"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        }
+      }
+    },
+    "PaidInvoiceRequest": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "invoiceId",
+        "billedAmount"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "invoiceId": {
+          "type": "string"
+        },
+        "billedAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "paymentMode": {
+          "type": "string"
+        },
+        "paymentGateway": {
+          "type": "string"
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "transactionStamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "metaData": {
+          "type": "object"
+        }
+      }
+    },
+    "OrderInfo": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "orderStatus"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "couponCode": {
+          "type": "string"
+        },
+        "planId": {
+          "type": "string"
+        },
+        "modelCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "parameterCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "deviceCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "clientCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "dataCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "archivalCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "dashboardCount": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "OrderBase": {
+      "type": "object",
+      "required": [
+        "orderStatus",
+        "orderAmount",
+        "reconciled",
+        "processed"
+      ],
+      "properties": {
+        "orderAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "reconciled": {
+          "type": "boolean"
+        },
+        "processed": {
+          "type": "boolean"
+        },
+        "billedAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "planPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "modelPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "parameterPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "devicePrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "clientPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "dataPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "userPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "archivalPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "dashboardPrice": {
+          "type": "number",
+          "format": "double"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "transactionStamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "discount": {
+          "type": "number",
+          "format": "double"
+        },
+        "metaData": {
+          "type": "object"
+        },
+        "paymentGateway": {
+          "type": "string"
+        },
+        "stripePaymentSecret": {
+          "type": "string"
+        },
+        "orderStatus": {
+          "type": "string"
+        }
+      }
+    },
+    "Order": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrderInfo"
+        },
+        {
+          "$ref": "#/definitions/OrderBase"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrderEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/Order"
+        }
+      }
+    },
+    "OrderEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrderEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "OrderArray": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      }
+    },
+    "OrderArrayRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrderArray"
+        },
+        {
+          "$ref": "#/definitions/BaseListRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "PaidOrderRequest": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "orderId",
+        "paymentGateway",
+        "transactionId",
+        "billedAmount"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "paymentGateway": {
+          "type": "string"
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "transactionStamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "billedAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "metaData": {
+          "type": "object"
+        }
+      }
+    },
+    "OrgPlanInfo": {
+      "type": "object",
+      "required": [
+        "planId",
+        "planType",
+        "deviceModelCount",
+        "modelParametersCount",
+        "devicesCount",
+        "clientCount",
+        "userCount",
+        "dashboardCount",
+        "dataPointsCount",
+        "archivalYears",
+        "purchaseModels",
+        "purchasedParameters",
+        "purchasedDevices",
+        "purchasedClients",
+        "purchasedUsers",
+        "purchasedDashboards",
+        "purchasedDataPoints",
+        "purchasedArchivals"
+      ],
+      "properties": {
+        "planId": {
+          "type": "string"
+        },
+        "planType": {
+          "type": "string"
+        },
+        "deviceModelCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "modelParametersCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "devicesCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "clientCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "dashboardCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "dataPointsCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "archivalYears": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchaseModels": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedParameters": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedDevices": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedClients": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedUsers": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedDashboards": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedDataPoints": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "purchasedArchivals": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "canBuyDataPlan": {
+          "type": "boolean"
+        },
+        "canBuyArchivalPlan": {
+          "type": "boolean"
+        },
+        "canBuyClientPlan": {
+          "type": "boolean"
+        },
+        "canBrand": {
+          "type": "boolean"
+        },
+        "canWhiteLabel": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OrgPlanBase": {
+      "type": "object",
+      "required": [
+        "orgId"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        }
+      }
+    },
+    "OrgPlan": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrgPlanInfo"
+        },
+        {
+          "$ref": "#/definitions/OrgPlanBase"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "required": [
+        "orgId"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        }
+      }
+    },
+    "OrgPlanEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/definitions/OrgPlan"
+        }
+      }
+    },
+    "OrgPlanEntityRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrgPlanEntity"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "StripePaymentSecretArgs": {
+      "type": "object",
+      "required": [
+        "orgId",
+        "orderId",
+        "currency"
+      ],
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
     }
   }
 }

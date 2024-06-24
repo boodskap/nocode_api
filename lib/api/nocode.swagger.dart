@@ -27,6 +27,7 @@ abstract class Nocode extends ChopperService {
     ChopperClient? client,
     http.Client? httpClient,
     Authenticator? authenticator,
+    ErrorConverter? errorConverter,
     Converter? converter,
     Uri? baseUrl,
     Iterable<dynamic>? interceptors,
@@ -41,7 +42,8 @@ abstract class Nocode extends ChopperService {
         interceptors: interceptors ?? [],
         client: httpClient,
         authenticator: authenticator,
-        baseUrl: baseUrl ?? Uri.parse('http://nocode.boodskap.io/rest/nocode'));
+        errorConverter: errorConverter,
+        baseUrl: baseUrl ?? Uri.parse('http://lbdev.boodskap.io/rest/nocode'));
     return _$Nocode(newClient);
   }
 
@@ -1314,6 +1316,489 @@ abstract class Nocode extends ChopperService {
     @Body() required ListReq? body,
     @Header('TOKEN') String? token,
   });
+
+  ///Create new plan
+  ///@param body
+  Future<chopper.Response<PlanEntityRes>> createNewPlan({
+    required PlanInfo? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(PlanInfo, () => PlanInfo.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+
+    return _createNewPlan(body: body, token: token?.toString());
+  }
+
+  ///Create new plan
+  ///@param body
+  @Post(path: '/Plan/create')
+  Future<chopper.Response<PlanEntityRes>> _createNewPlan({
+    @Body() required PlanInfo? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Update plan
+  ///@param planId Plan ID
+  ///@param body
+  Future<chopper.Response<PlanEntityRes>> updatePlan({
+    required String? planId,
+    required PlanInfo? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(PlanInfo, () => PlanInfo.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+
+    return _updatePlan(planId: planId, body: body, token: token?.toString());
+  }
+
+  ///Update plan
+  ///@param planId Plan ID
+  ///@param body
+  @Post(path: '/Plan/update/{planId}')
+  Future<chopper.Response<PlanEntityRes>> _updatePlan({
+    @Path('planId') required String? planId,
+    @Body() required PlanInfo? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Search plans
+  ///@param includeCustomPlans Include Custom Plans (required admin access)
+  ///@param body
+  Future<chopper.Response<PlanArrayRes>> searchPlans({
+    bool? includeCustomPlans,
+    required SearchReq? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(SearchReq, () => SearchReq.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        PlanArrayRes, () => PlanArrayRes.fromJsonFactory);
+
+    return _searchPlans(
+        includeCustomPlans: includeCustomPlans?.toString(),
+        body: body,
+        token: token?.toString());
+  }
+
+  ///Search plans
+  ///@param includeCustomPlans Include Custom Plans (required admin access)
+  ///@param body
+  @Post(path: '/Plan/search')
+  Future<chopper.Response<PlanArrayRes>> _searchPlans({
+    @Header('includeCustomPlans') String? includeCustomPlans,
+    @Body() required SearchReq? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Get plan
+  ///@param planId Plan ID
+  Future<chopper.Response<PlanEntityRes>> getPlan({
+    required String? planId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+
+    return _getPlan(planId: planId, token: token?.toString());
+  }
+
+  ///Get plan
+  ///@param planId Plan ID
+  @Get(path: '/Plan/get/{planId}')
+  Future<chopper.Response<PlanEntityRes>> _getPlan({
+    @Path('planId') required String? planId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Delete plan
+  ///@param planId Plan ID
+  Future<chopper.Response<PlanEntityRes>> deletePlan({
+    required String? planId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+
+    return _deletePlan(planId: planId, token: token?.toString());
+  }
+
+  ///Delete plan
+  ///@param planId Plan ID
+  @Delete(path: '/Plan/remove/{planId}')
+  Future<chopper.Response<PlanEntityRes>> _deletePlan({
+    @Path('planId') required String? planId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Create or update org plan
+  ///@param body
+  Future<chopper.Response<OrgPlanEntityRes>> createOrUpdateOrgPlan({
+    required PlanChangeRequest? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PlanChangeRequest, () => PlanChangeRequest.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
+
+    return _createOrUpdateOrgPlan(body: body, token: token?.toString());
+  }
+
+  ///Create or update org plan
+  ///@param body
+  @Post(path: '/OrgPlan/upsert')
+  Future<chopper.Response<OrgPlanEntityRes>> _createOrUpdateOrgPlan({
+    @Body() required PlanChangeRequest? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Add components to a plan
+  ///@param body
+  Future<chopper.Response<OrgPlanEntityRes>> addComponentsToPlan({
+    required AddComponentRequest? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        AddComponentRequest, () => AddComponentRequest.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
+
+    return _addComponentsToPlan(body: body, token: token?.toString());
+  }
+
+  ///Add components to a plan
+  ///@param body
+  @Post(path: '/OrgPlan/component/add')
+  Future<chopper.Response<OrgPlanEntityRes>> _addComponentsToPlan({
+    @Body() required AddComponentRequest? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Get organization plan
+  ///@param orgId Organization ID
+  Future<chopper.Response<OrgPlanEntityRes>> getOrgPlan({
+    required String? orgId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
+
+    return _getOrgPlan(orgId: orgId, token: token?.toString());
+  }
+
+  ///Get organization plan
+  ///@param orgId Organization ID
+  @Get(path: '/OrgPlan/get/{orgId}')
+  Future<chopper.Response<OrgPlanEntityRes>> _getOrgPlan({
+    @Path('orgId') required String? orgId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Search invoices
+  ///@param orgId Organization ID (empty id requires admin access)
+  ///@param paymentStatus PaymentStatus enum name
+  ///@param body
+  Future<chopper.Response<InvoiceArrayRes>> searchInvoices({
+    String? orgId,
+    String? paymentStatus,
+    required SearchReq? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(SearchReq, () => SearchReq.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        InvoiceArrayRes, () => InvoiceArrayRes.fromJsonFactory);
+
+    return _searchInvoices(
+        orgId: orgId?.toString(),
+        paymentStatus: paymentStatus?.toString(),
+        body: body,
+        token: token?.toString());
+  }
+
+  ///Search invoices
+  ///@param orgId Organization ID (empty id requires admin access)
+  ///@param paymentStatus PaymentStatus enum name
+  ///@param body
+  @Post(path: '/Invoice/search')
+  Future<chopper.Response<InvoiceArrayRes>> _searchInvoices({
+    @Header('orgId') String? orgId,
+    @Header('paymentStatus') String? paymentStatus,
+    @Body() required SearchReq? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Get invoice
+  ///@param invoiceId Invoice ID
+  Future<chopper.Response<InvoiceEntityRes>> getInvoice({
+    required String? invoiceId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        InvoiceEntityRes, () => InvoiceEntityRes.fromJsonFactory);
+
+    return _getInvoice(invoiceId: invoiceId, token: token?.toString());
+  }
+
+  ///Get invoice
+  ///@param invoiceId Invoice ID
+  @Get(path: '/Invoice/get/{invoiceId}')
+  Future<chopper.Response<InvoiceEntityRes>> _getInvoice({
+    @Path('invoiceId') required String? invoiceId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Set invoice payment status
+  ///@param paymentStatus PaymentStatus enum name
+  ///@param body
+  Future<chopper.Response<InvoiceEntityRes>> setPaymentStatus({
+    required String? paymentStatus,
+    required PaidInvoiceRequest? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PaidInvoiceRequest, () => PaidInvoiceRequest.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        InvoiceEntityRes, () => InvoiceEntityRes.fromJsonFactory);
+
+    return _setPaymentStatus(
+        paymentStatus: paymentStatus, body: body, token: token?.toString());
+  }
+
+  ///Set invoice payment status
+  ///@param paymentStatus PaymentStatus enum name
+  ///@param body
+  @Post(path: '/Invoice/set/status/{paymentStatus}')
+  Future<chopper.Response<InvoiceEntityRes>> _setPaymentStatus({
+    @Path('paymentStatus') required String? paymentStatus,
+    @Body() required PaidInvoiceRequest? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Invoice paid
+  ///@param body
+  Future<chopper.Response<InvoiceEntityRes>> invoicePaid({
+    required PaidInvoiceRequest? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PaidInvoiceRequest, () => PaidInvoiceRequest.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        InvoiceEntityRes, () => InvoiceEntityRes.fromJsonFactory);
+
+    return _invoicePaid(body: body, token: token?.toString());
+  }
+
+  ///Invoice paid
+  ///@param body
+  @Post(path: '/Invoice/paid')
+  Future<chopper.Response<InvoiceEntityRes>> _invoicePaid({
+    @Body() required PaidInvoiceRequest? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Delete invoice
+  ///@param invoiceId Invoice ID
+  Future<chopper.Response<InvoiceEntityRes>> deleteInvoice({
+    required String? invoiceId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        InvoiceEntityRes, () => InvoiceEntityRes.fromJsonFactory);
+
+    return _deleteInvoice(invoiceId: invoiceId, token: token?.toString());
+  }
+
+  ///Delete invoice
+  ///@param invoiceId Invoice ID
+  @Delete(path: '/Invoice/remove/{invoiceId}')
+  Future<chopper.Response<InvoiceEntityRes>> _deleteInvoice({
+    @Path('invoiceId') required String? invoiceId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Create new order
+  ///@param body
+  Future<chopper.Response<OrderEntityRes>> createNewOrder({
+    required OrderInfo? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(OrderInfo, () => OrderInfo.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _createNewOrder(body: body, token: token?.toString());
+  }
+
+  ///Create new order
+  ///@param body
+  @Post(path: '/Orders/create')
+  Future<chopper.Response<OrderEntityRes>> _createNewOrder({
+    @Body() required OrderInfo? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Update order
+  ///@param orderId Order ID
+  ///@param body
+  Future<chopper.Response<OrderEntityRes>> updateOrder({
+    required String? orderId,
+    required OrderInfo? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(OrderInfo, () => OrderInfo.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _updateOrder(orderId: orderId, body: body, token: token?.toString());
+  }
+
+  ///Update order
+  ///@param orderId Order ID
+  ///@param body
+  @Post(path: '/Orders/update/{orderId}')
+  Future<chopper.Response<OrderEntityRes>> _updateOrder({
+    @Path('orderId') required String? orderId,
+    @Body() required OrderInfo? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Search orders
+  ///@param orgId Organization ID (empty id requires admin access)
+  ///@param orderStatus OrderStatus enum name
+  ///@param body
+  Future<chopper.Response<OrderArrayRes>> searchOrders({
+    String? orgId,
+    String? orderStatus,
+    required SearchReq? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(SearchReq, () => SearchReq.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrderArrayRes, () => OrderArrayRes.fromJsonFactory);
+
+    return _searchOrders(
+        orgId: orgId?.toString(),
+        orderStatus: orderStatus?.toString(),
+        body: body,
+        token: token?.toString());
+  }
+
+  ///Search orders
+  ///@param orgId Organization ID (empty id requires admin access)
+  ///@param orderStatus OrderStatus enum name
+  ///@param body
+  @Post(path: '/Orders/search')
+  Future<chopper.Response<OrderArrayRes>> _searchOrders({
+    @Header('orgId') String? orgId,
+    @Header('orderStatus') String? orderStatus,
+    @Body() required SearchReq? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Get order
+  ///@param orderId Order ID
+  Future<chopper.Response<OrderEntityRes>> getOrder({
+    required String? orderId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _getOrder(orderId: orderId, token: token?.toString());
+  }
+
+  ///Get order
+  ///@param orderId Order ID
+  @Get(path: '/Orders/get/{orderId}')
+  Future<chopper.Response<OrderEntityRes>> _getOrder({
+    @Path('orderId') required String? orderId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Cancel order
+  ///@param orderId Order ID
+  Future<chopper.Response<OrderEntityRes>> cancelOrder({
+    required String? orderId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _cancelOrder(orderId: orderId, token: token?.toString());
+  }
+
+  ///Cancel order
+  ///@param orderId Order ID
+  @Get(path: '/Orders/cancel/{orderId}')
+  Future<chopper.Response<OrderEntityRes>> _cancelOrder({
+    @Path('orderId') required String? orderId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Order paid
+  ///@param body
+  Future<chopper.Response<OrderEntityRes>> orderPaid({
+    required PaidOrderRequest? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        PaidOrderRequest, () => PaidOrderRequest.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _orderPaid(body: body, token: token?.toString());
+  }
+
+  ///Order paid
+  ///@param body
+  @Post(path: '/Orders/paid')
+  Future<chopper.Response<OrderEntityRes>> _orderPaid({
+    @Body() required PaidOrderRequest? body,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Delete order
+  ///@param orderId Order ID
+  Future<chopper.Response<OrderEntityRes>> deleteOrder({
+    required String? orderId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _deleteOrder(orderId: orderId, token: token?.toString());
+  }
+
+  ///Delete order
+  ///@param orderId Order ID
+  @Delete(path: '/Orders/remove/{orderId}')
+  Future<chopper.Response<OrderEntityRes>> _deleteOrder({
+    @Path('orderId') required String? orderId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Create payment secret
+  ///@param body
+  Future<chopper.Response<OrderEntityRes>> createStripePaymentSecret({
+    required StripePaymentSecretArgs? body,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        StripePaymentSecretArgs, () => StripePaymentSecretArgs.fromJsonFactory);
+    generatedMapping.putIfAbsent(
+        OrderEntityRes, () => OrderEntityRes.fromJsonFactory);
+
+    return _createStripePaymentSecret(body: body, token: token?.toString());
+  }
+
+  ///Create payment secret
+  ///@param body
+  @Post(path: '/Orders/stripe/payment/secrete')
+  Future<chopper.Response<OrderEntityRes>> _createStripePaymentSecret({
+    @Body() required StripePaymentSecretArgs? body,
+    @Header('TOKEN') String? token,
+  });
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1333,7 +1818,7 @@ class NoCodeTemplate {
   static const fromJsonFactory = _$NoCodeTemplateFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is NoCodeTemplate &&
             (identical(other.className, className) ||
@@ -1395,7 +1880,7 @@ class BaseEntity {
   static const fromJsonFactory = _$BaseEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is BaseEntity &&
             (identical(other.id, id) ||
@@ -1500,7 +1985,7 @@ class BaseRes {
   static const fromJsonFactory = _$BaseResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is BaseRes &&
             (identical(other.ok, ok) ||
@@ -1583,7 +2068,7 @@ class BaseListRes {
   static const fromJsonFactory = _$BaseListResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is BaseListRes &&
             (identical(other.ok, ok) ||
@@ -1676,7 +2161,7 @@ class ListReq {
   static const fromJsonFactory = _$ListReqFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ListReq &&
             (identical(other.page, page) ||
@@ -1730,7 +2215,7 @@ class SearchReq {
   static const fromJsonFactory = _$SearchReqFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is SearchReq &&
             (identical(other.search, search) ||
@@ -1816,7 +2301,7 @@ class ProfileInfo {
   static const fromJsonFactory = _$ProfileInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ProfileInfo &&
             (identical(other.address, address) ||
@@ -1995,7 +2480,7 @@ class Profile {
   static const fromJsonFactory = _$ProfileFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Profile &&
             (identical(other.address, address) ||
@@ -2179,7 +2664,7 @@ class ProfileEntity {
   static const fromJsonFactory = _$ProfileEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ProfileEntity &&
             (identical(other.entity, entity) ||
@@ -2233,7 +2718,7 @@ class ProfileEntityRes {
   static const fromJsonFactory = _$ProfileEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ProfileEntityRes &&
             (identical(other.entity, entity) ||
@@ -2315,7 +2800,7 @@ class OrgProfileBase {
   static const fromJsonFactory = _$OrgProfileBaseFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfileBase &&
             (identical(other.subscribed, subscribed) ||
@@ -2362,6 +2847,9 @@ extension $OrgProfileBaseExtension on OrgProfileBase {
 @JsonSerializable(explicitToJson: true)
 class OrgProfile {
   const OrgProfile({
+    required this.subscribed,
+    required this.orgId,
+    required this.profileId,
     this.address,
     required this.email,
     required this.name,
@@ -2380,9 +2868,6 @@ class OrgProfile {
     required this.updatedBy,
     required this.updatedStamp,
     required this.domainKey,
-    required this.subscribed,
-    required this.orgId,
-    required this.profileId,
   });
 
   factory OrgProfile.fromJson(Map<String, dynamic> json) =>
@@ -2391,6 +2876,12 @@ class OrgProfile {
   static const toJsonFactory = _$OrgProfileToJson;
   Map<String, dynamic> toJson() => _$OrgProfileToJson(this);
 
+  @JsonKey(name: 'subscribed', includeIfNull: false, defaultValue: false)
+  final bool subscribed;
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'profileId', includeIfNull: false, defaultValue: '')
+  final String profileId;
   @JsonKey(name: 'address', includeIfNull: false, defaultValue: '')
   final String? address;
   @JsonKey(name: 'email', includeIfNull: false, defaultValue: '')
@@ -2427,18 +2918,20 @@ class OrgProfile {
   final int updatedStamp;
   @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
   final String domainKey;
-  @JsonKey(name: 'subscribed', includeIfNull: false, defaultValue: false)
-  final bool subscribed;
-  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
-  final String orgId;
-  @JsonKey(name: 'profileId', includeIfNull: false, defaultValue: '')
-  final String profileId;
   static const fromJsonFactory = _$OrgProfileFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfile &&
+            (identical(other.subscribed, subscribed) ||
+                const DeepCollectionEquality()
+                    .equals(other.subscribed, subscribed)) &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.profileId, profileId) ||
+                const DeepCollectionEquality()
+                    .equals(other.profileId, profileId)) &&
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
@@ -2485,15 +2978,7 @@ class OrgProfile {
                     .equals(other.updatedStamp, updatedStamp)) &&
             (identical(other.domainKey, domainKey) ||
                 const DeepCollectionEquality()
-                    .equals(other.domainKey, domainKey)) &&
-            (identical(other.subscribed, subscribed) ||
-                const DeepCollectionEquality()
-                    .equals(other.subscribed, subscribed)) &&
-            (identical(other.orgId, orgId) ||
-                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
-            (identical(other.profileId, profileId) ||
-                const DeepCollectionEquality()
-                    .equals(other.profileId, profileId)));
+                    .equals(other.domainKey, domainKey)));
   }
 
   @override
@@ -2501,6 +2986,9 @@ class OrgProfile {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(subscribed) ^
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(profileId) ^
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(name) ^
@@ -2519,15 +3007,15 @@ class OrgProfile {
       const DeepCollectionEquality().hash(updatedBy) ^
       const DeepCollectionEquality().hash(updatedStamp) ^
       const DeepCollectionEquality().hash(domainKey) ^
-      const DeepCollectionEquality().hash(subscribed) ^
-      const DeepCollectionEquality().hash(orgId) ^
-      const DeepCollectionEquality().hash(profileId) ^
       runtimeType.hashCode;
 }
 
 extension $OrgProfileExtension on OrgProfile {
   OrgProfile copyWith(
-      {String? address,
+      {bool? subscribed,
+      String? orgId,
+      String? profileId,
+      String? address,
       String? email,
       String? name,
       String? phone,
@@ -2544,11 +3032,11 @@ extension $OrgProfileExtension on OrgProfile {
       int? createdStamp,
       String? updatedBy,
       int? updatedStamp,
-      String? domainKey,
-      bool? subscribed,
-      String? orgId,
-      String? profileId}) {
+      String? domainKey}) {
     return OrgProfile(
+        subscribed: subscribed ?? this.subscribed,
+        orgId: orgId ?? this.orgId,
+        profileId: profileId ?? this.profileId,
         address: address ?? this.address,
         email: email ?? this.email,
         name: name ?? this.name,
@@ -2566,14 +3054,14 @@ extension $OrgProfileExtension on OrgProfile {
         createdStamp: createdStamp ?? this.createdStamp,
         updatedBy: updatedBy ?? this.updatedBy,
         updatedStamp: updatedStamp ?? this.updatedStamp,
-        domainKey: domainKey ?? this.domainKey,
-        subscribed: subscribed ?? this.subscribed,
-        orgId: orgId ?? this.orgId,
-        profileId: profileId ?? this.profileId);
+        domainKey: domainKey ?? this.domainKey);
   }
 
   OrgProfile copyWithWrapped(
-      {Wrapped<String?>? address,
+      {Wrapped<bool>? subscribed,
+      Wrapped<String>? orgId,
+      Wrapped<String>? profileId,
+      Wrapped<String?>? address,
       Wrapped<String>? email,
       Wrapped<String>? name,
       Wrapped<String?>? phone,
@@ -2590,11 +3078,11 @@ extension $OrgProfileExtension on OrgProfile {
       Wrapped<int>? createdStamp,
       Wrapped<String>? updatedBy,
       Wrapped<int>? updatedStamp,
-      Wrapped<String>? domainKey,
-      Wrapped<bool>? subscribed,
-      Wrapped<String>? orgId,
-      Wrapped<String>? profileId}) {
+      Wrapped<String>? domainKey}) {
     return OrgProfile(
+        subscribed: (subscribed != null ? subscribed.value : this.subscribed),
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        profileId: (profileId != null ? profileId.value : this.profileId),
         address: (address != null ? address.value : this.address),
         email: (email != null ? email.value : this.email),
         name: (name != null ? name.value : this.name),
@@ -2619,10 +3107,7 @@ extension $OrgProfileExtension on OrgProfile {
         updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
         updatedStamp:
             (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
-        domainKey: (domainKey != null ? domainKey.value : this.domainKey),
-        subscribed: (subscribed != null ? subscribed.value : this.subscribed),
-        orgId: (orgId != null ? orgId.value : this.orgId),
-        profileId: (profileId != null ? profileId.value : this.profileId));
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
   }
 }
 
@@ -2643,7 +3128,7 @@ class OrgProfileEntity {
   static const fromJsonFactory = _$OrgProfileEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfileEntity &&
             (identical(other.entity, entity) ||
@@ -2698,7 +3183,7 @@ class OrgProfileEntityRes {
   static const fromJsonFactory = _$OrgProfileEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfileEntityRes &&
             (identical(other.entity, entity) ||
@@ -2774,7 +3259,7 @@ class OrgProfileArray {
   static const fromJsonFactory = _$OrgProfileArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfileArray &&
             (identical(other.values, values) ||
@@ -2838,7 +3323,7 @@ class OrgProfileArrayRes {
   static const fromJsonFactory = _$OrgProfileArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgProfileArrayRes &&
             (identical(other.values, values) ||
@@ -2935,7 +3420,7 @@ class TeamProfileBase {
   static const fromJsonFactory = _$TeamProfileBaseFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfileBase &&
             (identical(other.teamId, teamId) ||
@@ -2964,28 +3449,10 @@ extension $TeamProfileBaseExtension on TeamProfileBase {
 @JsonSerializable(explicitToJson: true)
 class TeamProfile {
   const TeamProfile({
-    this.address,
-    required this.email,
-    required this.name,
-    this.phone,
-    this.website,
-    this.description,
-    this.icon,
-    this.logo,
-    this.landscapeBanner,
-    this.portraitBanner,
-    this.settings,
-    required this.id,
-    required this.rtype,
-    required this.createdBy,
-    required this.createdStamp,
-    required this.updatedBy,
-    required this.updatedStamp,
-    required this.domainKey,
+    required this.teamId,
     required this.subscribed,
     required this.orgId,
     required this.profileId,
-    required this.teamId,
   });
 
   factory TeamProfile.fromJson(Map<String, dynamic> json) =>
@@ -2994,103 +3461,22 @@ class TeamProfile {
   static const toJsonFactory = _$TeamProfileToJson;
   Map<String, dynamic> toJson() => _$TeamProfileToJson(this);
 
-  @JsonKey(name: 'address', includeIfNull: false, defaultValue: '')
-  final String? address;
-  @JsonKey(name: 'email', includeIfNull: false, defaultValue: '')
-  final String email;
-  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
-  final String name;
-  @JsonKey(name: 'phone', includeIfNull: false, defaultValue: '')
-  final String? phone;
-  @JsonKey(name: 'website', includeIfNull: false, defaultValue: '')
-  final String? website;
-  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
-  final String? description;
-  @JsonKey(name: 'icon', includeIfNull: false, defaultValue: '')
-  final String? icon;
-  @JsonKey(name: 'logo', includeIfNull: false, defaultValue: '')
-  final String? logo;
-  @JsonKey(name: 'landscapeBanner', includeIfNull: false, defaultValue: '')
-  final String? landscapeBanner;
-  @JsonKey(name: 'portraitBanner', includeIfNull: false, defaultValue: '')
-  final String? portraitBanner;
-  @JsonKey(name: 'settings', includeIfNull: false)
-  final ProfileSettings? settings;
-  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
-  final String id;
-  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
-  final String rtype;
-  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
-  final String createdBy;
-  @JsonKey(name: 'createdStamp', includeIfNull: false)
-  final int createdStamp;
-  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
-  final String updatedBy;
-  @JsonKey(name: 'updatedStamp', includeIfNull: false)
-  final int updatedStamp;
-  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
-  final String domainKey;
+  @JsonKey(name: 'teamId', includeIfNull: false, defaultValue: '')
+  final String teamId;
   @JsonKey(name: 'subscribed', includeIfNull: false, defaultValue: false)
   final bool subscribed;
   @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
   final String orgId;
   @JsonKey(name: 'profileId', includeIfNull: false, defaultValue: '')
   final String profileId;
-  @JsonKey(name: 'teamId', includeIfNull: false, defaultValue: '')
-  final String teamId;
   static const fromJsonFactory = _$TeamProfileFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfile &&
-            (identical(other.address, address) ||
-                const DeepCollectionEquality()
-                    .equals(other.address, address)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.phone, phone) ||
-                const DeepCollectionEquality().equals(other.phone, phone)) &&
-            (identical(other.website, website) ||
-                const DeepCollectionEquality()
-                    .equals(other.website, website)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.icon, icon) ||
-                const DeepCollectionEquality().equals(other.icon, icon)) &&
-            (identical(other.logo, logo) ||
-                const DeepCollectionEquality().equals(other.logo, logo)) &&
-            (identical(other.landscapeBanner, landscapeBanner) ||
-                const DeepCollectionEquality()
-                    .equals(other.landscapeBanner, landscapeBanner)) &&
-            (identical(other.portraitBanner, portraitBanner) ||
-                const DeepCollectionEquality()
-                    .equals(other.portraitBanner, portraitBanner)) &&
-            (identical(other.settings, settings) ||
-                const DeepCollectionEquality()
-                    .equals(other.settings, settings)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.rtype, rtype) ||
-                const DeepCollectionEquality().equals(other.rtype, rtype)) &&
-            (identical(other.createdBy, createdBy) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdBy, createdBy)) &&
-            (identical(other.createdStamp, createdStamp) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdStamp, createdStamp)) &&
-            (identical(other.updatedBy, updatedBy) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedBy, updatedBy)) &&
-            (identical(other.updatedStamp, updatedStamp) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedStamp, updatedStamp)) &&
-            (identical(other.domainKey, domainKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.domainKey, domainKey)) &&
+            (identical(other.teamId, teamId) ||
+                const DeepCollectionEquality().equals(other.teamId, teamId)) &&
             (identical(other.subscribed, subscribed) ||
                 const DeepCollectionEquality()
                     .equals(other.subscribed, subscribed)) &&
@@ -3098,9 +3484,7 @@ class TeamProfile {
                 const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.profileId, profileId) ||
                 const DeepCollectionEquality()
-                    .equals(other.profileId, profileId)) &&
-            (identical(other.teamId, teamId) ||
-                const DeepCollectionEquality().equals(other.teamId, teamId)));
+                    .equals(other.profileId, profileId)));
   }
 
   @override
@@ -3108,133 +3492,33 @@ class TeamProfile {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(address) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(phone) ^
-      const DeepCollectionEquality().hash(website) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(icon) ^
-      const DeepCollectionEquality().hash(logo) ^
-      const DeepCollectionEquality().hash(landscapeBanner) ^
-      const DeepCollectionEquality().hash(portraitBanner) ^
-      const DeepCollectionEquality().hash(settings) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(rtype) ^
-      const DeepCollectionEquality().hash(createdBy) ^
-      const DeepCollectionEquality().hash(createdStamp) ^
-      const DeepCollectionEquality().hash(updatedBy) ^
-      const DeepCollectionEquality().hash(updatedStamp) ^
-      const DeepCollectionEquality().hash(domainKey) ^
+      const DeepCollectionEquality().hash(teamId) ^
       const DeepCollectionEquality().hash(subscribed) ^
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(profileId) ^
-      const DeepCollectionEquality().hash(teamId) ^
       runtimeType.hashCode;
 }
 
 extension $TeamProfileExtension on TeamProfile {
   TeamProfile copyWith(
-      {String? address,
-      String? email,
-      String? name,
-      String? phone,
-      String? website,
-      String? description,
-      String? icon,
-      String? logo,
-      String? landscapeBanner,
-      String? portraitBanner,
-      ProfileSettings? settings,
-      String? id,
-      String? rtype,
-      String? createdBy,
-      int? createdStamp,
-      String? updatedBy,
-      int? updatedStamp,
-      String? domainKey,
-      bool? subscribed,
-      String? orgId,
-      String? profileId,
-      String? teamId}) {
+      {String? teamId, bool? subscribed, String? orgId, String? profileId}) {
     return TeamProfile(
-        address: address ?? this.address,
-        email: email ?? this.email,
-        name: name ?? this.name,
-        phone: phone ?? this.phone,
-        website: website ?? this.website,
-        description: description ?? this.description,
-        icon: icon ?? this.icon,
-        logo: logo ?? this.logo,
-        landscapeBanner: landscapeBanner ?? this.landscapeBanner,
-        portraitBanner: portraitBanner ?? this.portraitBanner,
-        settings: settings ?? this.settings,
-        id: id ?? this.id,
-        rtype: rtype ?? this.rtype,
-        createdBy: createdBy ?? this.createdBy,
-        createdStamp: createdStamp ?? this.createdStamp,
-        updatedBy: updatedBy ?? this.updatedBy,
-        updatedStamp: updatedStamp ?? this.updatedStamp,
-        domainKey: domainKey ?? this.domainKey,
+        teamId: teamId ?? this.teamId,
         subscribed: subscribed ?? this.subscribed,
         orgId: orgId ?? this.orgId,
-        profileId: profileId ?? this.profileId,
-        teamId: teamId ?? this.teamId);
+        profileId: profileId ?? this.profileId);
   }
 
   TeamProfile copyWithWrapped(
-      {Wrapped<String?>? address,
-      Wrapped<String>? email,
-      Wrapped<String>? name,
-      Wrapped<String?>? phone,
-      Wrapped<String?>? website,
-      Wrapped<String?>? description,
-      Wrapped<String?>? icon,
-      Wrapped<String?>? logo,
-      Wrapped<String?>? landscapeBanner,
-      Wrapped<String?>? portraitBanner,
-      Wrapped<ProfileSettings?>? settings,
-      Wrapped<String>? id,
-      Wrapped<String>? rtype,
-      Wrapped<String>? createdBy,
-      Wrapped<int>? createdStamp,
-      Wrapped<String>? updatedBy,
-      Wrapped<int>? updatedStamp,
-      Wrapped<String>? domainKey,
+      {Wrapped<String>? teamId,
       Wrapped<bool>? subscribed,
       Wrapped<String>? orgId,
-      Wrapped<String>? profileId,
-      Wrapped<String>? teamId}) {
+      Wrapped<String>? profileId}) {
     return TeamProfile(
-        address: (address != null ? address.value : this.address),
-        email: (email != null ? email.value : this.email),
-        name: (name != null ? name.value : this.name),
-        phone: (phone != null ? phone.value : this.phone),
-        website: (website != null ? website.value : this.website),
-        description:
-            (description != null ? description.value : this.description),
-        icon: (icon != null ? icon.value : this.icon),
-        logo: (logo != null ? logo.value : this.logo),
-        landscapeBanner: (landscapeBanner != null
-            ? landscapeBanner.value
-            : this.landscapeBanner),
-        portraitBanner: (portraitBanner != null
-            ? portraitBanner.value
-            : this.portraitBanner),
-        settings: (settings != null ? settings.value : this.settings),
-        id: (id != null ? id.value : this.id),
-        rtype: (rtype != null ? rtype.value : this.rtype),
-        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
-        createdStamp:
-            (createdStamp != null ? createdStamp.value : this.createdStamp),
-        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
-        updatedStamp:
-            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
-        domainKey: (domainKey != null ? domainKey.value : this.domainKey),
+        teamId: (teamId != null ? teamId.value : this.teamId),
         subscribed: (subscribed != null ? subscribed.value : this.subscribed),
         orgId: (orgId != null ? orgId.value : this.orgId),
-        profileId: (profileId != null ? profileId.value : this.profileId),
-        teamId: (teamId != null ? teamId.value : this.teamId));
+        profileId: (profileId != null ? profileId.value : this.profileId));
   }
 }
 
@@ -3255,7 +3539,7 @@ class TeamProfileEntity {
   static const fromJsonFactory = _$TeamProfileEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfileEntity &&
             (identical(other.entity, entity) ||
@@ -3310,7 +3594,7 @@ class TeamProfileEntityRes {
   static const fromJsonFactory = _$TeamProfileEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfileEntityRes &&
             (identical(other.entity, entity) ||
@@ -3386,7 +3670,7 @@ class TeamProfileArray {
   static const fromJsonFactory = _$TeamProfileArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfileArray &&
             (identical(other.values, values) ||
@@ -3450,7 +3734,7 @@ class TeamProfileArrayRes {
   static const fromJsonFactory = _$TeamProfileArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfileArrayRes &&
             (identical(other.values, values) ||
@@ -3577,7 +3861,7 @@ class OrganizationInfo {
   static const fromJsonFactory = _$OrganizationInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationInfo &&
             (identical(other.name, name) ||
@@ -3692,6 +3976,7 @@ extension $OrganizationInfoExtension on OrganizationInfo {
 class Organization {
   const Organization({
     required this.profileId,
+    this.planId,
     required this.organizationState,
     required this.name,
     this.address,
@@ -3721,6 +4006,8 @@ class Organization {
 
   @JsonKey(name: 'profileId', includeIfNull: false, defaultValue: '')
   final String profileId;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String? planId;
   @JsonKey(
     name: 'organizationState',
     includeIfNull: false,
@@ -3767,12 +4054,14 @@ class Organization {
   static const fromJsonFactory = _$OrganizationFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Organization &&
             (identical(other.profileId, profileId) ||
                 const DeepCollectionEquality()
                     .equals(other.profileId, profileId)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
             (identical(other.organizationState, organizationState) ||
                 const DeepCollectionEquality()
                     .equals(other.organizationState, organizationState)) &&
@@ -3831,6 +4120,7 @@ class Organization {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(profileId) ^
+      const DeepCollectionEquality().hash(planId) ^
       const DeepCollectionEquality().hash(organizationState) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(address) ^
@@ -3856,6 +4146,7 @@ class Organization {
 extension $OrganizationExtension on Organization {
   Organization copyWith(
       {String? profileId,
+      String? planId,
       enums.OrganizationOrganizationState? organizationState,
       String? name,
       String? address,
@@ -3877,6 +4168,7 @@ extension $OrganizationExtension on Organization {
       String? domainKey}) {
     return Organization(
         profileId: profileId ?? this.profileId,
+        planId: planId ?? this.planId,
         organizationState: organizationState ?? this.organizationState,
         name: name ?? this.name,
         address: address ?? this.address,
@@ -3900,6 +4192,7 @@ extension $OrganizationExtension on Organization {
 
   Organization copyWithWrapped(
       {Wrapped<String>? profileId,
+      Wrapped<String?>? planId,
       Wrapped<enums.OrganizationOrganizationState>? organizationState,
       Wrapped<String>? name,
       Wrapped<String?>? address,
@@ -3921,6 +4214,7 @@ extension $OrganizationExtension on Organization {
       Wrapped<String>? domainKey}) {
     return Organization(
         profileId: (profileId != null ? profileId.value : this.profileId),
+        planId: (planId != null ? planId.value : this.planId),
         organizationState: (organizationState != null
             ? organizationState.value
             : this.organizationState),
@@ -3969,7 +4263,7 @@ class OrganizationEntity {
   static const fromJsonFactory = _$OrganizationEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationEntity &&
             (identical(other.entity, entity) ||
@@ -4024,7 +4318,7 @@ class OrganizationEntityRes {
   static const fromJsonFactory = _$OrganizationEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationEntityRes &&
             (identical(other.entity, entity) ||
@@ -4100,7 +4394,7 @@ class OrganizationArray {
   static const fromJsonFactory = _$OrganizationArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationArray &&
             (identical(other.values, values) ||
@@ -4164,7 +4458,7 @@ class OrganizationArrayRes {
   static const fromJsonFactory = _$OrganizationArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationArrayRes &&
             (identical(other.values, values) ||
@@ -4301,7 +4595,7 @@ class Subscription {
   static const fromJsonFactory = _$SubscriptionFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Subscription &&
             (identical(other.orgId, orgId) ||
@@ -4432,7 +4726,7 @@ class SubscriptionEntity {
   static const fromJsonFactory = _$SubscriptionEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is SubscriptionEntity &&
             (identical(other.entity, entity) ||
@@ -4487,7 +4781,7 @@ class SubscriptionEntityRes {
   static const fromJsonFactory = _$SubscriptionEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is SubscriptionEntityRes &&
             (identical(other.entity, entity) ||
@@ -4593,7 +4887,7 @@ class TeamInfo {
   static const fromJsonFactory = _$TeamInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamInfo &&
             (identical(other.name, name) ||
@@ -4777,7 +5071,7 @@ class Team {
   static const fromJsonFactory = _$TeamFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Team &&
             (identical(other.orgId, orgId) ||
@@ -4976,7 +5270,7 @@ class TeamEntity {
   static const fromJsonFactory = _$TeamEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamEntity &&
             (identical(other.entity, entity) ||
@@ -5030,7 +5324,7 @@ class TeamEntityRes {
   static const fromJsonFactory = _$TeamEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamEntityRes &&
             (identical(other.entity, entity) ||
@@ -5102,7 +5396,7 @@ class TeamArray {
   static const fromJsonFactory = _$TeamArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamArray &&
             (identical(other.values, values) ||
@@ -5165,7 +5459,7 @@ class TeamArrayRes {
   static const fromJsonFactory = _$TeamArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamArrayRes &&
             (identical(other.values, values) ||
@@ -5283,7 +5577,7 @@ class ApplicationInfo {
   static const fromJsonFactory = _$ApplicationInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationInfo &&
             (identical(other.name, name) ||
@@ -5389,7 +5683,7 @@ class ApplicationModel {
   static const fromJsonFactory = _$ApplicationModelFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationModel &&
             (identical(other.modelJson, modelJson) ||
@@ -5530,7 +5824,7 @@ class Application {
   static const fromJsonFactory = _$ApplicationFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Application &&
             (identical(other.orgId, orgId) ||
@@ -5810,7 +6104,7 @@ class ApplicationEntity {
   static const fromJsonFactory = _$ApplicationEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationEntity &&
             (identical(other.entity, entity) ||
@@ -5865,7 +6159,7 @@ class ApplicationEntityRes {
   static const fromJsonFactory = _$ApplicationEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationEntityRes &&
             (identical(other.entity, entity) ||
@@ -5941,7 +6235,7 @@ class ApplicationArray {
   static const fromJsonFactory = _$ApplicationArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationArray &&
             (identical(other.values, values) ||
@@ -6005,7 +6299,7 @@ class ApplicationArrayRes {
   static const fromJsonFactory = _$ApplicationArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationArrayRes &&
             (identical(other.values, values) ||
@@ -6132,7 +6426,7 @@ class PageInfo {
   static const fromJsonFactory = _$PageInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageInfo &&
             (identical(other.name, name) ||
@@ -6265,7 +6559,7 @@ class PageModel {
   static const fromJsonFactory = _$PageModelFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageModel &&
             (identical(other.modelJson, modelJson) ||
@@ -6382,7 +6676,7 @@ class Page {
   static const fromJsonFactory = _$PageFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Page &&
             (identical(other.orgId, orgId) ||
@@ -6616,7 +6910,7 @@ class PageEntity {
   static const fromJsonFactory = _$PageEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageEntity &&
             (identical(other.entity, entity) ||
@@ -6670,7 +6964,7 @@ class PageEntityRes {
   static const fromJsonFactory = _$PageEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageEntityRes &&
             (identical(other.entity, entity) ||
@@ -6742,7 +7036,7 @@ class PageArray {
   static const fromJsonFactory = _$PageArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageArray &&
             (identical(other.values, values) ||
@@ -6805,7 +7099,7 @@ class PageArrayRes {
   static const fromJsonFactory = _$PageArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageArrayRes &&
             (identical(other.values, values) ||
@@ -6930,7 +7224,7 @@ class ImageFileInfo {
   static const fromJsonFactory = _$ImageFileInfoFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFileInfo &&
             (identical(other.imageType, imageType) ||
@@ -7074,7 +7368,7 @@ class ImageFile {
   static const fromJsonFactory = _$ImageFileFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFile &&
             (identical(other.contentType, contentType) ||
@@ -7231,7 +7525,7 @@ class ImageFileEntity {
   static const fromJsonFactory = _$ImageFileEntityFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFileEntity &&
             (identical(other.entity, entity) ||
@@ -7286,7 +7580,7 @@ class ImageFileEntityRes {
   static const fromJsonFactory = _$ImageFileEntityResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFileEntityRes &&
             (identical(other.entity, entity) ||
@@ -7362,7 +7656,7 @@ class ImageFileArray {
   static const fromJsonFactory = _$ImageFileArrayFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFileArray &&
             (identical(other.values, values) ||
@@ -7426,7 +7720,7 @@ class ImageFileArrayRes {
   static const fromJsonFactory = _$ImageFileArrayResFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ImageFileArrayRes &&
             (identical(other.values, values) ||
@@ -7529,7 +7823,7 @@ class OrgTeam {
   static const fromJsonFactory = _$OrgTeamFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrgTeam &&
             (identical(other.organization, organization) ||
@@ -7609,7 +7903,7 @@ class AppProfile {
   static const fromJsonFactory = _$AppProfileFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is AppProfile &&
             (identical(other.ok, ok) ||
@@ -7700,7 +7994,7 @@ class BaseSettings {
   static const fromJsonFactory = _$BaseSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is BaseSettings &&
             (identical(other.font, font) ||
@@ -7775,7 +8069,7 @@ class ProfileSettings {
   static const fromJsonFactory = _$ProfileSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ProfileSettings &&
             (identical(other.stripeCustomerId, stripeCustomerId) ||
@@ -7938,7 +8232,7 @@ class OrganizationSettings {
   static const fromJsonFactory = _$OrganizationSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrganizationSettings &&
             (identical(other.applicationTitle, applicationTitle) ||
@@ -8169,7 +8463,7 @@ class TeamSettings {
   static const fromJsonFactory = _$TeamSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamSettings &&
             (identical(other.font, font) ||
@@ -8238,7 +8532,7 @@ class ApplicationSettings {
   static const fromJsonFactory = _$ApplicationSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is ApplicationSettings &&
             (identical(other.stripeInvoiceId, stripeInvoiceId) ||
@@ -8317,7 +8611,7 @@ class PageSettings {
   static const fromJsonFactory = _$PageSettingsFromJson;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PageSettings &&
             (identical(other.stripeInvoiceId, stripeInvoiceId) ||
@@ -8367,6 +8661,4741 @@ extension $PageSettingsExtension on PageSettings {
         font: (font != null ? font.value : this.font),
         fontSize: (fontSize != null ? fontSize.value : this.fontSize),
         fontColor: (fontColor != null ? fontColor.value : this.fontColor));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanInfo {
+  const PlanInfo({
+    required this.name,
+    this.description,
+    required this.planFee,
+    required this.defaultDeviceModelCount,
+    required this.defaultDevicesCount,
+    required this.defaultDataPointsCount,
+    required this.defaultClientCount,
+    required this.defaultUserCount,
+    required this.defaultArchivalYears,
+    required this.defaultDashboardCount,
+    required this.defaultModelParametersCount,
+    required this.extraDeviceFee,
+    required this.extraDeviceModelFee,
+    required this.extraDataPointsFee,
+    required this.extraClientFee,
+    required this.extraUserFee,
+    required this.extraArchivalFee,
+    required this.extraDashboardFee,
+    required this.extraModelParametersFee,
+    required this.planType,
+  });
+
+  factory PlanInfo.fromJson(Map<String, dynamic> json) =>
+      _$PlanInfoFromJson(json);
+
+  static const toJsonFactory = _$PlanInfoToJson;
+  Map<String, dynamic> toJson() => _$PlanInfoToJson(this);
+
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'planFee', includeIfNull: false)
+  final double planFee;
+  @JsonKey(name: 'defaultDeviceModelCount', includeIfNull: false)
+  final int defaultDeviceModelCount;
+  @JsonKey(name: 'defaultDevicesCount', includeIfNull: false)
+  final int defaultDevicesCount;
+  @JsonKey(name: 'defaultDataPointsCount', includeIfNull: false)
+  final int defaultDataPointsCount;
+  @JsonKey(name: 'defaultClientCount', includeIfNull: false)
+  final int defaultClientCount;
+  @JsonKey(name: 'defaultUserCount', includeIfNull: false)
+  final int defaultUserCount;
+  @JsonKey(name: 'defaultArchivalYears', includeIfNull: false)
+  final int defaultArchivalYears;
+  @JsonKey(name: 'defaultDashboardCount', includeIfNull: false)
+  final int defaultDashboardCount;
+  @JsonKey(name: 'defaultModelParametersCount', includeIfNull: false)
+  final int defaultModelParametersCount;
+  @JsonKey(name: 'extraDeviceFee', includeIfNull: false)
+  final double extraDeviceFee;
+  @JsonKey(name: 'extraDeviceModelFee', includeIfNull: false)
+  final double extraDeviceModelFee;
+  @JsonKey(name: 'extraDataPointsFee', includeIfNull: false)
+  final double extraDataPointsFee;
+  @JsonKey(name: 'extraClientFee', includeIfNull: false)
+  final double extraClientFee;
+  @JsonKey(name: 'extraUserFee', includeIfNull: false)
+  final double extraUserFee;
+  @JsonKey(name: 'extraArchivalFee', includeIfNull: false)
+  final double extraArchivalFee;
+  @JsonKey(name: 'extraDashboardFee', includeIfNull: false)
+  final double extraDashboardFee;
+  @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
+  final double extraModelParametersFee;
+  @JsonKey(
+    name: 'planType',
+    includeIfNull: false,
+    toJson: planInfoPlanTypeToJson,
+    fromJson: planInfoPlanTypeFromJson,
+  )
+  final enums.PlanInfoPlanType planType;
+  static const fromJsonFactory = _$PlanInfoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanInfo &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.planFee, planFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFee, planFee)) &&
+            (identical(other.defaultDeviceModelCount, defaultDeviceModelCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDeviceModelCount, defaultDeviceModelCount)) &&
+            (identical(other.defaultDevicesCount, defaultDevicesCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultDevicesCount, defaultDevicesCount)) &&
+            (identical(other.defaultDataPointsCount, defaultDataPointsCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDataPointsCount, defaultDataPointsCount)) &&
+            (identical(other.defaultClientCount, defaultClientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultClientCount, defaultClientCount)) &&
+            (identical(other.defaultUserCount, defaultUserCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultUserCount, defaultUserCount)) &&
+            (identical(other.defaultArchivalYears, defaultArchivalYears) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultArchivalYears, defaultArchivalYears)) &&
+            (identical(other.defaultDashboardCount, defaultDashboardCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDashboardCount, defaultDashboardCount)) &&
+            (identical(other.defaultModelParametersCount, defaultModelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultModelParametersCount,
+                    defaultModelParametersCount)) &&
+            (identical(other.extraDeviceFee, extraDeviceFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDeviceFee, extraDeviceFee)) &&
+            (identical(other.extraDeviceModelFee, extraDeviceModelFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDeviceModelFee, extraDeviceModelFee)) &&
+            (identical(other.extraDataPointsFee, extraDataPointsFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDataPointsFee, extraDataPointsFee)) &&
+            (identical(other.extraClientFee, extraClientFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraClientFee, extraClientFee)) &&
+            (identical(other.extraUserFee, extraUserFee) || const DeepCollectionEquality().equals(other.extraUserFee, extraUserFee)) &&
+            (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
+            (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
+            (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
+            (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(planFee) ^
+      const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
+      const DeepCollectionEquality().hash(defaultDevicesCount) ^
+      const DeepCollectionEquality().hash(defaultDataPointsCount) ^
+      const DeepCollectionEquality().hash(defaultClientCount) ^
+      const DeepCollectionEquality().hash(defaultUserCount) ^
+      const DeepCollectionEquality().hash(defaultArchivalYears) ^
+      const DeepCollectionEquality().hash(defaultDashboardCount) ^
+      const DeepCollectionEquality().hash(defaultModelParametersCount) ^
+      const DeepCollectionEquality().hash(extraDeviceFee) ^
+      const DeepCollectionEquality().hash(extraDeviceModelFee) ^
+      const DeepCollectionEquality().hash(extraDataPointsFee) ^
+      const DeepCollectionEquality().hash(extraClientFee) ^
+      const DeepCollectionEquality().hash(extraUserFee) ^
+      const DeepCollectionEquality().hash(extraArchivalFee) ^
+      const DeepCollectionEquality().hash(extraDashboardFee) ^
+      const DeepCollectionEquality().hash(extraModelParametersFee) ^
+      const DeepCollectionEquality().hash(planType) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanInfoExtension on PlanInfo {
+  PlanInfo copyWith(
+      {String? name,
+      String? description,
+      double? planFee,
+      int? defaultDeviceModelCount,
+      int? defaultDevicesCount,
+      int? defaultDataPointsCount,
+      int? defaultClientCount,
+      int? defaultUserCount,
+      int? defaultArchivalYears,
+      int? defaultDashboardCount,
+      int? defaultModelParametersCount,
+      double? extraDeviceFee,
+      double? extraDeviceModelFee,
+      double? extraDataPointsFee,
+      double? extraClientFee,
+      double? extraUserFee,
+      double? extraArchivalFee,
+      double? extraDashboardFee,
+      double? extraModelParametersFee,
+      enums.PlanInfoPlanType? planType}) {
+    return PlanInfo(
+        name: name ?? this.name,
+        description: description ?? this.description,
+        planFee: planFee ?? this.planFee,
+        defaultDeviceModelCount:
+            defaultDeviceModelCount ?? this.defaultDeviceModelCount,
+        defaultDevicesCount: defaultDevicesCount ?? this.defaultDevicesCount,
+        defaultDataPointsCount:
+            defaultDataPointsCount ?? this.defaultDataPointsCount,
+        defaultClientCount: defaultClientCount ?? this.defaultClientCount,
+        defaultUserCount: defaultUserCount ?? this.defaultUserCount,
+        defaultArchivalYears: defaultArchivalYears ?? this.defaultArchivalYears,
+        defaultDashboardCount:
+            defaultDashboardCount ?? this.defaultDashboardCount,
+        defaultModelParametersCount:
+            defaultModelParametersCount ?? this.defaultModelParametersCount,
+        extraDeviceFee: extraDeviceFee ?? this.extraDeviceFee,
+        extraDeviceModelFee: extraDeviceModelFee ?? this.extraDeviceModelFee,
+        extraDataPointsFee: extraDataPointsFee ?? this.extraDataPointsFee,
+        extraClientFee: extraClientFee ?? this.extraClientFee,
+        extraUserFee: extraUserFee ?? this.extraUserFee,
+        extraArchivalFee: extraArchivalFee ?? this.extraArchivalFee,
+        extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
+        extraModelParametersFee:
+            extraModelParametersFee ?? this.extraModelParametersFee,
+        planType: planType ?? this.planType);
+  }
+
+  PlanInfo copyWithWrapped(
+      {Wrapped<String>? name,
+      Wrapped<String?>? description,
+      Wrapped<double>? planFee,
+      Wrapped<int>? defaultDeviceModelCount,
+      Wrapped<int>? defaultDevicesCount,
+      Wrapped<int>? defaultDataPointsCount,
+      Wrapped<int>? defaultClientCount,
+      Wrapped<int>? defaultUserCount,
+      Wrapped<int>? defaultArchivalYears,
+      Wrapped<int>? defaultDashboardCount,
+      Wrapped<int>? defaultModelParametersCount,
+      Wrapped<double>? extraDeviceFee,
+      Wrapped<double>? extraDeviceModelFee,
+      Wrapped<double>? extraDataPointsFee,
+      Wrapped<double>? extraClientFee,
+      Wrapped<double>? extraUserFee,
+      Wrapped<double>? extraArchivalFee,
+      Wrapped<double>? extraDashboardFee,
+      Wrapped<double>? extraModelParametersFee,
+      Wrapped<enums.PlanInfoPlanType>? planType}) {
+    return PlanInfo(
+        name: (name != null ? name.value : this.name),
+        description:
+            (description != null ? description.value : this.description),
+        planFee: (planFee != null ? planFee.value : this.planFee),
+        defaultDeviceModelCount: (defaultDeviceModelCount != null
+            ? defaultDeviceModelCount.value
+            : this.defaultDeviceModelCount),
+        defaultDevicesCount: (defaultDevicesCount != null
+            ? defaultDevicesCount.value
+            : this.defaultDevicesCount),
+        defaultDataPointsCount: (defaultDataPointsCount != null
+            ? defaultDataPointsCount.value
+            : this.defaultDataPointsCount),
+        defaultClientCount: (defaultClientCount != null
+            ? defaultClientCount.value
+            : this.defaultClientCount),
+        defaultUserCount: (defaultUserCount != null
+            ? defaultUserCount.value
+            : this.defaultUserCount),
+        defaultArchivalYears: (defaultArchivalYears != null
+            ? defaultArchivalYears.value
+            : this.defaultArchivalYears),
+        defaultDashboardCount: (defaultDashboardCount != null
+            ? defaultDashboardCount.value
+            : this.defaultDashboardCount),
+        defaultModelParametersCount: (defaultModelParametersCount != null
+            ? defaultModelParametersCount.value
+            : this.defaultModelParametersCount),
+        extraDeviceFee: (extraDeviceFee != null
+            ? extraDeviceFee.value
+            : this.extraDeviceFee),
+        extraDeviceModelFee: (extraDeviceModelFee != null
+            ? extraDeviceModelFee.value
+            : this.extraDeviceModelFee),
+        extraDataPointsFee: (extraDataPointsFee != null
+            ? extraDataPointsFee.value
+            : this.extraDataPointsFee),
+        extraClientFee: (extraClientFee != null
+            ? extraClientFee.value
+            : this.extraClientFee),
+        extraUserFee:
+            (extraUserFee != null ? extraUserFee.value : this.extraUserFee),
+        extraArchivalFee: (extraArchivalFee != null
+            ? extraArchivalFee.value
+            : this.extraArchivalFee),
+        extraDashboardFee: (extraDashboardFee != null
+            ? extraDashboardFee.value
+            : this.extraDashboardFee),
+        extraModelParametersFee: (extraModelParametersFee != null
+            ? extraModelParametersFee.value
+            : this.extraModelParametersFee),
+        planType: (planType != null ? planType.value : this.planType));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanBase {
+  const PlanBase({
+    required this.customPlan,
+  });
+
+  factory PlanBase.fromJson(Map<String, dynamic> json) =>
+      _$PlanBaseFromJson(json);
+
+  static const toJsonFactory = _$PlanBaseToJson;
+  Map<String, dynamic> toJson() => _$PlanBaseToJson(this);
+
+  @JsonKey(name: 'customPlan', includeIfNull: false)
+  final bool customPlan;
+  static const fromJsonFactory = _$PlanBaseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanBase &&
+            (identical(other.customPlan, customPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.customPlan, customPlan)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(customPlan) ^ runtimeType.hashCode;
+}
+
+extension $PlanBaseExtension on PlanBase {
+  PlanBase copyWith({bool? customPlan}) {
+    return PlanBase(customPlan: customPlan ?? this.customPlan);
+  }
+
+  PlanBase copyWithWrapped({Wrapped<bool>? customPlan}) {
+    return PlanBase(
+        customPlan: (customPlan != null ? customPlan.value : this.customPlan));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class Plan {
+  const Plan({
+    required this.customPlan,
+    required this.name,
+    this.description,
+    required this.planFee,
+    required this.defaultDeviceModelCount,
+    required this.defaultDevicesCount,
+    required this.defaultDataPointsCount,
+    required this.defaultClientCount,
+    required this.defaultUserCount,
+    required this.defaultArchivalYears,
+    required this.defaultDashboardCount,
+    required this.defaultModelParametersCount,
+    required this.extraDeviceFee,
+    required this.extraDeviceModelFee,
+    required this.extraDataPointsFee,
+    required this.extraClientFee,
+    required this.extraUserFee,
+    required this.extraArchivalFee,
+    required this.extraDashboardFee,
+    required this.extraModelParametersFee,
+    required this.planType,
+    required this.id,
+    required this.rtype,
+    required this.createdBy,
+    required this.createdStamp,
+    required this.updatedBy,
+    required this.updatedStamp,
+    required this.domainKey,
+  });
+
+  factory Plan.fromJson(Map<String, dynamic> json) => _$PlanFromJson(json);
+
+  static const toJsonFactory = _$PlanToJson;
+  Map<String, dynamic> toJson() => _$PlanToJson(this);
+
+  @JsonKey(name: 'customPlan', includeIfNull: false)
+  final bool customPlan;
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'planFee', includeIfNull: false)
+  final double planFee;
+  @JsonKey(name: 'defaultDeviceModelCount', includeIfNull: false)
+  final int defaultDeviceModelCount;
+  @JsonKey(name: 'defaultDevicesCount', includeIfNull: false)
+  final int defaultDevicesCount;
+  @JsonKey(name: 'defaultDataPointsCount', includeIfNull: false)
+  final int defaultDataPointsCount;
+  @JsonKey(name: 'defaultClientCount', includeIfNull: false)
+  final int defaultClientCount;
+  @JsonKey(name: 'defaultUserCount', includeIfNull: false)
+  final int defaultUserCount;
+  @JsonKey(name: 'defaultArchivalYears', includeIfNull: false)
+  final int defaultArchivalYears;
+  @JsonKey(name: 'defaultDashboardCount', includeIfNull: false)
+  final int defaultDashboardCount;
+  @JsonKey(name: 'defaultModelParametersCount', includeIfNull: false)
+  final int defaultModelParametersCount;
+  @JsonKey(name: 'extraDeviceFee', includeIfNull: false)
+  final double extraDeviceFee;
+  @JsonKey(name: 'extraDeviceModelFee', includeIfNull: false)
+  final double extraDeviceModelFee;
+  @JsonKey(name: 'extraDataPointsFee', includeIfNull: false)
+  final double extraDataPointsFee;
+  @JsonKey(name: 'extraClientFee', includeIfNull: false)
+  final double extraClientFee;
+  @JsonKey(name: 'extraUserFee', includeIfNull: false)
+  final double extraUserFee;
+  @JsonKey(name: 'extraArchivalFee', includeIfNull: false)
+  final double extraArchivalFee;
+  @JsonKey(name: 'extraDashboardFee', includeIfNull: false)
+  final double extraDashboardFee;
+  @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
+  final double extraModelParametersFee;
+  @JsonKey(
+    name: 'planType',
+    includeIfNull: false,
+    toJson: planPlanTypeToJson,
+    fromJson: planPlanTypeFromJson,
+  )
+  final enums.PlanPlanType planType;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
+  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
+  final String rtype;
+  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
+  final String createdBy;
+  @JsonKey(name: 'createdStamp', includeIfNull: false)
+  final int createdStamp;
+  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
+  final String updatedBy;
+  @JsonKey(name: 'updatedStamp', includeIfNull: false)
+  final int updatedStamp;
+  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
+  final String domainKey;
+  static const fromJsonFactory = _$PlanFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is Plan &&
+            (identical(other.customPlan, customPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.customPlan, customPlan)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.planFee, planFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFee, planFee)) &&
+            (identical(other.defaultDeviceModelCount, defaultDeviceModelCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDeviceModelCount, defaultDeviceModelCount)) &&
+            (identical(other.defaultDevicesCount, defaultDevicesCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultDevicesCount, defaultDevicesCount)) &&
+            (identical(other.defaultDataPointsCount, defaultDataPointsCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDataPointsCount, defaultDataPointsCount)) &&
+            (identical(other.defaultClientCount, defaultClientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultClientCount, defaultClientCount)) &&
+            (identical(other.defaultUserCount, defaultUserCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.defaultUserCount, defaultUserCount)) &&
+            (identical(other.defaultArchivalYears, defaultArchivalYears) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultArchivalYears, defaultArchivalYears)) &&
+            (identical(other.defaultDashboardCount, defaultDashboardCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultDashboardCount, defaultDashboardCount)) &&
+            (identical(other.defaultModelParametersCount, defaultModelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.defaultModelParametersCount,
+                    defaultModelParametersCount)) &&
+            (identical(other.extraDeviceFee, extraDeviceFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDeviceFee, extraDeviceFee)) &&
+            (identical(other.extraDeviceModelFee, extraDeviceModelFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDeviceModelFee, extraDeviceModelFee)) &&
+            (identical(other.extraDataPointsFee, extraDataPointsFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.extraDataPointsFee, extraDataPointsFee)) &&
+            (identical(other.extraClientFee, extraClientFee) ||
+                const DeepCollectionEquality().equals(other.extraClientFee, extraClientFee)) &&
+            (identical(other.extraUserFee, extraUserFee) || const DeepCollectionEquality().equals(other.extraUserFee, extraUserFee)) &&
+            (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
+            (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
+            (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
+            (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
+            (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
+            (identical(other.createdStamp, createdStamp) || const DeepCollectionEquality().equals(other.createdStamp, createdStamp)) &&
+            (identical(other.updatedBy, updatedBy) || const DeepCollectionEquality().equals(other.updatedBy, updatedBy)) &&
+            (identical(other.updatedStamp, updatedStamp) || const DeepCollectionEquality().equals(other.updatedStamp, updatedStamp)) &&
+            (identical(other.domainKey, domainKey) || const DeepCollectionEquality().equals(other.domainKey, domainKey)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(customPlan) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(planFee) ^
+      const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
+      const DeepCollectionEquality().hash(defaultDevicesCount) ^
+      const DeepCollectionEquality().hash(defaultDataPointsCount) ^
+      const DeepCollectionEquality().hash(defaultClientCount) ^
+      const DeepCollectionEquality().hash(defaultUserCount) ^
+      const DeepCollectionEquality().hash(defaultArchivalYears) ^
+      const DeepCollectionEquality().hash(defaultDashboardCount) ^
+      const DeepCollectionEquality().hash(defaultModelParametersCount) ^
+      const DeepCollectionEquality().hash(extraDeviceFee) ^
+      const DeepCollectionEquality().hash(extraDeviceModelFee) ^
+      const DeepCollectionEquality().hash(extraDataPointsFee) ^
+      const DeepCollectionEquality().hash(extraClientFee) ^
+      const DeepCollectionEquality().hash(extraUserFee) ^
+      const DeepCollectionEquality().hash(extraArchivalFee) ^
+      const DeepCollectionEquality().hash(extraDashboardFee) ^
+      const DeepCollectionEquality().hash(extraModelParametersFee) ^
+      const DeepCollectionEquality().hash(planType) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(rtype) ^
+      const DeepCollectionEquality().hash(createdBy) ^
+      const DeepCollectionEquality().hash(createdStamp) ^
+      const DeepCollectionEquality().hash(updatedBy) ^
+      const DeepCollectionEquality().hash(updatedStamp) ^
+      const DeepCollectionEquality().hash(domainKey) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanExtension on Plan {
+  Plan copyWith(
+      {bool? customPlan,
+      String? name,
+      String? description,
+      double? planFee,
+      int? defaultDeviceModelCount,
+      int? defaultDevicesCount,
+      int? defaultDataPointsCount,
+      int? defaultClientCount,
+      int? defaultUserCount,
+      int? defaultArchivalYears,
+      int? defaultDashboardCount,
+      int? defaultModelParametersCount,
+      double? extraDeviceFee,
+      double? extraDeviceModelFee,
+      double? extraDataPointsFee,
+      double? extraClientFee,
+      double? extraUserFee,
+      double? extraArchivalFee,
+      double? extraDashboardFee,
+      double? extraModelParametersFee,
+      enums.PlanPlanType? planType,
+      String? id,
+      String? rtype,
+      String? createdBy,
+      int? createdStamp,
+      String? updatedBy,
+      int? updatedStamp,
+      String? domainKey}) {
+    return Plan(
+        customPlan: customPlan ?? this.customPlan,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        planFee: planFee ?? this.planFee,
+        defaultDeviceModelCount:
+            defaultDeviceModelCount ?? this.defaultDeviceModelCount,
+        defaultDevicesCount: defaultDevicesCount ?? this.defaultDevicesCount,
+        defaultDataPointsCount:
+            defaultDataPointsCount ?? this.defaultDataPointsCount,
+        defaultClientCount: defaultClientCount ?? this.defaultClientCount,
+        defaultUserCount: defaultUserCount ?? this.defaultUserCount,
+        defaultArchivalYears: defaultArchivalYears ?? this.defaultArchivalYears,
+        defaultDashboardCount:
+            defaultDashboardCount ?? this.defaultDashboardCount,
+        defaultModelParametersCount:
+            defaultModelParametersCount ?? this.defaultModelParametersCount,
+        extraDeviceFee: extraDeviceFee ?? this.extraDeviceFee,
+        extraDeviceModelFee: extraDeviceModelFee ?? this.extraDeviceModelFee,
+        extraDataPointsFee: extraDataPointsFee ?? this.extraDataPointsFee,
+        extraClientFee: extraClientFee ?? this.extraClientFee,
+        extraUserFee: extraUserFee ?? this.extraUserFee,
+        extraArchivalFee: extraArchivalFee ?? this.extraArchivalFee,
+        extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
+        extraModelParametersFee:
+            extraModelParametersFee ?? this.extraModelParametersFee,
+        planType: planType ?? this.planType,
+        id: id ?? this.id,
+        rtype: rtype ?? this.rtype,
+        createdBy: createdBy ?? this.createdBy,
+        createdStamp: createdStamp ?? this.createdStamp,
+        updatedBy: updatedBy ?? this.updatedBy,
+        updatedStamp: updatedStamp ?? this.updatedStamp,
+        domainKey: domainKey ?? this.domainKey);
+  }
+
+  Plan copyWithWrapped(
+      {Wrapped<bool>? customPlan,
+      Wrapped<String>? name,
+      Wrapped<String?>? description,
+      Wrapped<double>? planFee,
+      Wrapped<int>? defaultDeviceModelCount,
+      Wrapped<int>? defaultDevicesCount,
+      Wrapped<int>? defaultDataPointsCount,
+      Wrapped<int>? defaultClientCount,
+      Wrapped<int>? defaultUserCount,
+      Wrapped<int>? defaultArchivalYears,
+      Wrapped<int>? defaultDashboardCount,
+      Wrapped<int>? defaultModelParametersCount,
+      Wrapped<double>? extraDeviceFee,
+      Wrapped<double>? extraDeviceModelFee,
+      Wrapped<double>? extraDataPointsFee,
+      Wrapped<double>? extraClientFee,
+      Wrapped<double>? extraUserFee,
+      Wrapped<double>? extraArchivalFee,
+      Wrapped<double>? extraDashboardFee,
+      Wrapped<double>? extraModelParametersFee,
+      Wrapped<enums.PlanPlanType>? planType,
+      Wrapped<String>? id,
+      Wrapped<String>? rtype,
+      Wrapped<String>? createdBy,
+      Wrapped<int>? createdStamp,
+      Wrapped<String>? updatedBy,
+      Wrapped<int>? updatedStamp,
+      Wrapped<String>? domainKey}) {
+    return Plan(
+        customPlan: (customPlan != null ? customPlan.value : this.customPlan),
+        name: (name != null ? name.value : this.name),
+        description:
+            (description != null ? description.value : this.description),
+        planFee: (planFee != null ? planFee.value : this.planFee),
+        defaultDeviceModelCount: (defaultDeviceModelCount != null
+            ? defaultDeviceModelCount.value
+            : this.defaultDeviceModelCount),
+        defaultDevicesCount: (defaultDevicesCount != null
+            ? defaultDevicesCount.value
+            : this.defaultDevicesCount),
+        defaultDataPointsCount: (defaultDataPointsCount != null
+            ? defaultDataPointsCount.value
+            : this.defaultDataPointsCount),
+        defaultClientCount: (defaultClientCount != null
+            ? defaultClientCount.value
+            : this.defaultClientCount),
+        defaultUserCount: (defaultUserCount != null
+            ? defaultUserCount.value
+            : this.defaultUserCount),
+        defaultArchivalYears: (defaultArchivalYears != null
+            ? defaultArchivalYears.value
+            : this.defaultArchivalYears),
+        defaultDashboardCount: (defaultDashboardCount != null
+            ? defaultDashboardCount.value
+            : this.defaultDashboardCount),
+        defaultModelParametersCount: (defaultModelParametersCount != null
+            ? defaultModelParametersCount.value
+            : this.defaultModelParametersCount),
+        extraDeviceFee: (extraDeviceFee != null
+            ? extraDeviceFee.value
+            : this.extraDeviceFee),
+        extraDeviceModelFee: (extraDeviceModelFee != null
+            ? extraDeviceModelFee.value
+            : this.extraDeviceModelFee),
+        extraDataPointsFee: (extraDataPointsFee != null
+            ? extraDataPointsFee.value
+            : this.extraDataPointsFee),
+        extraClientFee: (extraClientFee != null
+            ? extraClientFee.value
+            : this.extraClientFee),
+        extraUserFee:
+            (extraUserFee != null ? extraUserFee.value : this.extraUserFee),
+        extraArchivalFee: (extraArchivalFee != null
+            ? extraArchivalFee.value
+            : this.extraArchivalFee),
+        extraDashboardFee: (extraDashboardFee != null
+            ? extraDashboardFee.value
+            : this.extraDashboardFee),
+        extraModelParametersFee: (extraModelParametersFee != null
+            ? extraModelParametersFee.value
+            : this.extraModelParametersFee),
+        planType: (planType != null ? planType.value : this.planType),
+        id: (id != null ? id.value : this.id),
+        rtype: (rtype != null ? rtype.value : this.rtype),
+        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
+        createdStamp:
+            (createdStamp != null ? createdStamp.value : this.createdStamp),
+        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
+        updatedStamp:
+            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanEntity {
+  const PlanEntity({
+    this.entity,
+  });
+
+  factory PlanEntity.fromJson(Map<String, dynamic> json) =>
+      _$PlanEntityFromJson(json);
+
+  static const toJsonFactory = _$PlanEntityToJson;
+  Map<String, dynamic> toJson() => _$PlanEntityToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Plan? entity;
+  static const fromJsonFactory = _$PlanEntityFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanEntity &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^ runtimeType.hashCode;
+}
+
+extension $PlanEntityExtension on PlanEntity {
+  PlanEntity copyWith({Plan? entity}) {
+    return PlanEntity(entity: entity ?? this.entity);
+  }
+
+  PlanEntity copyWithWrapped({Wrapped<Plan?>? entity}) {
+    return PlanEntity(entity: (entity != null ? entity.value : this.entity));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanEntityRes {
+  const PlanEntityRes({
+    this.entity,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+  });
+
+  factory PlanEntityRes.fromJson(Map<String, dynamic> json) =>
+      _$PlanEntityResFromJson(json);
+
+  static const toJsonFactory = _$PlanEntityResToJson;
+  Map<String, dynamic> toJson() => _$PlanEntityResToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Plan? entity;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  static const fromJsonFactory = _$PlanEntityResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanEntityRes &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanEntityResExtension on PlanEntityRes {
+  PlanEntityRes copyWith(
+      {Plan? entity, bool? ok, String? msg, String? trace, String? errorCode}) {
+    return PlanEntityRes(
+        entity: entity ?? this.entity,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode);
+  }
+
+  PlanEntityRes copyWithWrapped(
+      {Wrapped<Plan?>? entity,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode}) {
+    return PlanEntityRes(
+        entity: (entity != null ? entity.value : this.entity),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanArray {
+  const PlanArray({
+    this.values,
+  });
+
+  factory PlanArray.fromJson(Map<String, dynamic> json) =>
+      _$PlanArrayFromJson(json);
+
+  static const toJsonFactory = _$PlanArrayToJson;
+  Map<String, dynamic> toJson() => _$PlanArrayToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Plan>[])
+  final List<Plan>? values;
+  static const fromJsonFactory = _$PlanArrayFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanArray &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^ runtimeType.hashCode;
+}
+
+extension $PlanArrayExtension on PlanArray {
+  PlanArray copyWith({List<Plan>? values}) {
+    return PlanArray(values: values ?? this.values);
+  }
+
+  PlanArray copyWithWrapped({Wrapped<List<Plan>?>? values}) {
+    return PlanArray(values: (values != null ? values.value : this.values));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanArrayRes {
+  const PlanArrayRes({
+    this.values,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+    this.total,
+    this.page,
+    this.size,
+  });
+
+  factory PlanArrayRes.fromJson(Map<String, dynamic> json) =>
+      _$PlanArrayResFromJson(json);
+
+  static const toJsonFactory = _$PlanArrayResToJson;
+  Map<String, dynamic> toJson() => _$PlanArrayResToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Plan>[])
+  final List<Plan>? values;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  @JsonKey(name: 'total', includeIfNull: false)
+  final int? total;
+  @JsonKey(name: 'page', includeIfNull: false)
+  final int? page;
+  @JsonKey(name: 'size', includeIfNull: false)
+  final int? size;
+  static const fromJsonFactory = _$PlanArrayResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanArrayRes &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)) &&
+            (identical(other.total, total) ||
+                const DeepCollectionEquality().equals(other.total, total)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.size, size) ||
+                const DeepCollectionEquality().equals(other.size, size)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      const DeepCollectionEquality().hash(total) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(size) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanArrayResExtension on PlanArrayRes {
+  PlanArrayRes copyWith(
+      {List<Plan>? values,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode,
+      int? total,
+      int? page,
+      int? size}) {
+    return PlanArrayRes(
+        values: values ?? this.values,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode,
+        total: total ?? this.total,
+        page: page ?? this.page,
+        size: size ?? this.size);
+  }
+
+  PlanArrayRes copyWithWrapped(
+      {Wrapped<List<Plan>?>? values,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode,
+      Wrapped<int?>? total,
+      Wrapped<int?>? page,
+      Wrapped<int?>? size}) {
+    return PlanArrayRes(
+        values: (values != null ? values.value : this.values),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode),
+        total: (total != null ? total.value : this.total),
+        page: (page != null ? page.value : this.page),
+        size: (size != null ? size.value : this.size));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceInfo {
+  const InvoiceInfo({
+    required this.name,
+    this.description,
+    required this.orgId,
+    required this.dueOn,
+  });
+
+  factory InvoiceInfo.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceInfoFromJson(json);
+
+  static const toJsonFactory = _$InvoiceInfoToJson;
+  Map<String, dynamic> toJson() => _$InvoiceInfoToJson(this);
+
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'dueOn', includeIfNull: false)
+  final int dueOn;
+  static const fromJsonFactory = _$InvoiceInfoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceInfo &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.dueOn, dueOn) ||
+                const DeepCollectionEquality().equals(other.dueOn, dueOn)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(dueOn) ^
+      runtimeType.hashCode;
+}
+
+extension $InvoiceInfoExtension on InvoiceInfo {
+  InvoiceInfo copyWith(
+      {String? name, String? description, String? orgId, int? dueOn}) {
+    return InvoiceInfo(
+        name: name ?? this.name,
+        description: description ?? this.description,
+        orgId: orgId ?? this.orgId,
+        dueOn: dueOn ?? this.dueOn);
+  }
+
+  InvoiceInfo copyWithWrapped(
+      {Wrapped<String>? name,
+      Wrapped<String?>? description,
+      Wrapped<String>? orgId,
+      Wrapped<int>? dueOn}) {
+    return InvoiceInfo(
+        name: (name != null ? name.value : this.name),
+        description:
+            (description != null ? description.value : this.description),
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        dueOn: (dueOn != null ? dueOn.value : this.dueOn));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceBase {
+  const InvoiceBase({
+    required this.invoiceAmount,
+    this.billedAmount,
+    required this.reconciled,
+    this.planId,
+    this.planFee,
+    this.deviceModelFee,
+    this.modelParametersFee,
+    this.deviceFee,
+    this.clientFee,
+    this.userFee,
+    this.dataFee,
+    this.archivalFee,
+    this.dashboardFee,
+    this.deviceModelCount,
+    this.modelParametersCount,
+    this.deviceCount,
+    this.clientCount,
+    this.userCount,
+    this.dataCount,
+    this.archivalCount,
+    this.dashboardCount,
+    this.paidOn,
+    this.providerId,
+    this.transactionId,
+    this.transactionStamp,
+    this.metaData,
+    this.graceDays,
+    this.paymentMode,
+    this.paymentGateway,
+    required this.paymentStatus,
+  });
+
+  factory InvoiceBase.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceBaseFromJson(json);
+
+  static const toJsonFactory = _$InvoiceBaseToJson;
+  Map<String, dynamic> toJson() => _$InvoiceBaseToJson(this);
+
+  @JsonKey(name: 'invoiceAmount', includeIfNull: false)
+  final double invoiceAmount;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double? billedAmount;
+  @JsonKey(name: 'reconciled', includeIfNull: false)
+  final bool reconciled;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String? planId;
+  @JsonKey(name: 'planFee', includeIfNull: false)
+  final double? planFee;
+  @JsonKey(name: 'deviceModelFee', includeIfNull: false)
+  final double? deviceModelFee;
+  @JsonKey(name: 'modelParametersFee', includeIfNull: false)
+  final double? modelParametersFee;
+  @JsonKey(name: 'deviceFee', includeIfNull: false)
+  final double? deviceFee;
+  @JsonKey(name: 'clientFee', includeIfNull: false)
+  final double? clientFee;
+  @JsonKey(name: 'userFee', includeIfNull: false)
+  final double? userFee;
+  @JsonKey(name: 'dataFee', includeIfNull: false)
+  final double? dataFee;
+  @JsonKey(name: 'archivalFee', includeIfNull: false)
+  final double? archivalFee;
+  @JsonKey(name: 'dashboardFee', includeIfNull: false)
+  final double? dashboardFee;
+  @JsonKey(name: 'deviceModelCount', includeIfNull: false)
+  final double? deviceModelCount;
+  @JsonKey(name: 'modelParametersCount', includeIfNull: false)
+  final double? modelParametersCount;
+  @JsonKey(name: 'deviceCount', includeIfNull: false)
+  final double? deviceCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final double? clientCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final double? userCount;
+  @JsonKey(name: 'dataCount', includeIfNull: false)
+  final double? dataCount;
+  @JsonKey(name: 'archivalCount', includeIfNull: false)
+  final double? archivalCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final double? dashboardCount;
+  @JsonKey(name: 'paidOn', includeIfNull: false)
+  final int? paidOn;
+  @JsonKey(name: 'providerId', includeIfNull: false, defaultValue: '')
+  final String? providerId;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String? transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  @JsonKey(name: 'graceDays', includeIfNull: false)
+  final int? graceDays;
+  @JsonKey(name: 'paymentMode', includeIfNull: false, defaultValue: '')
+  final String? paymentMode;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String? paymentGateway;
+  @JsonKey(name: 'paymentStatus', includeIfNull: false, defaultValue: '')
+  final String paymentStatus;
+  static const fromJsonFactory = _$InvoiceBaseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceBase &&
+            (identical(other.invoiceAmount, invoiceAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.invoiceAmount, invoiceAmount)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.reconciled, reconciled) ||
+                const DeepCollectionEquality()
+                    .equals(other.reconciled, reconciled)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.planFee, planFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFee, planFee)) &&
+            (identical(other.deviceModelFee, deviceModelFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelFee, deviceModelFee)) &&
+            (identical(other.modelParametersFee, modelParametersFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelParametersFee, modelParametersFee)) &&
+            (identical(other.deviceFee, deviceFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceFee, deviceFee)) &&
+            (identical(other.clientFee, clientFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientFee, clientFee)) &&
+            (identical(other.userFee, userFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.userFee, userFee)) &&
+            (identical(other.dataFee, dataFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataFee, dataFee)) &&
+            (identical(other.archivalFee, archivalFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalFee, archivalFee)) &&
+            (identical(other.dashboardFee, dashboardFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardFee, dashboardFee)) &&
+            (identical(other.deviceModelCount, deviceModelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelCount, deviceModelCount)) &&
+            (identical(other.modelParametersCount, modelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.modelParametersCount, modelParametersCount)) &&
+            (identical(other.deviceCount, deviceCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCount, deviceCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.dataCount, dataCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataCount, dataCount)) &&
+            (identical(other.archivalCount, archivalCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalCount, archivalCount)) &&
+            (identical(other.dashboardCount, dashboardCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.paidOn, paidOn) ||
+                const DeepCollectionEquality().equals(other.paidOn, paidOn)) &&
+            (identical(other.providerId, providerId) ||
+                const DeepCollectionEquality().equals(other.providerId, providerId)) &&
+            (identical(other.transactionId, transactionId) || const DeepCollectionEquality().equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) || const DeepCollectionEquality().equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.metaData, metaData) || const DeepCollectionEquality().equals(other.metaData, metaData)) &&
+            (identical(other.graceDays, graceDays) || const DeepCollectionEquality().equals(other.graceDays, graceDays)) &&
+            (identical(other.paymentMode, paymentMode) || const DeepCollectionEquality().equals(other.paymentMode, paymentMode)) &&
+            (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.paymentStatus, paymentStatus) || const DeepCollectionEquality().equals(other.paymentStatus, paymentStatus)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(invoiceAmount) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(reconciled) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(planFee) ^
+      const DeepCollectionEquality().hash(deviceModelFee) ^
+      const DeepCollectionEquality().hash(modelParametersFee) ^
+      const DeepCollectionEquality().hash(deviceFee) ^
+      const DeepCollectionEquality().hash(clientFee) ^
+      const DeepCollectionEquality().hash(userFee) ^
+      const DeepCollectionEquality().hash(dataFee) ^
+      const DeepCollectionEquality().hash(archivalFee) ^
+      const DeepCollectionEquality().hash(dashboardFee) ^
+      const DeepCollectionEquality().hash(deviceModelCount) ^
+      const DeepCollectionEquality().hash(modelParametersCount) ^
+      const DeepCollectionEquality().hash(deviceCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(dataCount) ^
+      const DeepCollectionEquality().hash(archivalCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(paidOn) ^
+      const DeepCollectionEquality().hash(providerId) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      const DeepCollectionEquality().hash(graceDays) ^
+      const DeepCollectionEquality().hash(paymentMode) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(paymentStatus) ^
+      runtimeType.hashCode;
+}
+
+extension $InvoiceBaseExtension on InvoiceBase {
+  InvoiceBase copyWith(
+      {double? invoiceAmount,
+      double? billedAmount,
+      bool? reconciled,
+      String? planId,
+      double? planFee,
+      double? deviceModelFee,
+      double? modelParametersFee,
+      double? deviceFee,
+      double? clientFee,
+      double? userFee,
+      double? dataFee,
+      double? archivalFee,
+      double? dashboardFee,
+      double? deviceModelCount,
+      double? modelParametersCount,
+      double? deviceCount,
+      double? clientCount,
+      double? userCount,
+      double? dataCount,
+      double? archivalCount,
+      double? dashboardCount,
+      int? paidOn,
+      String? providerId,
+      String? transactionId,
+      int? transactionStamp,
+      Object? metaData,
+      int? graceDays,
+      String? paymentMode,
+      String? paymentGateway,
+      String? paymentStatus}) {
+    return InvoiceBase(
+        invoiceAmount: invoiceAmount ?? this.invoiceAmount,
+        billedAmount: billedAmount ?? this.billedAmount,
+        reconciled: reconciled ?? this.reconciled,
+        planId: planId ?? this.planId,
+        planFee: planFee ?? this.planFee,
+        deviceModelFee: deviceModelFee ?? this.deviceModelFee,
+        modelParametersFee: modelParametersFee ?? this.modelParametersFee,
+        deviceFee: deviceFee ?? this.deviceFee,
+        clientFee: clientFee ?? this.clientFee,
+        userFee: userFee ?? this.userFee,
+        dataFee: dataFee ?? this.dataFee,
+        archivalFee: archivalFee ?? this.archivalFee,
+        dashboardFee: dashboardFee ?? this.dashboardFee,
+        deviceModelCount: deviceModelCount ?? this.deviceModelCount,
+        modelParametersCount: modelParametersCount ?? this.modelParametersCount,
+        deviceCount: deviceCount ?? this.deviceCount,
+        clientCount: clientCount ?? this.clientCount,
+        userCount: userCount ?? this.userCount,
+        dataCount: dataCount ?? this.dataCount,
+        archivalCount: archivalCount ?? this.archivalCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        paidOn: paidOn ?? this.paidOn,
+        providerId: providerId ?? this.providerId,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        metaData: metaData ?? this.metaData,
+        graceDays: graceDays ?? this.graceDays,
+        paymentMode: paymentMode ?? this.paymentMode,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        paymentStatus: paymentStatus ?? this.paymentStatus);
+  }
+
+  InvoiceBase copyWithWrapped(
+      {Wrapped<double>? invoiceAmount,
+      Wrapped<double?>? billedAmount,
+      Wrapped<bool>? reconciled,
+      Wrapped<String?>? planId,
+      Wrapped<double?>? planFee,
+      Wrapped<double?>? deviceModelFee,
+      Wrapped<double?>? modelParametersFee,
+      Wrapped<double?>? deviceFee,
+      Wrapped<double?>? clientFee,
+      Wrapped<double?>? userFee,
+      Wrapped<double?>? dataFee,
+      Wrapped<double?>? archivalFee,
+      Wrapped<double?>? dashboardFee,
+      Wrapped<double?>? deviceModelCount,
+      Wrapped<double?>? modelParametersCount,
+      Wrapped<double?>? deviceCount,
+      Wrapped<double?>? clientCount,
+      Wrapped<double?>? userCount,
+      Wrapped<double?>? dataCount,
+      Wrapped<double?>? archivalCount,
+      Wrapped<double?>? dashboardCount,
+      Wrapped<int?>? paidOn,
+      Wrapped<String?>? providerId,
+      Wrapped<String?>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<Object?>? metaData,
+      Wrapped<int?>? graceDays,
+      Wrapped<String?>? paymentMode,
+      Wrapped<String?>? paymentGateway,
+      Wrapped<String>? paymentStatus}) {
+    return InvoiceBase(
+        invoiceAmount:
+            (invoiceAmount != null ? invoiceAmount.value : this.invoiceAmount),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        reconciled: (reconciled != null ? reconciled.value : this.reconciled),
+        planId: (planId != null ? planId.value : this.planId),
+        planFee: (planFee != null ? planFee.value : this.planFee),
+        deviceModelFee: (deviceModelFee != null
+            ? deviceModelFee.value
+            : this.deviceModelFee),
+        modelParametersFee: (modelParametersFee != null
+            ? modelParametersFee.value
+            : this.modelParametersFee),
+        deviceFee: (deviceFee != null ? deviceFee.value : this.deviceFee),
+        clientFee: (clientFee != null ? clientFee.value : this.clientFee),
+        userFee: (userFee != null ? userFee.value : this.userFee),
+        dataFee: (dataFee != null ? dataFee.value : this.dataFee),
+        archivalFee:
+            (archivalFee != null ? archivalFee.value : this.archivalFee),
+        dashboardFee:
+            (dashboardFee != null ? dashboardFee.value : this.dashboardFee),
+        deviceModelCount: (deviceModelCount != null
+            ? deviceModelCount.value
+            : this.deviceModelCount),
+        modelParametersCount: (modelParametersCount != null
+            ? modelParametersCount.value
+            : this.modelParametersCount),
+        deviceCount:
+            (deviceCount != null ? deviceCount.value : this.deviceCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        dataCount: (dataCount != null ? dataCount.value : this.dataCount),
+        archivalCount:
+            (archivalCount != null ? archivalCount.value : this.archivalCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount),
+        paidOn: (paidOn != null ? paidOn.value : this.paidOn),
+        providerId: (providerId != null ? providerId.value : this.providerId),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        metaData: (metaData != null ? metaData.value : this.metaData),
+        graceDays: (graceDays != null ? graceDays.value : this.graceDays),
+        paymentMode:
+            (paymentMode != null ? paymentMode.value : this.paymentMode),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        paymentStatus:
+            (paymentStatus != null ? paymentStatus.value : this.paymentStatus));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class Invoice {
+  const Invoice({
+    required this.name,
+    this.description,
+    required this.orgId,
+    required this.dueOn,
+    required this.invoiceAmount,
+    this.billedAmount,
+    required this.reconciled,
+    this.planId,
+    this.planFee,
+    this.deviceModelFee,
+    this.modelParametersFee,
+    this.deviceFee,
+    this.clientFee,
+    this.userFee,
+    this.dataFee,
+    this.archivalFee,
+    this.dashboardFee,
+    this.deviceModelCount,
+    this.modelParametersCount,
+    this.deviceCount,
+    this.clientCount,
+    this.userCount,
+    this.dataCount,
+    this.archivalCount,
+    this.dashboardCount,
+    this.paidOn,
+    this.providerId,
+    this.transactionId,
+    this.transactionStamp,
+    this.metaData,
+    this.graceDays,
+    this.paymentMode,
+    this.paymentGateway,
+    required this.paymentStatus,
+    required this.id,
+    required this.rtype,
+    required this.createdBy,
+    required this.createdStamp,
+    required this.updatedBy,
+    required this.updatedStamp,
+    required this.domainKey,
+  });
+
+  factory Invoice.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceFromJson(json);
+
+  static const toJsonFactory = _$InvoiceToJson;
+  Map<String, dynamic> toJson() => _$InvoiceToJson(this);
+
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'dueOn', includeIfNull: false)
+  final int dueOn;
+  @JsonKey(name: 'invoiceAmount', includeIfNull: false)
+  final double invoiceAmount;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double? billedAmount;
+  @JsonKey(name: 'reconciled', includeIfNull: false)
+  final bool reconciled;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String? planId;
+  @JsonKey(name: 'planFee', includeIfNull: false)
+  final double? planFee;
+  @JsonKey(name: 'deviceModelFee', includeIfNull: false)
+  final double? deviceModelFee;
+  @JsonKey(name: 'modelParametersFee', includeIfNull: false)
+  final double? modelParametersFee;
+  @JsonKey(name: 'deviceFee', includeIfNull: false)
+  final double? deviceFee;
+  @JsonKey(name: 'clientFee', includeIfNull: false)
+  final double? clientFee;
+  @JsonKey(name: 'userFee', includeIfNull: false)
+  final double? userFee;
+  @JsonKey(name: 'dataFee', includeIfNull: false)
+  final double? dataFee;
+  @JsonKey(name: 'archivalFee', includeIfNull: false)
+  final double? archivalFee;
+  @JsonKey(name: 'dashboardFee', includeIfNull: false)
+  final double? dashboardFee;
+  @JsonKey(name: 'deviceModelCount', includeIfNull: false)
+  final double? deviceModelCount;
+  @JsonKey(name: 'modelParametersCount', includeIfNull: false)
+  final double? modelParametersCount;
+  @JsonKey(name: 'deviceCount', includeIfNull: false)
+  final double? deviceCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final double? clientCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final double? userCount;
+  @JsonKey(name: 'dataCount', includeIfNull: false)
+  final double? dataCount;
+  @JsonKey(name: 'archivalCount', includeIfNull: false)
+  final double? archivalCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final double? dashboardCount;
+  @JsonKey(name: 'paidOn', includeIfNull: false)
+  final int? paidOn;
+  @JsonKey(name: 'providerId', includeIfNull: false, defaultValue: '')
+  final String? providerId;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String? transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  @JsonKey(name: 'graceDays', includeIfNull: false)
+  final int? graceDays;
+  @JsonKey(name: 'paymentMode', includeIfNull: false, defaultValue: '')
+  final String? paymentMode;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String? paymentGateway;
+  @JsonKey(name: 'paymentStatus', includeIfNull: false, defaultValue: '')
+  final String paymentStatus;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
+  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
+  final String rtype;
+  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
+  final String createdBy;
+  @JsonKey(name: 'createdStamp', includeIfNull: false)
+  final int createdStamp;
+  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
+  final String updatedBy;
+  @JsonKey(name: 'updatedStamp', includeIfNull: false)
+  final int updatedStamp;
+  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
+  final String domainKey;
+  static const fromJsonFactory = _$InvoiceFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is Invoice &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.dueOn, dueOn) ||
+                const DeepCollectionEquality().equals(other.dueOn, dueOn)) &&
+            (identical(other.invoiceAmount, invoiceAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.invoiceAmount, invoiceAmount)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.reconciled, reconciled) ||
+                const DeepCollectionEquality()
+                    .equals(other.reconciled, reconciled)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.planFee, planFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFee, planFee)) &&
+            (identical(other.deviceModelFee, deviceModelFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelFee, deviceModelFee)) &&
+            (identical(other.modelParametersFee, modelParametersFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelParametersFee, modelParametersFee)) &&
+            (identical(other.deviceFee, deviceFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceFee, deviceFee)) &&
+            (identical(other.clientFee, clientFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientFee, clientFee)) &&
+            (identical(other.userFee, userFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.userFee, userFee)) &&
+            (identical(other.dataFee, dataFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataFee, dataFee)) &&
+            (identical(other.archivalFee, archivalFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalFee, archivalFee)) &&
+            (identical(other.dashboardFee, dashboardFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardFee, dashboardFee)) &&
+            (identical(other.deviceModelCount, deviceModelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelCount, deviceModelCount)) &&
+            (identical(other.modelParametersCount, modelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.modelParametersCount, modelParametersCount)) &&
+            (identical(other.deviceCount, deviceCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCount, deviceCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.dataCount, dataCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataCount, dataCount)) &&
+            (identical(other.archivalCount, archivalCount) || const DeepCollectionEquality().equals(other.archivalCount, archivalCount)) &&
+            (identical(other.dashboardCount, dashboardCount) || const DeepCollectionEquality().equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.paidOn, paidOn) || const DeepCollectionEquality().equals(other.paidOn, paidOn)) &&
+            (identical(other.providerId, providerId) || const DeepCollectionEquality().equals(other.providerId, providerId)) &&
+            (identical(other.transactionId, transactionId) || const DeepCollectionEquality().equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) || const DeepCollectionEquality().equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.metaData, metaData) || const DeepCollectionEquality().equals(other.metaData, metaData)) &&
+            (identical(other.graceDays, graceDays) || const DeepCollectionEquality().equals(other.graceDays, graceDays)) &&
+            (identical(other.paymentMode, paymentMode) || const DeepCollectionEquality().equals(other.paymentMode, paymentMode)) &&
+            (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.paymentStatus, paymentStatus) || const DeepCollectionEquality().equals(other.paymentStatus, paymentStatus)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
+            (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
+            (identical(other.createdStamp, createdStamp) || const DeepCollectionEquality().equals(other.createdStamp, createdStamp)) &&
+            (identical(other.updatedBy, updatedBy) || const DeepCollectionEquality().equals(other.updatedBy, updatedBy)) &&
+            (identical(other.updatedStamp, updatedStamp) || const DeepCollectionEquality().equals(other.updatedStamp, updatedStamp)) &&
+            (identical(other.domainKey, domainKey) || const DeepCollectionEquality().equals(other.domainKey, domainKey)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(dueOn) ^
+      const DeepCollectionEquality().hash(invoiceAmount) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(reconciled) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(planFee) ^
+      const DeepCollectionEquality().hash(deviceModelFee) ^
+      const DeepCollectionEquality().hash(modelParametersFee) ^
+      const DeepCollectionEquality().hash(deviceFee) ^
+      const DeepCollectionEquality().hash(clientFee) ^
+      const DeepCollectionEquality().hash(userFee) ^
+      const DeepCollectionEquality().hash(dataFee) ^
+      const DeepCollectionEquality().hash(archivalFee) ^
+      const DeepCollectionEquality().hash(dashboardFee) ^
+      const DeepCollectionEquality().hash(deviceModelCount) ^
+      const DeepCollectionEquality().hash(modelParametersCount) ^
+      const DeepCollectionEquality().hash(deviceCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(dataCount) ^
+      const DeepCollectionEquality().hash(archivalCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(paidOn) ^
+      const DeepCollectionEquality().hash(providerId) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      const DeepCollectionEquality().hash(graceDays) ^
+      const DeepCollectionEquality().hash(paymentMode) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(paymentStatus) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(rtype) ^
+      const DeepCollectionEquality().hash(createdBy) ^
+      const DeepCollectionEquality().hash(createdStamp) ^
+      const DeepCollectionEquality().hash(updatedBy) ^
+      const DeepCollectionEquality().hash(updatedStamp) ^
+      const DeepCollectionEquality().hash(domainKey) ^
+      runtimeType.hashCode;
+}
+
+extension $InvoiceExtension on Invoice {
+  Invoice copyWith(
+      {String? name,
+      String? description,
+      String? orgId,
+      int? dueOn,
+      double? invoiceAmount,
+      double? billedAmount,
+      bool? reconciled,
+      String? planId,
+      double? planFee,
+      double? deviceModelFee,
+      double? modelParametersFee,
+      double? deviceFee,
+      double? clientFee,
+      double? userFee,
+      double? dataFee,
+      double? archivalFee,
+      double? dashboardFee,
+      double? deviceModelCount,
+      double? modelParametersCount,
+      double? deviceCount,
+      double? clientCount,
+      double? userCount,
+      double? dataCount,
+      double? archivalCount,
+      double? dashboardCount,
+      int? paidOn,
+      String? providerId,
+      String? transactionId,
+      int? transactionStamp,
+      Object? metaData,
+      int? graceDays,
+      String? paymentMode,
+      String? paymentGateway,
+      String? paymentStatus,
+      String? id,
+      String? rtype,
+      String? createdBy,
+      int? createdStamp,
+      String? updatedBy,
+      int? updatedStamp,
+      String? domainKey}) {
+    return Invoice(
+        name: name ?? this.name,
+        description: description ?? this.description,
+        orgId: orgId ?? this.orgId,
+        dueOn: dueOn ?? this.dueOn,
+        invoiceAmount: invoiceAmount ?? this.invoiceAmount,
+        billedAmount: billedAmount ?? this.billedAmount,
+        reconciled: reconciled ?? this.reconciled,
+        planId: planId ?? this.planId,
+        planFee: planFee ?? this.planFee,
+        deviceModelFee: deviceModelFee ?? this.deviceModelFee,
+        modelParametersFee: modelParametersFee ?? this.modelParametersFee,
+        deviceFee: deviceFee ?? this.deviceFee,
+        clientFee: clientFee ?? this.clientFee,
+        userFee: userFee ?? this.userFee,
+        dataFee: dataFee ?? this.dataFee,
+        archivalFee: archivalFee ?? this.archivalFee,
+        dashboardFee: dashboardFee ?? this.dashboardFee,
+        deviceModelCount: deviceModelCount ?? this.deviceModelCount,
+        modelParametersCount: modelParametersCount ?? this.modelParametersCount,
+        deviceCount: deviceCount ?? this.deviceCount,
+        clientCount: clientCount ?? this.clientCount,
+        userCount: userCount ?? this.userCount,
+        dataCount: dataCount ?? this.dataCount,
+        archivalCount: archivalCount ?? this.archivalCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        paidOn: paidOn ?? this.paidOn,
+        providerId: providerId ?? this.providerId,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        metaData: metaData ?? this.metaData,
+        graceDays: graceDays ?? this.graceDays,
+        paymentMode: paymentMode ?? this.paymentMode,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        paymentStatus: paymentStatus ?? this.paymentStatus,
+        id: id ?? this.id,
+        rtype: rtype ?? this.rtype,
+        createdBy: createdBy ?? this.createdBy,
+        createdStamp: createdStamp ?? this.createdStamp,
+        updatedBy: updatedBy ?? this.updatedBy,
+        updatedStamp: updatedStamp ?? this.updatedStamp,
+        domainKey: domainKey ?? this.domainKey);
+  }
+
+  Invoice copyWithWrapped(
+      {Wrapped<String>? name,
+      Wrapped<String?>? description,
+      Wrapped<String>? orgId,
+      Wrapped<int>? dueOn,
+      Wrapped<double>? invoiceAmount,
+      Wrapped<double?>? billedAmount,
+      Wrapped<bool>? reconciled,
+      Wrapped<String?>? planId,
+      Wrapped<double?>? planFee,
+      Wrapped<double?>? deviceModelFee,
+      Wrapped<double?>? modelParametersFee,
+      Wrapped<double?>? deviceFee,
+      Wrapped<double?>? clientFee,
+      Wrapped<double?>? userFee,
+      Wrapped<double?>? dataFee,
+      Wrapped<double?>? archivalFee,
+      Wrapped<double?>? dashboardFee,
+      Wrapped<double?>? deviceModelCount,
+      Wrapped<double?>? modelParametersCount,
+      Wrapped<double?>? deviceCount,
+      Wrapped<double?>? clientCount,
+      Wrapped<double?>? userCount,
+      Wrapped<double?>? dataCount,
+      Wrapped<double?>? archivalCount,
+      Wrapped<double?>? dashboardCount,
+      Wrapped<int?>? paidOn,
+      Wrapped<String?>? providerId,
+      Wrapped<String?>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<Object?>? metaData,
+      Wrapped<int?>? graceDays,
+      Wrapped<String?>? paymentMode,
+      Wrapped<String?>? paymentGateway,
+      Wrapped<String>? paymentStatus,
+      Wrapped<String>? id,
+      Wrapped<String>? rtype,
+      Wrapped<String>? createdBy,
+      Wrapped<int>? createdStamp,
+      Wrapped<String>? updatedBy,
+      Wrapped<int>? updatedStamp,
+      Wrapped<String>? domainKey}) {
+    return Invoice(
+        name: (name != null ? name.value : this.name),
+        description:
+            (description != null ? description.value : this.description),
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        dueOn: (dueOn != null ? dueOn.value : this.dueOn),
+        invoiceAmount:
+            (invoiceAmount != null ? invoiceAmount.value : this.invoiceAmount),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        reconciled: (reconciled != null ? reconciled.value : this.reconciled),
+        planId: (planId != null ? planId.value : this.planId),
+        planFee: (planFee != null ? planFee.value : this.planFee),
+        deviceModelFee: (deviceModelFee != null
+            ? deviceModelFee.value
+            : this.deviceModelFee),
+        modelParametersFee: (modelParametersFee != null
+            ? modelParametersFee.value
+            : this.modelParametersFee),
+        deviceFee: (deviceFee != null ? deviceFee.value : this.deviceFee),
+        clientFee: (clientFee != null ? clientFee.value : this.clientFee),
+        userFee: (userFee != null ? userFee.value : this.userFee),
+        dataFee: (dataFee != null ? dataFee.value : this.dataFee),
+        archivalFee:
+            (archivalFee != null ? archivalFee.value : this.archivalFee),
+        dashboardFee:
+            (dashboardFee != null ? dashboardFee.value : this.dashboardFee),
+        deviceModelCount: (deviceModelCount != null
+            ? deviceModelCount.value
+            : this.deviceModelCount),
+        modelParametersCount: (modelParametersCount != null
+            ? modelParametersCount.value
+            : this.modelParametersCount),
+        deviceCount:
+            (deviceCount != null ? deviceCount.value : this.deviceCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        dataCount: (dataCount != null ? dataCount.value : this.dataCount),
+        archivalCount:
+            (archivalCount != null ? archivalCount.value : this.archivalCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount),
+        paidOn: (paidOn != null ? paidOn.value : this.paidOn),
+        providerId: (providerId != null ? providerId.value : this.providerId),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        metaData: (metaData != null ? metaData.value : this.metaData),
+        graceDays: (graceDays != null ? graceDays.value : this.graceDays),
+        paymentMode:
+            (paymentMode != null ? paymentMode.value : this.paymentMode),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        paymentStatus:
+            (paymentStatus != null ? paymentStatus.value : this.paymentStatus),
+        id: (id != null ? id.value : this.id),
+        rtype: (rtype != null ? rtype.value : this.rtype),
+        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
+        createdStamp:
+            (createdStamp != null ? createdStamp.value : this.createdStamp),
+        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
+        updatedStamp:
+            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceEntity {
+  const InvoiceEntity({
+    this.entity,
+  });
+
+  factory InvoiceEntity.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceEntityFromJson(json);
+
+  static const toJsonFactory = _$InvoiceEntityToJson;
+  Map<String, dynamic> toJson() => _$InvoiceEntityToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Invoice? entity;
+  static const fromJsonFactory = _$InvoiceEntityFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceEntity &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^ runtimeType.hashCode;
+}
+
+extension $InvoiceEntityExtension on InvoiceEntity {
+  InvoiceEntity copyWith({Invoice? entity}) {
+    return InvoiceEntity(entity: entity ?? this.entity);
+  }
+
+  InvoiceEntity copyWithWrapped({Wrapped<Invoice?>? entity}) {
+    return InvoiceEntity(entity: (entity != null ? entity.value : this.entity));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceEntityRes {
+  const InvoiceEntityRes({
+    this.entity,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+  });
+
+  factory InvoiceEntityRes.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceEntityResFromJson(json);
+
+  static const toJsonFactory = _$InvoiceEntityResToJson;
+  Map<String, dynamic> toJson() => _$InvoiceEntityResToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Invoice? entity;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  static const fromJsonFactory = _$InvoiceEntityResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceEntityRes &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      runtimeType.hashCode;
+}
+
+extension $InvoiceEntityResExtension on InvoiceEntityRes {
+  InvoiceEntityRes copyWith(
+      {Invoice? entity,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode}) {
+    return InvoiceEntityRes(
+        entity: entity ?? this.entity,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode);
+  }
+
+  InvoiceEntityRes copyWithWrapped(
+      {Wrapped<Invoice?>? entity,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode}) {
+    return InvoiceEntityRes(
+        entity: (entity != null ? entity.value : this.entity),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceArray {
+  const InvoiceArray({
+    this.values,
+  });
+
+  factory InvoiceArray.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceArrayFromJson(json);
+
+  static const toJsonFactory = _$InvoiceArrayToJson;
+  Map<String, dynamic> toJson() => _$InvoiceArrayToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Invoice>[])
+  final List<Invoice>? values;
+  static const fromJsonFactory = _$InvoiceArrayFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceArray &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^ runtimeType.hashCode;
+}
+
+extension $InvoiceArrayExtension on InvoiceArray {
+  InvoiceArray copyWith({List<Invoice>? values}) {
+    return InvoiceArray(values: values ?? this.values);
+  }
+
+  InvoiceArray copyWithWrapped({Wrapped<List<Invoice>?>? values}) {
+    return InvoiceArray(values: (values != null ? values.value : this.values));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class InvoiceArrayRes {
+  const InvoiceArrayRes({
+    this.values,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+    this.total,
+    this.page,
+    this.size,
+  });
+
+  factory InvoiceArrayRes.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceArrayResFromJson(json);
+
+  static const toJsonFactory = _$InvoiceArrayResToJson;
+  Map<String, dynamic> toJson() => _$InvoiceArrayResToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Invoice>[])
+  final List<Invoice>? values;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  @JsonKey(name: 'total', includeIfNull: false)
+  final int? total;
+  @JsonKey(name: 'page', includeIfNull: false)
+  final int? page;
+  @JsonKey(name: 'size', includeIfNull: false)
+  final int? size;
+  static const fromJsonFactory = _$InvoiceArrayResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is InvoiceArrayRes &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)) &&
+            (identical(other.total, total) ||
+                const DeepCollectionEquality().equals(other.total, total)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.size, size) ||
+                const DeepCollectionEquality().equals(other.size, size)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      const DeepCollectionEquality().hash(total) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(size) ^
+      runtimeType.hashCode;
+}
+
+extension $InvoiceArrayResExtension on InvoiceArrayRes {
+  InvoiceArrayRes copyWith(
+      {List<Invoice>? values,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode,
+      int? total,
+      int? page,
+      int? size}) {
+    return InvoiceArrayRes(
+        values: values ?? this.values,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode,
+        total: total ?? this.total,
+        page: page ?? this.page,
+        size: size ?? this.size);
+  }
+
+  InvoiceArrayRes copyWithWrapped(
+      {Wrapped<List<Invoice>?>? values,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode,
+      Wrapped<int?>? total,
+      Wrapped<int?>? page,
+      Wrapped<int?>? size}) {
+    return InvoiceArrayRes(
+        values: (values != null ? values.value : this.values),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode),
+        total: (total != null ? total.value : this.total),
+        page: (page != null ? page.value : this.page),
+        size: (size != null ? size.value : this.size));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanChangeRequest {
+  const PlanChangeRequest({
+    required this.orgId,
+    required this.planId,
+    this.orderId,
+  });
+
+  factory PlanChangeRequest.fromJson(Map<String, dynamic> json) =>
+      _$PlanChangeRequestFromJson(json);
+
+  static const toJsonFactory = _$PlanChangeRequestToJson;
+  Map<String, dynamic> toJson() => _$PlanChangeRequestToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String planId;
+  @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
+  final String? orderId;
+  static const fromJsonFactory = _$PlanChangeRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanChangeRequest &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.orderId, orderId) ||
+                const DeepCollectionEquality().equals(other.orderId, orderId)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(orderId) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanChangeRequestExtension on PlanChangeRequest {
+  PlanChangeRequest copyWith({String? orgId, String? planId, String? orderId}) {
+    return PlanChangeRequest(
+        orgId: orgId ?? this.orgId,
+        planId: planId ?? this.planId,
+        orderId: orderId ?? this.orderId);
+  }
+
+  PlanChangeRequest copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? planId,
+      Wrapped<String?>? orderId}) {
+    return PlanChangeRequest(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        planId: (planId != null ? planId.value : this.planId),
+        orderId: (orderId != null ? orderId.value : this.orderId));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AddComponentRequest {
+  const AddComponentRequest({
+    required this.orgId,
+    required this.orderId,
+  });
+
+  factory AddComponentRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddComponentRequestFromJson(json);
+
+  static const toJsonFactory = _$AddComponentRequestToJson;
+  Map<String, dynamic> toJson() => _$AddComponentRequestToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
+  final String orderId;
+  static const fromJsonFactory = _$AddComponentRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is AddComponentRequest &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.orderId, orderId) ||
+                const DeepCollectionEquality().equals(other.orderId, orderId)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(orderId) ^
+      runtimeType.hashCode;
+}
+
+extension $AddComponentRequestExtension on AddComponentRequest {
+  AddComponentRequest copyWith({String? orgId, String? orderId}) {
+    return AddComponentRequest(
+        orgId: orgId ?? this.orgId, orderId: orderId ?? this.orderId);
+  }
+
+  AddComponentRequest copyWithWrapped(
+      {Wrapped<String>? orgId, Wrapped<String>? orderId}) {
+    return AddComponentRequest(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        orderId: (orderId != null ? orderId.value : this.orderId));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PaidInvoiceRequest {
+  const PaidInvoiceRequest({
+    required this.orgId,
+    required this.invoiceId,
+    required this.billedAmount,
+    this.paymentMode,
+    this.paymentGateway,
+    this.transactionId,
+    this.transactionStamp,
+    this.metaData,
+  });
+
+  factory PaidInvoiceRequest.fromJson(Map<String, dynamic> json) =>
+      _$PaidInvoiceRequestFromJson(json);
+
+  static const toJsonFactory = _$PaidInvoiceRequestToJson;
+  Map<String, dynamic> toJson() => _$PaidInvoiceRequestToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'invoiceId', includeIfNull: false, defaultValue: '')
+  final String invoiceId;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double billedAmount;
+  @JsonKey(name: 'paymentMode', includeIfNull: false, defaultValue: '')
+  final String? paymentMode;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String? paymentGateway;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String? transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  static const fromJsonFactory = _$PaidInvoiceRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PaidInvoiceRequest &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.invoiceId, invoiceId) ||
+                const DeepCollectionEquality()
+                    .equals(other.invoiceId, invoiceId)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.paymentMode, paymentMode) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentMode, paymentMode)) &&
+            (identical(other.paymentGateway, paymentGateway) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.transactionId, transactionId) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.metaData, metaData) ||
+                const DeepCollectionEquality()
+                    .equals(other.metaData, metaData)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(invoiceId) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(paymentMode) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      runtimeType.hashCode;
+}
+
+extension $PaidInvoiceRequestExtension on PaidInvoiceRequest {
+  PaidInvoiceRequest copyWith(
+      {String? orgId,
+      String? invoiceId,
+      double? billedAmount,
+      String? paymentMode,
+      String? paymentGateway,
+      String? transactionId,
+      int? transactionStamp,
+      Object? metaData}) {
+    return PaidInvoiceRequest(
+        orgId: orgId ?? this.orgId,
+        invoiceId: invoiceId ?? this.invoiceId,
+        billedAmount: billedAmount ?? this.billedAmount,
+        paymentMode: paymentMode ?? this.paymentMode,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        metaData: metaData ?? this.metaData);
+  }
+
+  PaidInvoiceRequest copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? invoiceId,
+      Wrapped<double>? billedAmount,
+      Wrapped<String?>? paymentMode,
+      Wrapped<String?>? paymentGateway,
+      Wrapped<String?>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<Object?>? metaData}) {
+    return PaidInvoiceRequest(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        invoiceId: (invoiceId != null ? invoiceId.value : this.invoiceId),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        paymentMode:
+            (paymentMode != null ? paymentMode.value : this.paymentMode),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        metaData: (metaData != null ? metaData.value : this.metaData));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderInfo {
+  const OrderInfo({
+    this.description,
+    required this.orgId,
+    this.couponCode,
+    this.planId,
+    this.modelCount,
+    this.parameterCount,
+    this.deviceCount,
+    this.clientCount,
+    this.dataCount,
+    this.userCount,
+    this.archivalCount,
+    this.dashboardCount,
+  });
+
+  factory OrderInfo.fromJson(Map<String, dynamic> json) =>
+      _$OrderInfoFromJson(json);
+
+  static const toJsonFactory = _$OrderInfoToJson;
+  Map<String, dynamic> toJson() => _$OrderInfoToJson(this);
+
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'couponCode', includeIfNull: false, defaultValue: '')
+  final String? couponCode;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String? planId;
+  @JsonKey(name: 'modelCount', includeIfNull: false)
+  final int? modelCount;
+  @JsonKey(name: 'parameterCount', includeIfNull: false)
+  final int? parameterCount;
+  @JsonKey(name: 'deviceCount', includeIfNull: false)
+  final int? deviceCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final int? clientCount;
+  @JsonKey(name: 'dataCount', includeIfNull: false)
+  final int? dataCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final int? userCount;
+  @JsonKey(name: 'archivalCount', includeIfNull: false)
+  final int? archivalCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final int? dashboardCount;
+  static const fromJsonFactory = _$OrderInfoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderInfo &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.couponCode, couponCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.couponCode, couponCode)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.modelCount, modelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelCount, modelCount)) &&
+            (identical(other.parameterCount, parameterCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.parameterCount, parameterCount)) &&
+            (identical(other.deviceCount, deviceCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCount, deviceCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.dataCount, dataCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataCount, dataCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.archivalCount, archivalCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalCount, archivalCount)) &&
+            (identical(other.dashboardCount, dashboardCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardCount, dashboardCount)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(couponCode) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(modelCount) ^
+      const DeepCollectionEquality().hash(parameterCount) ^
+      const DeepCollectionEquality().hash(deviceCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(dataCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(archivalCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderInfoExtension on OrderInfo {
+  OrderInfo copyWith(
+      {String? description,
+      String? orgId,
+      String? couponCode,
+      String? planId,
+      int? modelCount,
+      int? parameterCount,
+      int? deviceCount,
+      int? clientCount,
+      int? dataCount,
+      int? userCount,
+      int? archivalCount,
+      int? dashboardCount}) {
+    return OrderInfo(
+        description: description ?? this.description,
+        orgId: orgId ?? this.orgId,
+        couponCode: couponCode ?? this.couponCode,
+        planId: planId ?? this.planId,
+        modelCount: modelCount ?? this.modelCount,
+        parameterCount: parameterCount ?? this.parameterCount,
+        deviceCount: deviceCount ?? this.deviceCount,
+        clientCount: clientCount ?? this.clientCount,
+        dataCount: dataCount ?? this.dataCount,
+        userCount: userCount ?? this.userCount,
+        archivalCount: archivalCount ?? this.archivalCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount);
+  }
+
+  OrderInfo copyWithWrapped(
+      {Wrapped<String?>? description,
+      Wrapped<String>? orgId,
+      Wrapped<String?>? couponCode,
+      Wrapped<String?>? planId,
+      Wrapped<int?>? modelCount,
+      Wrapped<int?>? parameterCount,
+      Wrapped<int?>? deviceCount,
+      Wrapped<int?>? clientCount,
+      Wrapped<int?>? dataCount,
+      Wrapped<int?>? userCount,
+      Wrapped<int?>? archivalCount,
+      Wrapped<int?>? dashboardCount}) {
+    return OrderInfo(
+        description:
+            (description != null ? description.value : this.description),
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        couponCode: (couponCode != null ? couponCode.value : this.couponCode),
+        planId: (planId != null ? planId.value : this.planId),
+        modelCount: (modelCount != null ? modelCount.value : this.modelCount),
+        parameterCount: (parameterCount != null
+            ? parameterCount.value
+            : this.parameterCount),
+        deviceCount:
+            (deviceCount != null ? deviceCount.value : this.deviceCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        dataCount: (dataCount != null ? dataCount.value : this.dataCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        archivalCount:
+            (archivalCount != null ? archivalCount.value : this.archivalCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderBase {
+  const OrderBase({
+    required this.orderAmount,
+    required this.reconciled,
+    required this.processed,
+    this.billedAmount,
+    this.planPrice,
+    this.modelPrice,
+    this.parameterPrice,
+    this.devicePrice,
+    this.clientPrice,
+    this.dataPrice,
+    this.userPrice,
+    this.archivalPrice,
+    this.dashboardPrice,
+    this.providerId,
+    this.transactionId,
+    this.transactionStamp,
+    this.discount,
+    this.metaData,
+    this.paymentGateway,
+    this.stripePaymentSecret,
+    required this.orderStatus,
+  });
+
+  factory OrderBase.fromJson(Map<String, dynamic> json) =>
+      _$OrderBaseFromJson(json);
+
+  static const toJsonFactory = _$OrderBaseToJson;
+  Map<String, dynamic> toJson() => _$OrderBaseToJson(this);
+
+  @JsonKey(name: 'orderAmount', includeIfNull: false)
+  final double orderAmount;
+  @JsonKey(name: 'reconciled', includeIfNull: false)
+  final bool reconciled;
+  @JsonKey(name: 'processed', includeIfNull: false)
+  final bool processed;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double? billedAmount;
+  @JsonKey(name: 'planPrice', includeIfNull: false)
+  final double? planPrice;
+  @JsonKey(name: 'modelPrice', includeIfNull: false)
+  final double? modelPrice;
+  @JsonKey(name: 'parameterPrice', includeIfNull: false)
+  final double? parameterPrice;
+  @JsonKey(name: 'devicePrice', includeIfNull: false)
+  final double? devicePrice;
+  @JsonKey(name: 'clientPrice', includeIfNull: false)
+  final double? clientPrice;
+  @JsonKey(name: 'dataPrice', includeIfNull: false)
+  final double? dataPrice;
+  @JsonKey(name: 'userPrice', includeIfNull: false)
+  final double? userPrice;
+  @JsonKey(name: 'archivalPrice', includeIfNull: false)
+  final double? archivalPrice;
+  @JsonKey(name: 'dashboardPrice', includeIfNull: false)
+  final double? dashboardPrice;
+  @JsonKey(name: 'providerId', includeIfNull: false, defaultValue: '')
+  final String? providerId;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String? transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'discount', includeIfNull: false)
+  final double? discount;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String? paymentGateway;
+  @JsonKey(name: 'stripePaymentSecret', includeIfNull: false, defaultValue: '')
+  final String? stripePaymentSecret;
+  @JsonKey(name: 'orderStatus', includeIfNull: false, defaultValue: '')
+  final String orderStatus;
+  static const fromJsonFactory = _$OrderBaseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderBase &&
+            (identical(other.orderAmount, orderAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderAmount, orderAmount)) &&
+            (identical(other.reconciled, reconciled) ||
+                const DeepCollectionEquality()
+                    .equals(other.reconciled, reconciled)) &&
+            (identical(other.processed, processed) ||
+                const DeepCollectionEquality()
+                    .equals(other.processed, processed)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.planPrice, planPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.planPrice, planPrice)) &&
+            (identical(other.modelPrice, modelPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelPrice, modelPrice)) &&
+            (identical(other.parameterPrice, parameterPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.parameterPrice, parameterPrice)) &&
+            (identical(other.devicePrice, devicePrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.devicePrice, devicePrice)) &&
+            (identical(other.clientPrice, clientPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientPrice, clientPrice)) &&
+            (identical(other.dataPrice, dataPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataPrice, dataPrice)) &&
+            (identical(other.userPrice, userPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.userPrice, userPrice)) &&
+            (identical(other.archivalPrice, archivalPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalPrice, archivalPrice)) &&
+            (identical(other.dashboardPrice, dashboardPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardPrice, dashboardPrice)) &&
+            (identical(other.providerId, providerId) ||
+                const DeepCollectionEquality()
+                    .equals(other.providerId, providerId)) &&
+            (identical(other.transactionId, transactionId) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.discount, discount) ||
+                const DeepCollectionEquality()
+                    .equals(other.discount, discount)) &&
+            (identical(other.metaData, metaData) ||
+                const DeepCollectionEquality()
+                    .equals(other.metaData, metaData)) &&
+            (identical(other.paymentGateway, paymentGateway) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.stripePaymentSecret, stripePaymentSecret) ||
+                const DeepCollectionEquality()
+                    .equals(other.stripePaymentSecret, stripePaymentSecret)) &&
+            (identical(other.orderStatus, orderStatus) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderStatus, orderStatus)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orderAmount) ^
+      const DeepCollectionEquality().hash(reconciled) ^
+      const DeepCollectionEquality().hash(processed) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(planPrice) ^
+      const DeepCollectionEquality().hash(modelPrice) ^
+      const DeepCollectionEquality().hash(parameterPrice) ^
+      const DeepCollectionEquality().hash(devicePrice) ^
+      const DeepCollectionEquality().hash(clientPrice) ^
+      const DeepCollectionEquality().hash(dataPrice) ^
+      const DeepCollectionEquality().hash(userPrice) ^
+      const DeepCollectionEquality().hash(archivalPrice) ^
+      const DeepCollectionEquality().hash(dashboardPrice) ^
+      const DeepCollectionEquality().hash(providerId) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(discount) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(stripePaymentSecret) ^
+      const DeepCollectionEquality().hash(orderStatus) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderBaseExtension on OrderBase {
+  OrderBase copyWith(
+      {double? orderAmount,
+      bool? reconciled,
+      bool? processed,
+      double? billedAmount,
+      double? planPrice,
+      double? modelPrice,
+      double? parameterPrice,
+      double? devicePrice,
+      double? clientPrice,
+      double? dataPrice,
+      double? userPrice,
+      double? archivalPrice,
+      double? dashboardPrice,
+      String? providerId,
+      String? transactionId,
+      int? transactionStamp,
+      double? discount,
+      Object? metaData,
+      String? paymentGateway,
+      String? stripePaymentSecret,
+      String? orderStatus}) {
+    return OrderBase(
+        orderAmount: orderAmount ?? this.orderAmount,
+        reconciled: reconciled ?? this.reconciled,
+        processed: processed ?? this.processed,
+        billedAmount: billedAmount ?? this.billedAmount,
+        planPrice: planPrice ?? this.planPrice,
+        modelPrice: modelPrice ?? this.modelPrice,
+        parameterPrice: parameterPrice ?? this.parameterPrice,
+        devicePrice: devicePrice ?? this.devicePrice,
+        clientPrice: clientPrice ?? this.clientPrice,
+        dataPrice: dataPrice ?? this.dataPrice,
+        userPrice: userPrice ?? this.userPrice,
+        archivalPrice: archivalPrice ?? this.archivalPrice,
+        dashboardPrice: dashboardPrice ?? this.dashboardPrice,
+        providerId: providerId ?? this.providerId,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        discount: discount ?? this.discount,
+        metaData: metaData ?? this.metaData,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        stripePaymentSecret: stripePaymentSecret ?? this.stripePaymentSecret,
+        orderStatus: orderStatus ?? this.orderStatus);
+  }
+
+  OrderBase copyWithWrapped(
+      {Wrapped<double>? orderAmount,
+      Wrapped<bool>? reconciled,
+      Wrapped<bool>? processed,
+      Wrapped<double?>? billedAmount,
+      Wrapped<double?>? planPrice,
+      Wrapped<double?>? modelPrice,
+      Wrapped<double?>? parameterPrice,
+      Wrapped<double?>? devicePrice,
+      Wrapped<double?>? clientPrice,
+      Wrapped<double?>? dataPrice,
+      Wrapped<double?>? userPrice,
+      Wrapped<double?>? archivalPrice,
+      Wrapped<double?>? dashboardPrice,
+      Wrapped<String?>? providerId,
+      Wrapped<String?>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<double?>? discount,
+      Wrapped<Object?>? metaData,
+      Wrapped<String?>? paymentGateway,
+      Wrapped<String?>? stripePaymentSecret,
+      Wrapped<String>? orderStatus}) {
+    return OrderBase(
+        orderAmount:
+            (orderAmount != null ? orderAmount.value : this.orderAmount),
+        reconciled: (reconciled != null ? reconciled.value : this.reconciled),
+        processed: (processed != null ? processed.value : this.processed),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        planPrice: (planPrice != null ? planPrice.value : this.planPrice),
+        modelPrice: (modelPrice != null ? modelPrice.value : this.modelPrice),
+        parameterPrice: (parameterPrice != null
+            ? parameterPrice.value
+            : this.parameterPrice),
+        devicePrice:
+            (devicePrice != null ? devicePrice.value : this.devicePrice),
+        clientPrice:
+            (clientPrice != null ? clientPrice.value : this.clientPrice),
+        dataPrice: (dataPrice != null ? dataPrice.value : this.dataPrice),
+        userPrice: (userPrice != null ? userPrice.value : this.userPrice),
+        archivalPrice:
+            (archivalPrice != null ? archivalPrice.value : this.archivalPrice),
+        dashboardPrice: (dashboardPrice != null
+            ? dashboardPrice.value
+            : this.dashboardPrice),
+        providerId: (providerId != null ? providerId.value : this.providerId),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        discount: (discount != null ? discount.value : this.discount),
+        metaData: (metaData != null ? metaData.value : this.metaData),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        stripePaymentSecret: (stripePaymentSecret != null
+            ? stripePaymentSecret.value
+            : this.stripePaymentSecret),
+        orderStatus:
+            (orderStatus != null ? orderStatus.value : this.orderStatus));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class Order {
+  const Order({
+    this.description,
+    required this.orgId,
+    this.couponCode,
+    this.planId,
+    this.modelCount,
+    this.parameterCount,
+    this.deviceCount,
+    this.clientCount,
+    this.dataCount,
+    this.userCount,
+    this.archivalCount,
+    this.dashboardCount,
+    required this.orderAmount,
+    required this.reconciled,
+    required this.processed,
+    this.billedAmount,
+    this.planPrice,
+    this.modelPrice,
+    this.parameterPrice,
+    this.devicePrice,
+    this.clientPrice,
+    this.dataPrice,
+    this.userPrice,
+    this.archivalPrice,
+    this.dashboardPrice,
+    this.providerId,
+    this.transactionId,
+    this.transactionStamp,
+    this.discount,
+    this.metaData,
+    this.paymentGateway,
+    this.stripePaymentSecret,
+    required this.orderStatus,
+    required this.id,
+    required this.rtype,
+    required this.createdBy,
+    required this.createdStamp,
+    required this.updatedBy,
+    required this.updatedStamp,
+    required this.domainKey,
+  });
+
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+
+  static const toJsonFactory = _$OrderToJson;
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'couponCode', includeIfNull: false, defaultValue: '')
+  final String? couponCode;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String? planId;
+  @JsonKey(name: 'modelCount', includeIfNull: false)
+  final int? modelCount;
+  @JsonKey(name: 'parameterCount', includeIfNull: false)
+  final int? parameterCount;
+  @JsonKey(name: 'deviceCount', includeIfNull: false)
+  final int? deviceCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final int? clientCount;
+  @JsonKey(name: 'dataCount', includeIfNull: false)
+  final int? dataCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final int? userCount;
+  @JsonKey(name: 'archivalCount', includeIfNull: false)
+  final int? archivalCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final int? dashboardCount;
+  @JsonKey(name: 'orderAmount', includeIfNull: false)
+  final double orderAmount;
+  @JsonKey(name: 'reconciled', includeIfNull: false)
+  final bool reconciled;
+  @JsonKey(name: 'processed', includeIfNull: false)
+  final bool processed;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double? billedAmount;
+  @JsonKey(name: 'planPrice', includeIfNull: false)
+  final double? planPrice;
+  @JsonKey(name: 'modelPrice', includeIfNull: false)
+  final double? modelPrice;
+  @JsonKey(name: 'parameterPrice', includeIfNull: false)
+  final double? parameterPrice;
+  @JsonKey(name: 'devicePrice', includeIfNull: false)
+  final double? devicePrice;
+  @JsonKey(name: 'clientPrice', includeIfNull: false)
+  final double? clientPrice;
+  @JsonKey(name: 'dataPrice', includeIfNull: false)
+  final double? dataPrice;
+  @JsonKey(name: 'userPrice', includeIfNull: false)
+  final double? userPrice;
+  @JsonKey(name: 'archivalPrice', includeIfNull: false)
+  final double? archivalPrice;
+  @JsonKey(name: 'dashboardPrice', includeIfNull: false)
+  final double? dashboardPrice;
+  @JsonKey(name: 'providerId', includeIfNull: false, defaultValue: '')
+  final String? providerId;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String? transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'discount', includeIfNull: false)
+  final double? discount;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String? paymentGateway;
+  @JsonKey(name: 'stripePaymentSecret', includeIfNull: false, defaultValue: '')
+  final String? stripePaymentSecret;
+  @JsonKey(name: 'orderStatus', includeIfNull: false, defaultValue: '')
+  final String orderStatus;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
+  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
+  final String rtype;
+  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
+  final String createdBy;
+  @JsonKey(name: 'createdStamp', includeIfNull: false)
+  final int createdStamp;
+  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
+  final String updatedBy;
+  @JsonKey(name: 'updatedStamp', includeIfNull: false)
+  final int updatedStamp;
+  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
+  final String domainKey;
+  static const fromJsonFactory = _$OrderFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is Order &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.couponCode, couponCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.couponCode, couponCode)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.modelCount, modelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelCount, modelCount)) &&
+            (identical(other.parameterCount, parameterCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.parameterCount, parameterCount)) &&
+            (identical(other.deviceCount, deviceCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCount, deviceCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.dataCount, dataCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataCount, dataCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.archivalCount, archivalCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalCount, archivalCount)) &&
+            (identical(other.dashboardCount, dashboardCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.orderAmount, orderAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderAmount, orderAmount)) &&
+            (identical(other.reconciled, reconciled) ||
+                const DeepCollectionEquality()
+                    .equals(other.reconciled, reconciled)) &&
+            (identical(other.processed, processed) ||
+                const DeepCollectionEquality()
+                    .equals(other.processed, processed)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.planPrice, planPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.planPrice, planPrice)) &&
+            (identical(other.modelPrice, modelPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.modelPrice, modelPrice)) &&
+            (identical(other.parameterPrice, parameterPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.parameterPrice, parameterPrice)) &&
+            (identical(other.devicePrice, devicePrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.devicePrice, devicePrice)) &&
+            (identical(other.clientPrice, clientPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientPrice, clientPrice)) &&
+            (identical(other.dataPrice, dataPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataPrice, dataPrice)) &&
+            (identical(other.userPrice, userPrice) ||
+                const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
+            (identical(other.archivalPrice, archivalPrice) || const DeepCollectionEquality().equals(other.archivalPrice, archivalPrice)) &&
+            (identical(other.dashboardPrice, dashboardPrice) || const DeepCollectionEquality().equals(other.dashboardPrice, dashboardPrice)) &&
+            (identical(other.providerId, providerId) || const DeepCollectionEquality().equals(other.providerId, providerId)) &&
+            (identical(other.transactionId, transactionId) || const DeepCollectionEquality().equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) || const DeepCollectionEquality().equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.discount, discount) || const DeepCollectionEquality().equals(other.discount, discount)) &&
+            (identical(other.metaData, metaData) || const DeepCollectionEquality().equals(other.metaData, metaData)) &&
+            (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.stripePaymentSecret, stripePaymentSecret) || const DeepCollectionEquality().equals(other.stripePaymentSecret, stripePaymentSecret)) &&
+            (identical(other.orderStatus, orderStatus) || const DeepCollectionEquality().equals(other.orderStatus, orderStatus)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
+            (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
+            (identical(other.createdStamp, createdStamp) || const DeepCollectionEquality().equals(other.createdStamp, createdStamp)) &&
+            (identical(other.updatedBy, updatedBy) || const DeepCollectionEquality().equals(other.updatedBy, updatedBy)) &&
+            (identical(other.updatedStamp, updatedStamp) || const DeepCollectionEquality().equals(other.updatedStamp, updatedStamp)) &&
+            (identical(other.domainKey, domainKey) || const DeepCollectionEquality().equals(other.domainKey, domainKey)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(couponCode) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(modelCount) ^
+      const DeepCollectionEquality().hash(parameterCount) ^
+      const DeepCollectionEquality().hash(deviceCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(dataCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(archivalCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(orderAmount) ^
+      const DeepCollectionEquality().hash(reconciled) ^
+      const DeepCollectionEquality().hash(processed) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(planPrice) ^
+      const DeepCollectionEquality().hash(modelPrice) ^
+      const DeepCollectionEquality().hash(parameterPrice) ^
+      const DeepCollectionEquality().hash(devicePrice) ^
+      const DeepCollectionEquality().hash(clientPrice) ^
+      const DeepCollectionEquality().hash(dataPrice) ^
+      const DeepCollectionEquality().hash(userPrice) ^
+      const DeepCollectionEquality().hash(archivalPrice) ^
+      const DeepCollectionEquality().hash(dashboardPrice) ^
+      const DeepCollectionEquality().hash(providerId) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(discount) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(stripePaymentSecret) ^
+      const DeepCollectionEquality().hash(orderStatus) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(rtype) ^
+      const DeepCollectionEquality().hash(createdBy) ^
+      const DeepCollectionEquality().hash(createdStamp) ^
+      const DeepCollectionEquality().hash(updatedBy) ^
+      const DeepCollectionEquality().hash(updatedStamp) ^
+      const DeepCollectionEquality().hash(domainKey) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderExtension on Order {
+  Order copyWith(
+      {String? description,
+      String? orgId,
+      String? couponCode,
+      String? planId,
+      int? modelCount,
+      int? parameterCount,
+      int? deviceCount,
+      int? clientCount,
+      int? dataCount,
+      int? userCount,
+      int? archivalCount,
+      int? dashboardCount,
+      double? orderAmount,
+      bool? reconciled,
+      bool? processed,
+      double? billedAmount,
+      double? planPrice,
+      double? modelPrice,
+      double? parameterPrice,
+      double? devicePrice,
+      double? clientPrice,
+      double? dataPrice,
+      double? userPrice,
+      double? archivalPrice,
+      double? dashboardPrice,
+      String? providerId,
+      String? transactionId,
+      int? transactionStamp,
+      double? discount,
+      Object? metaData,
+      String? paymentGateway,
+      String? stripePaymentSecret,
+      String? orderStatus,
+      String? id,
+      String? rtype,
+      String? createdBy,
+      int? createdStamp,
+      String? updatedBy,
+      int? updatedStamp,
+      String? domainKey}) {
+    return Order(
+        description: description ?? this.description,
+        orgId: orgId ?? this.orgId,
+        couponCode: couponCode ?? this.couponCode,
+        planId: planId ?? this.planId,
+        modelCount: modelCount ?? this.modelCount,
+        parameterCount: parameterCount ?? this.parameterCount,
+        deviceCount: deviceCount ?? this.deviceCount,
+        clientCount: clientCount ?? this.clientCount,
+        dataCount: dataCount ?? this.dataCount,
+        userCount: userCount ?? this.userCount,
+        archivalCount: archivalCount ?? this.archivalCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        orderAmount: orderAmount ?? this.orderAmount,
+        reconciled: reconciled ?? this.reconciled,
+        processed: processed ?? this.processed,
+        billedAmount: billedAmount ?? this.billedAmount,
+        planPrice: planPrice ?? this.planPrice,
+        modelPrice: modelPrice ?? this.modelPrice,
+        parameterPrice: parameterPrice ?? this.parameterPrice,
+        devicePrice: devicePrice ?? this.devicePrice,
+        clientPrice: clientPrice ?? this.clientPrice,
+        dataPrice: dataPrice ?? this.dataPrice,
+        userPrice: userPrice ?? this.userPrice,
+        archivalPrice: archivalPrice ?? this.archivalPrice,
+        dashboardPrice: dashboardPrice ?? this.dashboardPrice,
+        providerId: providerId ?? this.providerId,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        discount: discount ?? this.discount,
+        metaData: metaData ?? this.metaData,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        stripePaymentSecret: stripePaymentSecret ?? this.stripePaymentSecret,
+        orderStatus: orderStatus ?? this.orderStatus,
+        id: id ?? this.id,
+        rtype: rtype ?? this.rtype,
+        createdBy: createdBy ?? this.createdBy,
+        createdStamp: createdStamp ?? this.createdStamp,
+        updatedBy: updatedBy ?? this.updatedBy,
+        updatedStamp: updatedStamp ?? this.updatedStamp,
+        domainKey: domainKey ?? this.domainKey);
+  }
+
+  Order copyWithWrapped(
+      {Wrapped<String?>? description,
+      Wrapped<String>? orgId,
+      Wrapped<String?>? couponCode,
+      Wrapped<String?>? planId,
+      Wrapped<int?>? modelCount,
+      Wrapped<int?>? parameterCount,
+      Wrapped<int?>? deviceCount,
+      Wrapped<int?>? clientCount,
+      Wrapped<int?>? dataCount,
+      Wrapped<int?>? userCount,
+      Wrapped<int?>? archivalCount,
+      Wrapped<int?>? dashboardCount,
+      Wrapped<double>? orderAmount,
+      Wrapped<bool>? reconciled,
+      Wrapped<bool>? processed,
+      Wrapped<double?>? billedAmount,
+      Wrapped<double?>? planPrice,
+      Wrapped<double?>? modelPrice,
+      Wrapped<double?>? parameterPrice,
+      Wrapped<double?>? devicePrice,
+      Wrapped<double?>? clientPrice,
+      Wrapped<double?>? dataPrice,
+      Wrapped<double?>? userPrice,
+      Wrapped<double?>? archivalPrice,
+      Wrapped<double?>? dashboardPrice,
+      Wrapped<String?>? providerId,
+      Wrapped<String?>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<double?>? discount,
+      Wrapped<Object?>? metaData,
+      Wrapped<String?>? paymentGateway,
+      Wrapped<String?>? stripePaymentSecret,
+      Wrapped<String>? orderStatus,
+      Wrapped<String>? id,
+      Wrapped<String>? rtype,
+      Wrapped<String>? createdBy,
+      Wrapped<int>? createdStamp,
+      Wrapped<String>? updatedBy,
+      Wrapped<int>? updatedStamp,
+      Wrapped<String>? domainKey}) {
+    return Order(
+        description:
+            (description != null ? description.value : this.description),
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        couponCode: (couponCode != null ? couponCode.value : this.couponCode),
+        planId: (planId != null ? planId.value : this.planId),
+        modelCount: (modelCount != null ? modelCount.value : this.modelCount),
+        parameterCount: (parameterCount != null
+            ? parameterCount.value
+            : this.parameterCount),
+        deviceCount:
+            (deviceCount != null ? deviceCount.value : this.deviceCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        dataCount: (dataCount != null ? dataCount.value : this.dataCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        archivalCount:
+            (archivalCount != null ? archivalCount.value : this.archivalCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount),
+        orderAmount:
+            (orderAmount != null ? orderAmount.value : this.orderAmount),
+        reconciled: (reconciled != null ? reconciled.value : this.reconciled),
+        processed: (processed != null ? processed.value : this.processed),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        planPrice: (planPrice != null ? planPrice.value : this.planPrice),
+        modelPrice: (modelPrice != null ? modelPrice.value : this.modelPrice),
+        parameterPrice: (parameterPrice != null
+            ? parameterPrice.value
+            : this.parameterPrice),
+        devicePrice:
+            (devicePrice != null ? devicePrice.value : this.devicePrice),
+        clientPrice:
+            (clientPrice != null ? clientPrice.value : this.clientPrice),
+        dataPrice: (dataPrice != null ? dataPrice.value : this.dataPrice),
+        userPrice: (userPrice != null ? userPrice.value : this.userPrice),
+        archivalPrice:
+            (archivalPrice != null ? archivalPrice.value : this.archivalPrice),
+        dashboardPrice: (dashboardPrice != null
+            ? dashboardPrice.value
+            : this.dashboardPrice),
+        providerId: (providerId != null ? providerId.value : this.providerId),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        discount: (discount != null ? discount.value : this.discount),
+        metaData: (metaData != null ? metaData.value : this.metaData),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        stripePaymentSecret: (stripePaymentSecret != null
+            ? stripePaymentSecret.value
+            : this.stripePaymentSecret),
+        orderStatus:
+            (orderStatus != null ? orderStatus.value : this.orderStatus),
+        id: (id != null ? id.value : this.id),
+        rtype: (rtype != null ? rtype.value : this.rtype),
+        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
+        createdStamp:
+            (createdStamp != null ? createdStamp.value : this.createdStamp),
+        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
+        updatedStamp:
+            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderEntity {
+  const OrderEntity({
+    this.entity,
+  });
+
+  factory OrderEntity.fromJson(Map<String, dynamic> json) =>
+      _$OrderEntityFromJson(json);
+
+  static const toJsonFactory = _$OrderEntityToJson;
+  Map<String, dynamic> toJson() => _$OrderEntityToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Order? entity;
+  static const fromJsonFactory = _$OrderEntityFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderEntity &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^ runtimeType.hashCode;
+}
+
+extension $OrderEntityExtension on OrderEntity {
+  OrderEntity copyWith({Order? entity}) {
+    return OrderEntity(entity: entity ?? this.entity);
+  }
+
+  OrderEntity copyWithWrapped({Wrapped<Order?>? entity}) {
+    return OrderEntity(entity: (entity != null ? entity.value : this.entity));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderEntityRes {
+  const OrderEntityRes({
+    this.entity,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+  });
+
+  factory OrderEntityRes.fromJson(Map<String, dynamic> json) =>
+      _$OrderEntityResFromJson(json);
+
+  static const toJsonFactory = _$OrderEntityResToJson;
+  Map<String, dynamic> toJson() => _$OrderEntityResToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final Order? entity;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  static const fromJsonFactory = _$OrderEntityResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderEntityRes &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderEntityResExtension on OrderEntityRes {
+  OrderEntityRes copyWith(
+      {Order? entity,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode}) {
+    return OrderEntityRes(
+        entity: entity ?? this.entity,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode);
+  }
+
+  OrderEntityRes copyWithWrapped(
+      {Wrapped<Order?>? entity,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode}) {
+    return OrderEntityRes(
+        entity: (entity != null ? entity.value : this.entity),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderArray {
+  const OrderArray({
+    this.values,
+  });
+
+  factory OrderArray.fromJson(Map<String, dynamic> json) =>
+      _$OrderArrayFromJson(json);
+
+  static const toJsonFactory = _$OrderArrayToJson;
+  Map<String, dynamic> toJson() => _$OrderArrayToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Order>[])
+  final List<Order>? values;
+  static const fromJsonFactory = _$OrderArrayFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderArray &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^ runtimeType.hashCode;
+}
+
+extension $OrderArrayExtension on OrderArray {
+  OrderArray copyWith({List<Order>? values}) {
+    return OrderArray(values: values ?? this.values);
+  }
+
+  OrderArray copyWithWrapped({Wrapped<List<Order>?>? values}) {
+    return OrderArray(values: (values != null ? values.value : this.values));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrderArrayRes {
+  const OrderArrayRes({
+    this.values,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+    this.total,
+    this.page,
+    this.size,
+  });
+
+  factory OrderArrayRes.fromJson(Map<String, dynamic> json) =>
+      _$OrderArrayResFromJson(json);
+
+  static const toJsonFactory = _$OrderArrayResToJson;
+  Map<String, dynamic> toJson() => _$OrderArrayResToJson(this);
+
+  @JsonKey(name: 'values', includeIfNull: false, defaultValue: <Order>[])
+  final List<Order>? values;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  @JsonKey(name: 'total', includeIfNull: false)
+  final int? total;
+  @JsonKey(name: 'page', includeIfNull: false)
+  final int? page;
+  @JsonKey(name: 'size', includeIfNull: false)
+  final int? size;
+  static const fromJsonFactory = _$OrderArrayResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrderArrayRes &&
+            (identical(other.values, values) ||
+                const DeepCollectionEquality().equals(other.values, values)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)) &&
+            (identical(other.total, total) ||
+                const DeepCollectionEquality().equals(other.total, total)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.size, size) ||
+                const DeepCollectionEquality().equals(other.size, size)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(values) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      const DeepCollectionEquality().hash(total) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(size) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderArrayResExtension on OrderArrayRes {
+  OrderArrayRes copyWith(
+      {List<Order>? values,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode,
+      int? total,
+      int? page,
+      int? size}) {
+    return OrderArrayRes(
+        values: values ?? this.values,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode,
+        total: total ?? this.total,
+        page: page ?? this.page,
+        size: size ?? this.size);
+  }
+
+  OrderArrayRes copyWithWrapped(
+      {Wrapped<List<Order>?>? values,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode,
+      Wrapped<int?>? total,
+      Wrapped<int?>? page,
+      Wrapped<int?>? size}) {
+    return OrderArrayRes(
+        values: (values != null ? values.value : this.values),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode),
+        total: (total != null ? total.value : this.total),
+        page: (page != null ? page.value : this.page),
+        size: (size != null ? size.value : this.size));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PaidOrderRequest {
+  const PaidOrderRequest({
+    required this.orgId,
+    required this.orderId,
+    required this.paymentGateway,
+    required this.transactionId,
+    this.transactionStamp,
+    required this.billedAmount,
+    this.metaData,
+  });
+
+  factory PaidOrderRequest.fromJson(Map<String, dynamic> json) =>
+      _$PaidOrderRequestFromJson(json);
+
+  static const toJsonFactory = _$PaidOrderRequestToJson;
+  Map<String, dynamic> toJson() => _$PaidOrderRequestToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
+  final String orderId;
+  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
+  final String paymentGateway;
+  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
+  final String transactionId;
+  @JsonKey(name: 'transactionStamp', includeIfNull: false)
+  final int? transactionStamp;
+  @JsonKey(name: 'billedAmount', includeIfNull: false)
+  final double billedAmount;
+  @JsonKey(name: 'metaData', includeIfNull: false)
+  final Object? metaData;
+  static const fromJsonFactory = _$PaidOrderRequestFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PaidOrderRequest &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.orderId, orderId) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderId, orderId)) &&
+            (identical(other.paymentGateway, paymentGateway) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentGateway, paymentGateway)) &&
+            (identical(other.transactionId, transactionId) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionId, transactionId)) &&
+            (identical(other.transactionStamp, transactionStamp) ||
+                const DeepCollectionEquality()
+                    .equals(other.transactionStamp, transactionStamp)) &&
+            (identical(other.billedAmount, billedAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.billedAmount, billedAmount)) &&
+            (identical(other.metaData, metaData) ||
+                const DeepCollectionEquality()
+                    .equals(other.metaData, metaData)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(orderId) ^
+      const DeepCollectionEquality().hash(paymentGateway) ^
+      const DeepCollectionEquality().hash(transactionId) ^
+      const DeepCollectionEquality().hash(transactionStamp) ^
+      const DeepCollectionEquality().hash(billedAmount) ^
+      const DeepCollectionEquality().hash(metaData) ^
+      runtimeType.hashCode;
+}
+
+extension $PaidOrderRequestExtension on PaidOrderRequest {
+  PaidOrderRequest copyWith(
+      {String? orgId,
+      String? orderId,
+      String? paymentGateway,
+      String? transactionId,
+      int? transactionStamp,
+      double? billedAmount,
+      Object? metaData}) {
+    return PaidOrderRequest(
+        orgId: orgId ?? this.orgId,
+        orderId: orderId ?? this.orderId,
+        paymentGateway: paymentGateway ?? this.paymentGateway,
+        transactionId: transactionId ?? this.transactionId,
+        transactionStamp: transactionStamp ?? this.transactionStamp,
+        billedAmount: billedAmount ?? this.billedAmount,
+        metaData: metaData ?? this.metaData);
+  }
+
+  PaidOrderRequest copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? orderId,
+      Wrapped<String>? paymentGateway,
+      Wrapped<String>? transactionId,
+      Wrapped<int?>? transactionStamp,
+      Wrapped<double>? billedAmount,
+      Wrapped<Object?>? metaData}) {
+    return PaidOrderRequest(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        orderId: (orderId != null ? orderId.value : this.orderId),
+        paymentGateway: (paymentGateway != null
+            ? paymentGateway.value
+            : this.paymentGateway),
+        transactionId:
+            (transactionId != null ? transactionId.value : this.transactionId),
+        transactionStamp: (transactionStamp != null
+            ? transactionStamp.value
+            : this.transactionStamp),
+        billedAmount:
+            (billedAmount != null ? billedAmount.value : this.billedAmount),
+        metaData: (metaData != null ? metaData.value : this.metaData));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrgPlanInfo {
+  const OrgPlanInfo({
+    required this.planId,
+    required this.planType,
+    required this.deviceModelCount,
+    required this.modelParametersCount,
+    required this.devicesCount,
+    required this.clientCount,
+    required this.userCount,
+    required this.dashboardCount,
+    required this.dataPointsCount,
+    required this.archivalYears,
+    required this.purchaseModels,
+    required this.purchasedParameters,
+    required this.purchasedDevices,
+    required this.purchasedClients,
+    required this.purchasedUsers,
+    required this.purchasedDashboards,
+    required this.purchasedDataPoints,
+    required this.purchasedArchivals,
+    this.canBuyDataPlan,
+    this.canBuyArchivalPlan,
+    this.canBuyClientPlan,
+    this.canBrand,
+    this.canWhiteLabel,
+  });
+
+  factory OrgPlanInfo.fromJson(Map<String, dynamic> json) =>
+      _$OrgPlanInfoFromJson(json);
+
+  static const toJsonFactory = _$OrgPlanInfoToJson;
+  Map<String, dynamic> toJson() => _$OrgPlanInfoToJson(this);
+
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String planId;
+  @JsonKey(name: 'planType', includeIfNull: false, defaultValue: '')
+  final String planType;
+  @JsonKey(name: 'deviceModelCount', includeIfNull: false)
+  final int deviceModelCount;
+  @JsonKey(name: 'modelParametersCount', includeIfNull: false)
+  final int modelParametersCount;
+  @JsonKey(name: 'devicesCount', includeIfNull: false)
+  final int devicesCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final int clientCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final int userCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final int dashboardCount;
+  @JsonKey(name: 'dataPointsCount', includeIfNull: false)
+  final int dataPointsCount;
+  @JsonKey(name: 'archivalYears', includeIfNull: false)
+  final int archivalYears;
+  @JsonKey(name: 'purchaseModels', includeIfNull: false)
+  final int purchaseModels;
+  @JsonKey(name: 'purchasedParameters', includeIfNull: false)
+  final int purchasedParameters;
+  @JsonKey(name: 'purchasedDevices', includeIfNull: false)
+  final int purchasedDevices;
+  @JsonKey(name: 'purchasedClients', includeIfNull: false)
+  final int purchasedClients;
+  @JsonKey(name: 'purchasedUsers', includeIfNull: false)
+  final int purchasedUsers;
+  @JsonKey(name: 'purchasedDashboards', includeIfNull: false)
+  final int purchasedDashboards;
+  @JsonKey(name: 'purchasedDataPoints', includeIfNull: false)
+  final int purchasedDataPoints;
+  @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
+  final int purchasedArchivals;
+  @JsonKey(name: 'canBuyDataPlan', includeIfNull: false)
+  final bool? canBuyDataPlan;
+  @JsonKey(name: 'canBuyArchivalPlan', includeIfNull: false)
+  final bool? canBuyArchivalPlan;
+  @JsonKey(name: 'canBuyClientPlan', includeIfNull: false)
+  final bool? canBuyClientPlan;
+  @JsonKey(name: 'canBrand', includeIfNull: false)
+  final bool? canBrand;
+  @JsonKey(name: 'canWhiteLabel', includeIfNull: false)
+  final bool? canWhiteLabel;
+  static const fromJsonFactory = _$OrgPlanInfoFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrgPlanInfo &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.planType, planType) ||
+                const DeepCollectionEquality()
+                    .equals(other.planType, planType)) &&
+            (identical(other.deviceModelCount, deviceModelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelCount, deviceModelCount)) &&
+            (identical(other.modelParametersCount, modelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.modelParametersCount, modelParametersCount)) &&
+            (identical(other.devicesCount, devicesCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.devicesCount, devicesCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.dashboardCount, dashboardCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.dataPointsCount, dataPointsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataPointsCount, dataPointsCount)) &&
+            (identical(other.archivalYears, archivalYears) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalYears, archivalYears)) &&
+            (identical(other.purchaseModels, purchaseModels) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchaseModels, purchaseModels)) &&
+            (identical(other.purchasedParameters, purchasedParameters) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedParameters, purchasedParameters)) &&
+            (identical(other.purchasedDevices, purchasedDevices) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDevices, purchasedDevices)) &&
+            (identical(other.purchasedClients, purchasedClients) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedClients, purchasedClients)) &&
+            (identical(other.purchasedUsers, purchasedUsers) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedUsers, purchasedUsers)) &&
+            (identical(other.purchasedDashboards, purchasedDashboards) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDashboards, purchasedDashboards)) &&
+            (identical(other.purchasedDataPoints, purchasedDataPoints) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDataPoints, purchasedDataPoints)) &&
+            (identical(other.purchasedArchivals, purchasedArchivals) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedArchivals, purchasedArchivals)) &&
+            (identical(other.canBuyDataPlan, canBuyDataPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyDataPlan, canBuyDataPlan)) &&
+            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
+            (identical(other.canBuyClientPlan, canBuyClientPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyClientPlan, canBuyClientPlan)) &&
+            (identical(other.canBrand, canBrand) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBrand, canBrand)) &&
+            (identical(other.canWhiteLabel, canWhiteLabel) || const DeepCollectionEquality().equals(other.canWhiteLabel, canWhiteLabel)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(planType) ^
+      const DeepCollectionEquality().hash(deviceModelCount) ^
+      const DeepCollectionEquality().hash(modelParametersCount) ^
+      const DeepCollectionEquality().hash(devicesCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(dataPointsCount) ^
+      const DeepCollectionEquality().hash(archivalYears) ^
+      const DeepCollectionEquality().hash(purchaseModels) ^
+      const DeepCollectionEquality().hash(purchasedParameters) ^
+      const DeepCollectionEquality().hash(purchasedDevices) ^
+      const DeepCollectionEquality().hash(purchasedClients) ^
+      const DeepCollectionEquality().hash(purchasedUsers) ^
+      const DeepCollectionEquality().hash(purchasedDashboards) ^
+      const DeepCollectionEquality().hash(purchasedDataPoints) ^
+      const DeepCollectionEquality().hash(purchasedArchivals) ^
+      const DeepCollectionEquality().hash(canBuyDataPlan) ^
+      const DeepCollectionEquality().hash(canBuyArchivalPlan) ^
+      const DeepCollectionEquality().hash(canBuyClientPlan) ^
+      const DeepCollectionEquality().hash(canBrand) ^
+      const DeepCollectionEquality().hash(canWhiteLabel) ^
+      runtimeType.hashCode;
+}
+
+extension $OrgPlanInfoExtension on OrgPlanInfo {
+  OrgPlanInfo copyWith(
+      {String? planId,
+      String? planType,
+      int? deviceModelCount,
+      int? modelParametersCount,
+      int? devicesCount,
+      int? clientCount,
+      int? userCount,
+      int? dashboardCount,
+      int? dataPointsCount,
+      int? archivalYears,
+      int? purchaseModels,
+      int? purchasedParameters,
+      int? purchasedDevices,
+      int? purchasedClients,
+      int? purchasedUsers,
+      int? purchasedDashboards,
+      int? purchasedDataPoints,
+      int? purchasedArchivals,
+      bool? canBuyDataPlan,
+      bool? canBuyArchivalPlan,
+      bool? canBuyClientPlan,
+      bool? canBrand,
+      bool? canWhiteLabel}) {
+    return OrgPlanInfo(
+        planId: planId ?? this.planId,
+        planType: planType ?? this.planType,
+        deviceModelCount: deviceModelCount ?? this.deviceModelCount,
+        modelParametersCount: modelParametersCount ?? this.modelParametersCount,
+        devicesCount: devicesCount ?? this.devicesCount,
+        clientCount: clientCount ?? this.clientCount,
+        userCount: userCount ?? this.userCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        dataPointsCount: dataPointsCount ?? this.dataPointsCount,
+        archivalYears: archivalYears ?? this.archivalYears,
+        purchaseModels: purchaseModels ?? this.purchaseModels,
+        purchasedParameters: purchasedParameters ?? this.purchasedParameters,
+        purchasedDevices: purchasedDevices ?? this.purchasedDevices,
+        purchasedClients: purchasedClients ?? this.purchasedClients,
+        purchasedUsers: purchasedUsers ?? this.purchasedUsers,
+        purchasedDashboards: purchasedDashboards ?? this.purchasedDashboards,
+        purchasedDataPoints: purchasedDataPoints ?? this.purchasedDataPoints,
+        purchasedArchivals: purchasedArchivals ?? this.purchasedArchivals,
+        canBuyDataPlan: canBuyDataPlan ?? this.canBuyDataPlan,
+        canBuyArchivalPlan: canBuyArchivalPlan ?? this.canBuyArchivalPlan,
+        canBuyClientPlan: canBuyClientPlan ?? this.canBuyClientPlan,
+        canBrand: canBrand ?? this.canBrand,
+        canWhiteLabel: canWhiteLabel ?? this.canWhiteLabel);
+  }
+
+  OrgPlanInfo copyWithWrapped(
+      {Wrapped<String>? planId,
+      Wrapped<String>? planType,
+      Wrapped<int>? deviceModelCount,
+      Wrapped<int>? modelParametersCount,
+      Wrapped<int>? devicesCount,
+      Wrapped<int>? clientCount,
+      Wrapped<int>? userCount,
+      Wrapped<int>? dashboardCount,
+      Wrapped<int>? dataPointsCount,
+      Wrapped<int>? archivalYears,
+      Wrapped<int>? purchaseModels,
+      Wrapped<int>? purchasedParameters,
+      Wrapped<int>? purchasedDevices,
+      Wrapped<int>? purchasedClients,
+      Wrapped<int>? purchasedUsers,
+      Wrapped<int>? purchasedDashboards,
+      Wrapped<int>? purchasedDataPoints,
+      Wrapped<int>? purchasedArchivals,
+      Wrapped<bool?>? canBuyDataPlan,
+      Wrapped<bool?>? canBuyArchivalPlan,
+      Wrapped<bool?>? canBuyClientPlan,
+      Wrapped<bool?>? canBrand,
+      Wrapped<bool?>? canWhiteLabel}) {
+    return OrgPlanInfo(
+        planId: (planId != null ? planId.value : this.planId),
+        planType: (planType != null ? planType.value : this.planType),
+        deviceModelCount: (deviceModelCount != null
+            ? deviceModelCount.value
+            : this.deviceModelCount),
+        modelParametersCount: (modelParametersCount != null
+            ? modelParametersCount.value
+            : this.modelParametersCount),
+        devicesCount:
+            (devicesCount != null ? devicesCount.value : this.devicesCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount),
+        dataPointsCount: (dataPointsCount != null
+            ? dataPointsCount.value
+            : this.dataPointsCount),
+        archivalYears:
+            (archivalYears != null ? archivalYears.value : this.archivalYears),
+        purchaseModels: (purchaseModels != null
+            ? purchaseModels.value
+            : this.purchaseModels),
+        purchasedParameters: (purchasedParameters != null
+            ? purchasedParameters.value
+            : this.purchasedParameters),
+        purchasedDevices: (purchasedDevices != null
+            ? purchasedDevices.value
+            : this.purchasedDevices),
+        purchasedClients: (purchasedClients != null
+            ? purchasedClients.value
+            : this.purchasedClients),
+        purchasedUsers: (purchasedUsers != null
+            ? purchasedUsers.value
+            : this.purchasedUsers),
+        purchasedDashboards: (purchasedDashboards != null
+            ? purchasedDashboards.value
+            : this.purchasedDashboards),
+        purchasedDataPoints: (purchasedDataPoints != null
+            ? purchasedDataPoints.value
+            : this.purchasedDataPoints),
+        purchasedArchivals: (purchasedArchivals != null
+            ? purchasedArchivals.value
+            : this.purchasedArchivals),
+        canBuyDataPlan: (canBuyDataPlan != null
+            ? canBuyDataPlan.value
+            : this.canBuyDataPlan),
+        canBuyArchivalPlan: (canBuyArchivalPlan != null
+            ? canBuyArchivalPlan.value
+            : this.canBuyArchivalPlan),
+        canBuyClientPlan: (canBuyClientPlan != null
+            ? canBuyClientPlan.value
+            : this.canBuyClientPlan),
+        canBrand: (canBrand != null ? canBrand.value : this.canBrand),
+        canWhiteLabel:
+            (canWhiteLabel != null ? canWhiteLabel.value : this.canWhiteLabel));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrgPlanBase {
+  const OrgPlanBase({
+    required this.orgId,
+  });
+
+  factory OrgPlanBase.fromJson(Map<String, dynamic> json) =>
+      _$OrgPlanBaseFromJson(json);
+
+  static const toJsonFactory = _$OrgPlanBaseToJson;
+  Map<String, dynamic> toJson() => _$OrgPlanBaseToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  static const fromJsonFactory = _$OrgPlanBaseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrgPlanBase &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^ runtimeType.hashCode;
+}
+
+extension $OrgPlanBaseExtension on OrgPlanBase {
+  OrgPlanBase copyWith({String? orgId}) {
+    return OrgPlanBase(orgId: orgId ?? this.orgId);
+  }
+
+  OrgPlanBase copyWithWrapped({Wrapped<String>? orgId}) {
+    return OrgPlanBase(orgId: (orgId != null ? orgId.value : this.orgId));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrgPlan {
+  const OrgPlan({
+    required this.orgId,
+    required this.planId,
+    required this.planType,
+    required this.deviceModelCount,
+    required this.modelParametersCount,
+    required this.devicesCount,
+    required this.clientCount,
+    required this.userCount,
+    required this.dashboardCount,
+    required this.dataPointsCount,
+    required this.archivalYears,
+    required this.purchaseModels,
+    required this.purchasedParameters,
+    required this.purchasedDevices,
+    required this.purchasedClients,
+    required this.purchasedUsers,
+    required this.purchasedDashboards,
+    required this.purchasedDataPoints,
+    required this.purchasedArchivals,
+    this.canBuyDataPlan,
+    this.canBuyArchivalPlan,
+    this.canBuyClientPlan,
+    this.canBrand,
+    this.canWhiteLabel,
+    required this.id,
+    required this.rtype,
+    required this.createdBy,
+    required this.createdStamp,
+    required this.updatedBy,
+    required this.updatedStamp,
+    required this.domainKey,
+  });
+
+  factory OrgPlan.fromJson(Map<String, dynamic> json) =>
+      _$OrgPlanFromJson(json);
+
+  static const toJsonFactory = _$OrgPlanToJson;
+  Map<String, dynamic> toJson() => _$OrgPlanToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
+  final String planId;
+  @JsonKey(name: 'planType', includeIfNull: false, defaultValue: '')
+  final String planType;
+  @JsonKey(name: 'deviceModelCount', includeIfNull: false)
+  final int deviceModelCount;
+  @JsonKey(name: 'modelParametersCount', includeIfNull: false)
+  final int modelParametersCount;
+  @JsonKey(name: 'devicesCount', includeIfNull: false)
+  final int devicesCount;
+  @JsonKey(name: 'clientCount', includeIfNull: false)
+  final int clientCount;
+  @JsonKey(name: 'userCount', includeIfNull: false)
+  final int userCount;
+  @JsonKey(name: 'dashboardCount', includeIfNull: false)
+  final int dashboardCount;
+  @JsonKey(name: 'dataPointsCount', includeIfNull: false)
+  final int dataPointsCount;
+  @JsonKey(name: 'archivalYears', includeIfNull: false)
+  final int archivalYears;
+  @JsonKey(name: 'purchaseModels', includeIfNull: false)
+  final int purchaseModels;
+  @JsonKey(name: 'purchasedParameters', includeIfNull: false)
+  final int purchasedParameters;
+  @JsonKey(name: 'purchasedDevices', includeIfNull: false)
+  final int purchasedDevices;
+  @JsonKey(name: 'purchasedClients', includeIfNull: false)
+  final int purchasedClients;
+  @JsonKey(name: 'purchasedUsers', includeIfNull: false)
+  final int purchasedUsers;
+  @JsonKey(name: 'purchasedDashboards', includeIfNull: false)
+  final int purchasedDashboards;
+  @JsonKey(name: 'purchasedDataPoints', includeIfNull: false)
+  final int purchasedDataPoints;
+  @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
+  final int purchasedArchivals;
+  @JsonKey(name: 'canBuyDataPlan', includeIfNull: false)
+  final bool? canBuyDataPlan;
+  @JsonKey(name: 'canBuyArchivalPlan', includeIfNull: false)
+  final bool? canBuyArchivalPlan;
+  @JsonKey(name: 'canBuyClientPlan', includeIfNull: false)
+  final bool? canBuyClientPlan;
+  @JsonKey(name: 'canBrand', includeIfNull: false)
+  final bool? canBrand;
+  @JsonKey(name: 'canWhiteLabel', includeIfNull: false)
+  final bool? canWhiteLabel;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
+  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
+  final String rtype;
+  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
+  final String createdBy;
+  @JsonKey(name: 'createdStamp', includeIfNull: false)
+  final int createdStamp;
+  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
+  final String updatedBy;
+  @JsonKey(name: 'updatedStamp', includeIfNull: false)
+  final int updatedStamp;
+  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
+  final String domainKey;
+  static const fromJsonFactory = _$OrgPlanFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrgPlan &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.planId, planId) ||
+                const DeepCollectionEquality().equals(other.planId, planId)) &&
+            (identical(other.planType, planType) ||
+                const DeepCollectionEquality()
+                    .equals(other.planType, planType)) &&
+            (identical(other.deviceModelCount, deviceModelCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceModelCount, deviceModelCount)) &&
+            (identical(other.modelParametersCount, modelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.modelParametersCount, modelParametersCount)) &&
+            (identical(other.devicesCount, devicesCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.devicesCount, devicesCount)) &&
+            (identical(other.clientCount, clientCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.clientCount, clientCount)) &&
+            (identical(other.userCount, userCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userCount, userCount)) &&
+            (identical(other.dashboardCount, dashboardCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.dataPointsCount, dataPointsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataPointsCount, dataPointsCount)) &&
+            (identical(other.archivalYears, archivalYears) ||
+                const DeepCollectionEquality()
+                    .equals(other.archivalYears, archivalYears)) &&
+            (identical(other.purchaseModels, purchaseModels) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchaseModels, purchaseModels)) &&
+            (identical(other.purchasedParameters, purchasedParameters) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedParameters, purchasedParameters)) &&
+            (identical(other.purchasedDevices, purchasedDevices) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDevices, purchasedDevices)) &&
+            (identical(other.purchasedClients, purchasedClients) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedClients, purchasedClients)) &&
+            (identical(other.purchasedUsers, purchasedUsers) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedUsers, purchasedUsers)) &&
+            (identical(other.purchasedDashboards, purchasedDashboards) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDashboards, purchasedDashboards)) &&
+            (identical(other.purchasedDataPoints, purchasedDataPoints) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedDataPoints, purchasedDataPoints)) &&
+            (identical(other.purchasedArchivals, purchasedArchivals) ||
+                const DeepCollectionEquality()
+                    .equals(other.purchasedArchivals, purchasedArchivals)) &&
+            (identical(other.canBuyDataPlan, canBuyDataPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyDataPlan, canBuyDataPlan)) &&
+            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
+            (identical(other.canBuyClientPlan, canBuyClientPlan) ||
+                const DeepCollectionEquality()
+                    .equals(other.canBuyClientPlan, canBuyClientPlan)) &&
+            (identical(other.canBrand, canBrand) ||
+                const DeepCollectionEquality().equals(other.canBrand, canBrand)) &&
+            (identical(other.canWhiteLabel, canWhiteLabel) || const DeepCollectionEquality().equals(other.canWhiteLabel, canWhiteLabel)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
+            (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
+            (identical(other.createdStamp, createdStamp) || const DeepCollectionEquality().equals(other.createdStamp, createdStamp)) &&
+            (identical(other.updatedBy, updatedBy) || const DeepCollectionEquality().equals(other.updatedBy, updatedBy)) &&
+            (identical(other.updatedStamp, updatedStamp) || const DeepCollectionEquality().equals(other.updatedStamp, updatedStamp)) &&
+            (identical(other.domainKey, domainKey) || const DeepCollectionEquality().equals(other.domainKey, domainKey)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(planId) ^
+      const DeepCollectionEquality().hash(planType) ^
+      const DeepCollectionEquality().hash(deviceModelCount) ^
+      const DeepCollectionEquality().hash(modelParametersCount) ^
+      const DeepCollectionEquality().hash(devicesCount) ^
+      const DeepCollectionEquality().hash(clientCount) ^
+      const DeepCollectionEquality().hash(userCount) ^
+      const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(dataPointsCount) ^
+      const DeepCollectionEquality().hash(archivalYears) ^
+      const DeepCollectionEquality().hash(purchaseModels) ^
+      const DeepCollectionEquality().hash(purchasedParameters) ^
+      const DeepCollectionEquality().hash(purchasedDevices) ^
+      const DeepCollectionEquality().hash(purchasedClients) ^
+      const DeepCollectionEquality().hash(purchasedUsers) ^
+      const DeepCollectionEquality().hash(purchasedDashboards) ^
+      const DeepCollectionEquality().hash(purchasedDataPoints) ^
+      const DeepCollectionEquality().hash(purchasedArchivals) ^
+      const DeepCollectionEquality().hash(canBuyDataPlan) ^
+      const DeepCollectionEquality().hash(canBuyArchivalPlan) ^
+      const DeepCollectionEquality().hash(canBuyClientPlan) ^
+      const DeepCollectionEquality().hash(canBrand) ^
+      const DeepCollectionEquality().hash(canWhiteLabel) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(rtype) ^
+      const DeepCollectionEquality().hash(createdBy) ^
+      const DeepCollectionEquality().hash(createdStamp) ^
+      const DeepCollectionEquality().hash(updatedBy) ^
+      const DeepCollectionEquality().hash(updatedStamp) ^
+      const DeepCollectionEquality().hash(domainKey) ^
+      runtimeType.hashCode;
+}
+
+extension $OrgPlanExtension on OrgPlan {
+  OrgPlan copyWith(
+      {String? orgId,
+      String? planId,
+      String? planType,
+      int? deviceModelCount,
+      int? modelParametersCount,
+      int? devicesCount,
+      int? clientCount,
+      int? userCount,
+      int? dashboardCount,
+      int? dataPointsCount,
+      int? archivalYears,
+      int? purchaseModels,
+      int? purchasedParameters,
+      int? purchasedDevices,
+      int? purchasedClients,
+      int? purchasedUsers,
+      int? purchasedDashboards,
+      int? purchasedDataPoints,
+      int? purchasedArchivals,
+      bool? canBuyDataPlan,
+      bool? canBuyArchivalPlan,
+      bool? canBuyClientPlan,
+      bool? canBrand,
+      bool? canWhiteLabel,
+      String? id,
+      String? rtype,
+      String? createdBy,
+      int? createdStamp,
+      String? updatedBy,
+      int? updatedStamp,
+      String? domainKey}) {
+    return OrgPlan(
+        orgId: orgId ?? this.orgId,
+        planId: planId ?? this.planId,
+        planType: planType ?? this.planType,
+        deviceModelCount: deviceModelCount ?? this.deviceModelCount,
+        modelParametersCount: modelParametersCount ?? this.modelParametersCount,
+        devicesCount: devicesCount ?? this.devicesCount,
+        clientCount: clientCount ?? this.clientCount,
+        userCount: userCount ?? this.userCount,
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        dataPointsCount: dataPointsCount ?? this.dataPointsCount,
+        archivalYears: archivalYears ?? this.archivalYears,
+        purchaseModels: purchaseModels ?? this.purchaseModels,
+        purchasedParameters: purchasedParameters ?? this.purchasedParameters,
+        purchasedDevices: purchasedDevices ?? this.purchasedDevices,
+        purchasedClients: purchasedClients ?? this.purchasedClients,
+        purchasedUsers: purchasedUsers ?? this.purchasedUsers,
+        purchasedDashboards: purchasedDashboards ?? this.purchasedDashboards,
+        purchasedDataPoints: purchasedDataPoints ?? this.purchasedDataPoints,
+        purchasedArchivals: purchasedArchivals ?? this.purchasedArchivals,
+        canBuyDataPlan: canBuyDataPlan ?? this.canBuyDataPlan,
+        canBuyArchivalPlan: canBuyArchivalPlan ?? this.canBuyArchivalPlan,
+        canBuyClientPlan: canBuyClientPlan ?? this.canBuyClientPlan,
+        canBrand: canBrand ?? this.canBrand,
+        canWhiteLabel: canWhiteLabel ?? this.canWhiteLabel,
+        id: id ?? this.id,
+        rtype: rtype ?? this.rtype,
+        createdBy: createdBy ?? this.createdBy,
+        createdStamp: createdStamp ?? this.createdStamp,
+        updatedBy: updatedBy ?? this.updatedBy,
+        updatedStamp: updatedStamp ?? this.updatedStamp,
+        domainKey: domainKey ?? this.domainKey);
+  }
+
+  OrgPlan copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? planId,
+      Wrapped<String>? planType,
+      Wrapped<int>? deviceModelCount,
+      Wrapped<int>? modelParametersCount,
+      Wrapped<int>? devicesCount,
+      Wrapped<int>? clientCount,
+      Wrapped<int>? userCount,
+      Wrapped<int>? dashboardCount,
+      Wrapped<int>? dataPointsCount,
+      Wrapped<int>? archivalYears,
+      Wrapped<int>? purchaseModels,
+      Wrapped<int>? purchasedParameters,
+      Wrapped<int>? purchasedDevices,
+      Wrapped<int>? purchasedClients,
+      Wrapped<int>? purchasedUsers,
+      Wrapped<int>? purchasedDashboards,
+      Wrapped<int>? purchasedDataPoints,
+      Wrapped<int>? purchasedArchivals,
+      Wrapped<bool?>? canBuyDataPlan,
+      Wrapped<bool?>? canBuyArchivalPlan,
+      Wrapped<bool?>? canBuyClientPlan,
+      Wrapped<bool?>? canBrand,
+      Wrapped<bool?>? canWhiteLabel,
+      Wrapped<String>? id,
+      Wrapped<String>? rtype,
+      Wrapped<String>? createdBy,
+      Wrapped<int>? createdStamp,
+      Wrapped<String>? updatedBy,
+      Wrapped<int>? updatedStamp,
+      Wrapped<String>? domainKey}) {
+    return OrgPlan(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        planId: (planId != null ? planId.value : this.planId),
+        planType: (planType != null ? planType.value : this.planType),
+        deviceModelCount: (deviceModelCount != null
+            ? deviceModelCount.value
+            : this.deviceModelCount),
+        modelParametersCount: (modelParametersCount != null
+            ? modelParametersCount.value
+            : this.modelParametersCount),
+        devicesCount:
+            (devicesCount != null ? devicesCount.value : this.devicesCount),
+        clientCount:
+            (clientCount != null ? clientCount.value : this.clientCount),
+        userCount: (userCount != null ? userCount.value : this.userCount),
+        dashboardCount: (dashboardCount != null
+            ? dashboardCount.value
+            : this.dashboardCount),
+        dataPointsCount: (dataPointsCount != null
+            ? dataPointsCount.value
+            : this.dataPointsCount),
+        archivalYears:
+            (archivalYears != null ? archivalYears.value : this.archivalYears),
+        purchaseModels: (purchaseModels != null
+            ? purchaseModels.value
+            : this.purchaseModels),
+        purchasedParameters: (purchasedParameters != null
+            ? purchasedParameters.value
+            : this.purchasedParameters),
+        purchasedDevices: (purchasedDevices != null
+            ? purchasedDevices.value
+            : this.purchasedDevices),
+        purchasedClients: (purchasedClients != null
+            ? purchasedClients.value
+            : this.purchasedClients),
+        purchasedUsers: (purchasedUsers != null
+            ? purchasedUsers.value
+            : this.purchasedUsers),
+        purchasedDashboards: (purchasedDashboards != null
+            ? purchasedDashboards.value
+            : this.purchasedDashboards),
+        purchasedDataPoints: (purchasedDataPoints != null
+            ? purchasedDataPoints.value
+            : this.purchasedDataPoints),
+        purchasedArchivals: (purchasedArchivals != null
+            ? purchasedArchivals.value
+            : this.purchasedArchivals),
+        canBuyDataPlan: (canBuyDataPlan != null
+            ? canBuyDataPlan.value
+            : this.canBuyDataPlan),
+        canBuyArchivalPlan: (canBuyArchivalPlan != null
+            ? canBuyArchivalPlan.value
+            : this.canBuyArchivalPlan),
+        canBuyClientPlan: (canBuyClientPlan != null
+            ? canBuyClientPlan.value
+            : this.canBuyClientPlan),
+        canBrand: (canBrand != null ? canBrand.value : this.canBrand),
+        canWhiteLabel:
+            (canWhiteLabel != null ? canWhiteLabel.value : this.canWhiteLabel),
+        id: (id != null ? id.value : this.id),
+        rtype: (rtype != null ? rtype.value : this.rtype),
+        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
+        createdStamp:
+            (createdStamp != null ? createdStamp.value : this.createdStamp),
+        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
+        updatedStamp:
+            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrgPlanEntity {
+  const OrgPlanEntity({
+    this.entity,
+  });
+
+  factory OrgPlanEntity.fromJson(Map<String, dynamic> json) =>
+      _$OrgPlanEntityFromJson(json);
+
+  static const toJsonFactory = _$OrgPlanEntityToJson;
+  Map<String, dynamic> toJson() => _$OrgPlanEntityToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final OrgPlan? entity;
+  static const fromJsonFactory = _$OrgPlanEntityFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrgPlanEntity &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^ runtimeType.hashCode;
+}
+
+extension $OrgPlanEntityExtension on OrgPlanEntity {
+  OrgPlanEntity copyWith({OrgPlan? entity}) {
+    return OrgPlanEntity(entity: entity ?? this.entity);
+  }
+
+  OrgPlanEntity copyWithWrapped({Wrapped<OrgPlan?>? entity}) {
+    return OrgPlanEntity(entity: (entity != null ? entity.value : this.entity));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class OrgPlanEntityRes {
+  const OrgPlanEntityRes({
+    this.entity,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+  });
+
+  factory OrgPlanEntityRes.fromJson(Map<String, dynamic> json) =>
+      _$OrgPlanEntityResFromJson(json);
+
+  static const toJsonFactory = _$OrgPlanEntityResToJson;
+  Map<String, dynamic> toJson() => _$OrgPlanEntityResToJson(this);
+
+  @JsonKey(name: 'entity', includeIfNull: false)
+  final OrgPlan? entity;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  static const fromJsonFactory = _$OrgPlanEntityResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is OrgPlanEntityRes &&
+            (identical(other.entity, entity) ||
+                const DeepCollectionEquality().equals(other.entity, entity)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(entity) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      runtimeType.hashCode;
+}
+
+extension $OrgPlanEntityResExtension on OrgPlanEntityRes {
+  OrgPlanEntityRes copyWith(
+      {OrgPlan? entity,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode}) {
+    return OrgPlanEntityRes(
+        entity: entity ?? this.entity,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode);
+  }
+
+  OrgPlanEntityRes copyWithWrapped(
+      {Wrapped<OrgPlan?>? entity,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode}) {
+    return OrgPlanEntityRes(
+        entity: (entity != null ? entity.value : this.entity),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class StripePaymentSecretArgs {
+  const StripePaymentSecretArgs({
+    required this.orgId,
+    required this.orderId,
+    required this.currency,
+  });
+
+  factory StripePaymentSecretArgs.fromJson(Map<String, dynamic> json) =>
+      _$StripePaymentSecretArgsFromJson(json);
+
+  static const toJsonFactory = _$StripePaymentSecretArgsToJson;
+  Map<String, dynamic> toJson() => _$StripePaymentSecretArgsToJson(this);
+
+  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
+  final String orgId;
+  @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
+  final String orderId;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  static const fromJsonFactory = _$StripePaymentSecretArgsFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is StripePaymentSecretArgs &&
+            (identical(other.orgId, orgId) ||
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.orderId, orderId) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderId, orderId)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(orderId) ^
+      const DeepCollectionEquality().hash(currency) ^
+      runtimeType.hashCode;
+}
+
+extension $StripePaymentSecretArgsExtension on StripePaymentSecretArgs {
+  StripePaymentSecretArgs copyWith(
+      {String? orgId, String? orderId, String? currency}) {
+    return StripePaymentSecretArgs(
+        orgId: orgId ?? this.orgId,
+        orderId: orderId ?? this.orderId,
+        currency: currency ?? this.currency);
+  }
+
+  StripePaymentSecretArgs copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? orderId,
+      Wrapped<String>? currency}) {
+    return StripePaymentSecretArgs(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        orderId: (orderId != null ? orderId.value : this.orderId),
+        currency: (currency != null ? currency.value : this.currency));
   }
 }
 
@@ -9090,6 +14119,141 @@ List<enums.ImageFileImageTarget>? imageFileImageTargetNullableListFromJson(
   return imageFileImageTarget
       .map((e) => imageFileImageTargetFromJson(e.toString()))
       .toList();
+}
+
+String? planInfoPlanTypeNullableToJson(
+    enums.PlanInfoPlanType? planInfoPlanType) {
+  return planInfoPlanType?.value;
+}
+
+String? planInfoPlanTypeToJson(enums.PlanInfoPlanType planInfoPlanType) {
+  return planInfoPlanType.value;
+}
+
+enums.PlanInfoPlanType planInfoPlanTypeFromJson(
+  Object? planInfoPlanType, [
+  enums.PlanInfoPlanType? defaultValue,
+]) {
+  return enums.PlanInfoPlanType.values
+          .firstWhereOrNull((e) => e.value == planInfoPlanType) ??
+      defaultValue ??
+      enums.PlanInfoPlanType.swaggerGeneratedUnknown;
+}
+
+enums.PlanInfoPlanType? planInfoPlanTypeNullableFromJson(
+  Object? planInfoPlanType, [
+  enums.PlanInfoPlanType? defaultValue,
+]) {
+  if (planInfoPlanType == null) {
+    return null;
+  }
+  return enums.PlanInfoPlanType.values
+          .firstWhereOrNull((e) => e.value == planInfoPlanType) ??
+      defaultValue;
+}
+
+String planInfoPlanTypeExplodedListToJson(
+    List<enums.PlanInfoPlanType>? planInfoPlanType) {
+  return planInfoPlanType?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> planInfoPlanTypeListToJson(
+    List<enums.PlanInfoPlanType>? planInfoPlanType) {
+  if (planInfoPlanType == null) {
+    return [];
+  }
+
+  return planInfoPlanType.map((e) => e.value!).toList();
+}
+
+List<enums.PlanInfoPlanType> planInfoPlanTypeListFromJson(
+  List? planInfoPlanType, [
+  List<enums.PlanInfoPlanType>? defaultValue,
+]) {
+  if (planInfoPlanType == null) {
+    return defaultValue ?? [];
+  }
+
+  return planInfoPlanType
+      .map((e) => planInfoPlanTypeFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.PlanInfoPlanType>? planInfoPlanTypeNullableListFromJson(
+  List? planInfoPlanType, [
+  List<enums.PlanInfoPlanType>? defaultValue,
+]) {
+  if (planInfoPlanType == null) {
+    return defaultValue;
+  }
+
+  return planInfoPlanType
+      .map((e) => planInfoPlanTypeFromJson(e.toString()))
+      .toList();
+}
+
+String? planPlanTypeNullableToJson(enums.PlanPlanType? planPlanType) {
+  return planPlanType?.value;
+}
+
+String? planPlanTypeToJson(enums.PlanPlanType planPlanType) {
+  return planPlanType.value;
+}
+
+enums.PlanPlanType planPlanTypeFromJson(
+  Object? planPlanType, [
+  enums.PlanPlanType? defaultValue,
+]) {
+  return enums.PlanPlanType.values
+          .firstWhereOrNull((e) => e.value == planPlanType) ??
+      defaultValue ??
+      enums.PlanPlanType.swaggerGeneratedUnknown;
+}
+
+enums.PlanPlanType? planPlanTypeNullableFromJson(
+  Object? planPlanType, [
+  enums.PlanPlanType? defaultValue,
+]) {
+  if (planPlanType == null) {
+    return null;
+  }
+  return enums.PlanPlanType.values
+          .firstWhereOrNull((e) => e.value == planPlanType) ??
+      defaultValue;
+}
+
+String planPlanTypeExplodedListToJson(List<enums.PlanPlanType>? planPlanType) {
+  return planPlanType?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> planPlanTypeListToJson(List<enums.PlanPlanType>? planPlanType) {
+  if (planPlanType == null) {
+    return [];
+  }
+
+  return planPlanType.map((e) => e.value!).toList();
+}
+
+List<enums.PlanPlanType> planPlanTypeListFromJson(
+  List? planPlanType, [
+  List<enums.PlanPlanType>? defaultValue,
+]) {
+  if (planPlanType == null) {
+    return defaultValue ?? [];
+  }
+
+  return planPlanType.map((e) => planPlanTypeFromJson(e.toString())).toList();
+}
+
+List<enums.PlanPlanType>? planPlanTypeNullableListFromJson(
+  List? planPlanType, [
+  List<enums.PlanPlanType>? defaultValue,
+]) {
+  if (planPlanType == null) {
+    return defaultValue;
+  }
+
+  return planPlanType.map((e) => planPlanTypeFromJson(e.toString())).toList();
 }
 
 String? applicationCreateTargetOrgIdTeamIdPostTargetNullableToJson(

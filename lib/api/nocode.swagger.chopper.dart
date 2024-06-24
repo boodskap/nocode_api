@@ -6,6 +6,7 @@ part of 'nocode.swagger.dart';
 // ChopperGenerator
 // **************************************************************************
 
+// coverage:ignore-file
 // ignore_for_file: type=lint
 final class _$Nocode extends Nocode {
   _$Nocode([ChopperClient? client]) {
@@ -14,7 +15,7 @@ final class _$Nocode extends Nocode {
   }
 
   @override
-  final definitionType = Nocode;
+  final Type definitionType = Nocode;
 
   @override
   Future<Response<BaseRes>> _cleanup({String? token}) {
@@ -930,5 +931,422 @@ final class _$Nocode extends Nocode {
       headers: $headers,
     );
     return client.send<ImageFileArrayRes, ImageFileArrayRes>($request);
+  }
+
+  @override
+  Future<Response<PlanEntityRes>> _createNewPlan({
+    required PlanInfo? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Plan/create');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<PlanEntityRes>> _updatePlan({
+    required String? planId,
+    required PlanInfo? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Plan/update/${planId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<PlanArrayRes>> _searchPlans({
+    String? includeCustomPlans,
+    required SearchReq? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Plan/search');
+    final Map<String, String> $headers = {
+      if (includeCustomPlans != null) 'includeCustomPlans': includeCustomPlans,
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<PlanArrayRes, PlanArrayRes>($request);
+  }
+
+  @override
+  Future<Response<PlanEntityRes>> _getPlan({
+    required String? planId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Plan/get/${planId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<PlanEntityRes>> _deletePlan({
+    required String? planId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Plan/remove/${planId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrgPlanEntityRes>> _createOrUpdateOrgPlan({
+    required PlanChangeRequest? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/OrgPlan/upsert');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrgPlanEntityRes>> _addComponentsToPlan({
+    required AddComponentRequest? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/OrgPlan/component/add');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrgPlanEntityRes>> _getOrgPlan({
+    required String? orgId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/OrgPlan/get/${orgId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<InvoiceArrayRes>> _searchInvoices({
+    String? orgId,
+    String? paymentStatus,
+    required SearchReq? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Invoice/search');
+    final Map<String, String> $headers = {
+      if (orgId != null) 'orgId': orgId,
+      if (paymentStatus != null) 'paymentStatus': paymentStatus,
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<InvoiceArrayRes, InvoiceArrayRes>($request);
+  }
+
+  @override
+  Future<Response<InvoiceEntityRes>> _getInvoice({
+    required String? invoiceId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Invoice/get/${invoiceId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<InvoiceEntityRes, InvoiceEntityRes>($request);
+  }
+
+  @override
+  Future<Response<InvoiceEntityRes>> _setPaymentStatus({
+    required String? paymentStatus,
+    required PaidInvoiceRequest? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Invoice/set/status/${paymentStatus}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<InvoiceEntityRes, InvoiceEntityRes>($request);
+  }
+
+  @override
+  Future<Response<InvoiceEntityRes>> _invoicePaid({
+    required PaidInvoiceRequest? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Invoice/paid');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<InvoiceEntityRes, InvoiceEntityRes>($request);
+  }
+
+  @override
+  Future<Response<InvoiceEntityRes>> _deleteInvoice({
+    required String? invoiceId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Invoice/remove/${invoiceId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<InvoiceEntityRes, InvoiceEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _createNewOrder({
+    required OrderInfo? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/create');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _updateOrder({
+    required String? orderId,
+    required OrderInfo? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/update/${orderId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderArrayRes>> _searchOrders({
+    String? orgId,
+    String? orderStatus,
+    required SearchReq? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/search');
+    final Map<String, String> $headers = {
+      if (orgId != null) 'orgId': orgId,
+      if (orderStatus != null) 'orderStatus': orderStatus,
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrderArrayRes, OrderArrayRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _getOrder({
+    required String? orderId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/get/${orderId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _cancelOrder({
+    required String? orderId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/cancel/${orderId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _orderPaid({
+    required PaidOrderRequest? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/paid');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _deleteOrder({
+    required String? orderId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/remove/${orderId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrderEntityRes>> _createStripePaymentSecret({
+    required StripePaymentSecretArgs? body,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/Orders/stripe/payment/secrete');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<OrderEntityRes, OrderEntityRes>($request);
   }
 }
