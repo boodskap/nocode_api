@@ -20,9 +20,9 @@ BaseEntity _$BaseEntityFromJson(Map<String, dynamic> json) => BaseEntity(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -66,9 +66,9 @@ BaseListRes _$BaseListResFromJson(Map<String, dynamic> json) => BaseListRes(
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$BaseListResToJson(BaseListRes instance) {
@@ -92,8 +92,8 @@ Map<String, dynamic> _$BaseListResToJson(BaseListRes instance) {
 }
 
 ListReq _$ListReqFromJson(Map<String, dynamic> json) => ListReq(
-      page: json['page'] as int,
-      size: json['size'] as int,
+      page: (json['page'] as num).toInt(),
+      size: (json['size'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ListReqToJson(ListReq instance) => <String, dynamic>{
@@ -103,8 +103,8 @@ Map<String, dynamic> _$ListReqToJson(ListReq instance) => <String, dynamic>{
 
 SearchReq _$SearchReqFromJson(Map<String, dynamic> json) => SearchReq(
       search: json['search'] as String? ?? '',
-      page: json['page'] as int,
-      size: json['size'] as int,
+      page: (json['page'] as num).toInt(),
+      size: (json['size'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SearchReqToJson(SearchReq instance) => <String, dynamic>{
@@ -169,9 +169,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -268,6 +268,9 @@ Map<String, dynamic> _$OrgProfileBaseToJson(OrgProfileBase instance) =>
     };
 
 OrgProfile _$OrgProfileFromJson(Map<String, dynamic> json) => OrgProfile(
+      subscribed: json['subscribed'] as bool? ?? false,
+      orgId: json['orgId'] as String? ?? '',
+      profileId: json['profileId'] as String? ?? '',
       address: json['address'] as String? ?? '',
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
@@ -284,17 +287,18 @@ OrgProfile _$OrgProfileFromJson(Map<String, dynamic> json) => OrgProfile(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
-      subscribed: json['subscribed'] as bool? ?? false,
-      orgId: json['orgId'] as String? ?? '',
-      profileId: json['profileId'] as String? ?? '',
     );
 
 Map<String, dynamic> _$OrgProfileToJson(OrgProfile instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'subscribed': instance.subscribed,
+    'orgId': instance.orgId,
+    'profileId': instance.profileId,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -320,9 +324,6 @@ Map<String, dynamic> _$OrgProfileToJson(OrgProfile instance) {
   val['updatedBy'] = instance.updatedBy;
   val['updatedStamp'] = instance.updatedStamp;
   val['domainKey'] = instance.domainKey;
-  val['subscribed'] = instance.subscribed;
-  val['orgId'] = instance.orgId;
-  val['profileId'] = instance.profileId;
   return val;
 }
 
@@ -405,9 +406,9 @@ OrgProfileArrayRes _$OrgProfileArrayResFromJson(Map<String, dynamic> json) =>
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$OrgProfileArrayResToJson(OrgProfileArrayRes instance) {
@@ -441,65 +442,19 @@ Map<String, dynamic> _$TeamProfileBaseToJson(TeamProfileBase instance) =>
     };
 
 TeamProfile _$TeamProfileFromJson(Map<String, dynamic> json) => TeamProfile(
-      address: json['address'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      name: json['name'] as String? ?? '',
-      phone: json['phone'] as String? ?? '',
-      website: json['website'] as String? ?? '',
-      description: json['description'] as String? ?? '',
-      icon: json['icon'] as String? ?? '',
-      logo: json['logo'] as String? ?? '',
-      landscapeBanner: json['landscapeBanner'] as String? ?? '',
-      portraitBanner: json['portraitBanner'] as String? ?? '',
-      settings: json['settings'] == null
-          ? null
-          : ProfileSettings.fromJson(json['settings'] as Map<String, dynamic>),
-      id: json['id'] as String? ?? '',
-      rtype: json['rtype'] as String? ?? '',
-      createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
-      updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
-      domainKey: json['domainKey'] as String? ?? '',
+      teamId: json['teamId'] as String? ?? '',
       subscribed: json['subscribed'] as bool? ?? false,
       orgId: json['orgId'] as String? ?? '',
       profileId: json['profileId'] as String? ?? '',
-      teamId: json['teamId'] as String? ?? '',
     );
 
-Map<String, dynamic> _$TeamProfileToJson(TeamProfile instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('address', instance.address);
-  val['email'] = instance.email;
-  val['name'] = instance.name;
-  writeNotNull('phone', instance.phone);
-  writeNotNull('website', instance.website);
-  writeNotNull('description', instance.description);
-  writeNotNull('icon', instance.icon);
-  writeNotNull('logo', instance.logo);
-  writeNotNull('landscapeBanner', instance.landscapeBanner);
-  writeNotNull('portraitBanner', instance.portraitBanner);
-  writeNotNull('settings', instance.settings?.toJson());
-  val['id'] = instance.id;
-  val['rtype'] = instance.rtype;
-  val['createdBy'] = instance.createdBy;
-  val['createdStamp'] = instance.createdStamp;
-  val['updatedBy'] = instance.updatedBy;
-  val['updatedStamp'] = instance.updatedStamp;
-  val['domainKey'] = instance.domainKey;
-  val['subscribed'] = instance.subscribed;
-  val['orgId'] = instance.orgId;
-  val['profileId'] = instance.profileId;
-  val['teamId'] = instance.teamId;
-  return val;
-}
+Map<String, dynamic> _$TeamProfileToJson(TeamProfile instance) =>
+    <String, dynamic>{
+      'teamId': instance.teamId,
+      'subscribed': instance.subscribed,
+      'orgId': instance.orgId,
+      'profileId': instance.profileId,
+    };
 
 TeamProfileEntity _$TeamProfileEntityFromJson(Map<String, dynamic> json) =>
     TeamProfileEntity(
@@ -582,9 +537,9 @@ TeamProfileArrayRes _$TeamProfileArrayResFromJson(Map<String, dynamic> json) =>
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$TeamProfileArrayResToJson(TeamProfileArrayRes instance) {
@@ -651,6 +606,7 @@ Map<String, dynamic> _$OrganizationInfoToJson(OrganizationInfo instance) {
 
 Organization _$OrganizationFromJson(Map<String, dynamic> json) => Organization(
       profileId: json['profileId'] as String? ?? '',
+      planId: json['planId'] as String? ?? '',
       organizationState:
           organizationOrganizationStateFromJson(json['organizationState']),
       name: json['name'] as String? ?? '',
@@ -670,9 +626,9 @@ Organization _$OrganizationFromJson(Map<String, dynamic> json) => Organization(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -687,6 +643,7 @@ Map<String, dynamic> _$OrganizationToJson(Organization instance) {
     }
   }
 
+  writeNotNull('planId', instance.planId);
   writeNotNull('organizationState',
       organizationOrganizationStateToJson(instance.organizationState));
   val['name'] = instance.name;
@@ -792,9 +749,9 @@ OrganizationArrayRes _$OrganizationArrayResFromJson(
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$OrganizationArrayResToJson(
@@ -828,9 +785,9 @@ Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -969,9 +926,9 @@ Team _$TeamFromJson(Map<String, dynamic> json) => Team(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -1084,9 +1041,9 @@ TeamArrayRes _$TeamArrayResFromJson(Map<String, dynamic> json) => TeamArrayRes(
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$TeamArrayResToJson(TeamArrayRes instance) {
@@ -1161,8 +1118,8 @@ Application _$ApplicationFromJson(Map<String, dynamic> json) => Application(
       target: applicationTargetFromJson(json['target']),
       applicationState:
           applicationApplicationStateFromJson(json['applicationState']),
-      freePages: json['freePages'] as int,
-      paidPages: json['paidPages'] as int,
+      freePages: (json['freePages'] as num).toInt(),
+      paidPages: (json['paidPages'] as num).toInt(),
       canBuildAndroid: json['canBuildAndroid'] as bool? ?? false,
       canBuildIoS: json['canBuildIoS'] as bool? ?? false,
       canBuildLinux: json['canBuildLinux'] as bool? ?? false,
@@ -1175,9 +1132,9 @@ Application _$ApplicationFromJson(Map<String, dynamic> json) => Application(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
@@ -1317,9 +1274,9 @@ ApplicationArrayRes _$ApplicationArrayResFromJson(Map<String, dynamic> json) =>
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ApplicationArrayResToJson(ApplicationArrayRes instance) {
@@ -1352,7 +1309,7 @@ PageInfo _$PageInfoFromJson(Map<String, dynamic> json) => PageInfo(
       desktopBgImage: json['desktopBgImage'] as String? ?? '',
       tabBgImage: json['tabBgImage'] as String? ?? '',
       mobileBgImage: json['mobileBgImage'] as String? ?? '',
-      bgColor: json['bgColor'] as int?,
+      bgColor: (json['bgColor'] as num?)?.toInt(),
       settings: json['settings'] == null
           ? null
           : PageSettings.fromJson(json['settings'] as Map<String, dynamic>),
@@ -1405,7 +1362,7 @@ Page _$PageFromJson(Map<String, dynamic> json) => Page(
       desktopBgImage: json['desktopBgImage'] as String? ?? '',
       tabBgImage: json['tabBgImage'] as String? ?? '',
       mobileBgImage: json['mobileBgImage'] as String? ?? '',
-      bgColor: json['bgColor'] as int?,
+      bgColor: (json['bgColor'] as num?)?.toInt(),
       settings: json['settings'] == null
           ? null
           : PageSettings.fromJson(json['settings'] as Map<String, dynamic>),
@@ -1413,9 +1370,9 @@ Page _$PageFromJson(Map<String, dynamic> json) => Page(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -1532,9 +1489,9 @@ PageArrayRes _$PageArrayResFromJson(Map<String, dynamic> json) => PageArrayRes(
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PageArrayResToJson(PageArrayRes instance) {
@@ -1600,9 +1557,9 @@ ImageFile _$ImageFileFromJson(Map<String, dynamic> json) => ImageFile(
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
-      createdStamp: json['createdStamp'] as int,
+      createdStamp: (json['createdStamp'] as num).toInt(),
       updatedBy: json['updatedBy'] as String? ?? '',
-      updatedStamp: json['updatedStamp'] as int,
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
       domainKey: json['domainKey'] as String? ?? '',
     );
 
@@ -1713,9 +1670,9 @@ ImageFileArrayRes _$ImageFileArrayResFromJson(Map<String, dynamic> json) =>
       msg: json['msg'] as String? ?? '',
       trace: json['trace'] as String? ?? '',
       errorCode: json['errorCode'] as String? ?? '',
-      total: json['total'] as int?,
-      page: json['page'] as int?,
-      size: json['size'] as int?,
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ImageFileArrayResToJson(ImageFileArrayRes instance) {
@@ -1801,8 +1758,8 @@ Map<String, dynamic> _$AppProfileToJson(AppProfile instance) {
 
 BaseSettings _$BaseSettingsFromJson(Map<String, dynamic> json) => BaseSettings(
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$BaseSettingsToJson(BaseSettings instance) =>
@@ -1818,8 +1775,8 @@ ProfileSettings _$ProfileSettingsFromJson(Map<String, dynamic> json) =>
       stripeNoCodeSubscriptionId:
           json['stripeNoCodeSubscriptionId'] as String? ?? '',
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ProfileSettingsToJson(ProfileSettings instance) {
@@ -1882,8 +1839,8 @@ OrganizationSettings _$OrganizationSettingsFromJson(
                   .toList() ??
               [],
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$OrganizationSettingsToJson(
@@ -1926,8 +1883,8 @@ Map<String, dynamic> _$OrganizationSettingsToJson(
 
 TeamSettings _$TeamSettingsFromJson(Map<String, dynamic> json) => TeamSettings(
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$TeamSettingsToJson(TeamSettings instance) =>
@@ -1941,8 +1898,8 @@ ApplicationSettings _$ApplicationSettingsFromJson(Map<String, dynamic> json) =>
     ApplicationSettings(
       stripeInvoiceId: json['stripeInvoiceId'] as String? ?? '',
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ApplicationSettingsToJson(ApplicationSettings instance) {
@@ -1964,8 +1921,8 @@ Map<String, dynamic> _$ApplicationSettingsToJson(ApplicationSettings instance) {
 PageSettings _$PageSettingsFromJson(Map<String, dynamic> json) => PageSettings(
       stripeInvoiceId: json['stripeInvoiceId'] as String? ?? '',
       font: json['font'] as String? ?? '',
-      fontSize: json['fontSize'] as int,
-      fontColor: json['fontColor'] as int,
+      fontSize: (json['fontSize'] as num).toInt(),
+      fontColor: (json['fontColor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$PageSettingsToJson(PageSettings instance) {
@@ -1983,3 +1940,1152 @@ Map<String, dynamic> _$PageSettingsToJson(PageSettings instance) {
   val['fontColor'] = instance.fontColor;
   return val;
 }
+
+PlanInfo _$PlanInfoFromJson(Map<String, dynamic> json) => PlanInfo(
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      planFee: (json['planFee'] as num).toDouble(),
+      defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
+      defaultDevicesCount: (json['defaultDevicesCount'] as num).toInt(),
+      defaultDataPointsCount: (json['defaultDataPointsCount'] as num).toInt(),
+      defaultClientCount: (json['defaultClientCount'] as num).toInt(),
+      defaultUserCount: (json['defaultUserCount'] as num).toInt(),
+      defaultArchivalYears: (json['defaultArchivalYears'] as num).toInt(),
+      defaultDashboardCount: (json['defaultDashboardCount'] as num).toInt(),
+      defaultModelParametersCount:
+          (json['defaultModelParametersCount'] as num).toInt(),
+      extraDeviceFee: (json['extraDeviceFee'] as num).toDouble(),
+      extraDeviceModelFee: (json['extraDeviceModelFee'] as num).toDouble(),
+      extraDataPointsFee: (json['extraDataPointsFee'] as num).toDouble(),
+      extraClientFee: (json['extraClientFee'] as num).toDouble(),
+      extraUserFee: (json['extraUserFee'] as num).toDouble(),
+      extraArchivalFee: (json['extraArchivalFee'] as num).toDouble(),
+      extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
+      extraModelParametersFee:
+          (json['extraModelParametersFee'] as num).toDouble(),
+      planType: planInfoPlanTypeFromJson(json['planType']),
+    );
+
+Map<String, dynamic> _$PlanInfoToJson(PlanInfo instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['planFee'] = instance.planFee;
+  val['defaultDeviceModelCount'] = instance.defaultDeviceModelCount;
+  val['defaultDevicesCount'] = instance.defaultDevicesCount;
+  val['defaultDataPointsCount'] = instance.defaultDataPointsCount;
+  val['defaultClientCount'] = instance.defaultClientCount;
+  val['defaultUserCount'] = instance.defaultUserCount;
+  val['defaultArchivalYears'] = instance.defaultArchivalYears;
+  val['defaultDashboardCount'] = instance.defaultDashboardCount;
+  val['defaultModelParametersCount'] = instance.defaultModelParametersCount;
+  val['extraDeviceFee'] = instance.extraDeviceFee;
+  val['extraDeviceModelFee'] = instance.extraDeviceModelFee;
+  val['extraDataPointsFee'] = instance.extraDataPointsFee;
+  val['extraClientFee'] = instance.extraClientFee;
+  val['extraUserFee'] = instance.extraUserFee;
+  val['extraArchivalFee'] = instance.extraArchivalFee;
+  val['extraDashboardFee'] = instance.extraDashboardFee;
+  val['extraModelParametersFee'] = instance.extraModelParametersFee;
+  writeNotNull('planType', planInfoPlanTypeToJson(instance.planType));
+  return val;
+}
+
+PlanBase _$PlanBaseFromJson(Map<String, dynamic> json) => PlanBase(
+      customPlan: json['customPlan'] as bool,
+    );
+
+Map<String, dynamic> _$PlanBaseToJson(PlanBase instance) => <String, dynamic>{
+      'customPlan': instance.customPlan,
+    };
+
+Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
+      customPlan: json['customPlan'] as bool,
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      planFee: (json['planFee'] as num).toDouble(),
+      defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
+      defaultDevicesCount: (json['defaultDevicesCount'] as num).toInt(),
+      defaultDataPointsCount: (json['defaultDataPointsCount'] as num).toInt(),
+      defaultClientCount: (json['defaultClientCount'] as num).toInt(),
+      defaultUserCount: (json['defaultUserCount'] as num).toInt(),
+      defaultArchivalYears: (json['defaultArchivalYears'] as num).toInt(),
+      defaultDashboardCount: (json['defaultDashboardCount'] as num).toInt(),
+      defaultModelParametersCount:
+          (json['defaultModelParametersCount'] as num).toInt(),
+      extraDeviceFee: (json['extraDeviceFee'] as num).toDouble(),
+      extraDeviceModelFee: (json['extraDeviceModelFee'] as num).toDouble(),
+      extraDataPointsFee: (json['extraDataPointsFee'] as num).toDouble(),
+      extraClientFee: (json['extraClientFee'] as num).toDouble(),
+      extraUserFee: (json['extraUserFee'] as num).toDouble(),
+      extraArchivalFee: (json['extraArchivalFee'] as num).toDouble(),
+      extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
+      extraModelParametersFee:
+          (json['extraModelParametersFee'] as num).toDouble(),
+      planType: planPlanTypeFromJson(json['planType']),
+      id: json['id'] as String? ?? '',
+      rtype: json['rtype'] as String? ?? '',
+      createdBy: json['createdBy'] as String? ?? '',
+      createdStamp: (json['createdStamp'] as num).toInt(),
+      updatedBy: json['updatedBy'] as String? ?? '',
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
+      domainKey: json['domainKey'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PlanToJson(Plan instance) {
+  final val = <String, dynamic>{
+    'customPlan': instance.customPlan,
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['planFee'] = instance.planFee;
+  val['defaultDeviceModelCount'] = instance.defaultDeviceModelCount;
+  val['defaultDevicesCount'] = instance.defaultDevicesCount;
+  val['defaultDataPointsCount'] = instance.defaultDataPointsCount;
+  val['defaultClientCount'] = instance.defaultClientCount;
+  val['defaultUserCount'] = instance.defaultUserCount;
+  val['defaultArchivalYears'] = instance.defaultArchivalYears;
+  val['defaultDashboardCount'] = instance.defaultDashboardCount;
+  val['defaultModelParametersCount'] = instance.defaultModelParametersCount;
+  val['extraDeviceFee'] = instance.extraDeviceFee;
+  val['extraDeviceModelFee'] = instance.extraDeviceModelFee;
+  val['extraDataPointsFee'] = instance.extraDataPointsFee;
+  val['extraClientFee'] = instance.extraClientFee;
+  val['extraUserFee'] = instance.extraUserFee;
+  val['extraArchivalFee'] = instance.extraArchivalFee;
+  val['extraDashboardFee'] = instance.extraDashboardFee;
+  val['extraModelParametersFee'] = instance.extraModelParametersFee;
+  writeNotNull('planType', planPlanTypeToJson(instance.planType));
+  val['id'] = instance.id;
+  val['rtype'] = instance.rtype;
+  val['createdBy'] = instance.createdBy;
+  val['createdStamp'] = instance.createdStamp;
+  val['updatedBy'] = instance.updatedBy;
+  val['updatedStamp'] = instance.updatedStamp;
+  val['domainKey'] = instance.domainKey;
+  return val;
+}
+
+PlanEntity _$PlanEntityFromJson(Map<String, dynamic> json) => PlanEntity(
+      entity: json['entity'] == null
+          ? null
+          : Plan.fromJson(json['entity'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PlanEntityToJson(PlanEntity instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  return val;
+}
+
+PlanEntityRes _$PlanEntityResFromJson(Map<String, dynamic> json) =>
+    PlanEntityRes(
+      entity: json['entity'] == null
+          ? null
+          : Plan.fromJson(json['entity'] as Map<String, dynamic>),
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PlanEntityResToJson(PlanEntityRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  return val;
+}
+
+PlanArray _$PlanArrayFromJson(Map<String, dynamic> json) => PlanArray(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Plan.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$PlanArrayToJson(PlanArray instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+PlanArrayRes _$PlanArrayResFromJson(Map<String, dynamic> json) => PlanArrayRes(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Plan.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$PlanArrayResToJson(PlanArrayRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  writeNotNull('total', instance.total);
+  writeNotNull('page', instance.page);
+  writeNotNull('size', instance.size);
+  return val;
+}
+
+InvoiceInfo _$InvoiceInfoFromJson(Map<String, dynamic> json) => InvoiceInfo(
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      orgId: json['orgId'] as String? ?? '',
+      dueOn: (json['dueOn'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$InvoiceInfoToJson(InvoiceInfo instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['orgId'] = instance.orgId;
+  val['dueOn'] = instance.dueOn;
+  return val;
+}
+
+InvoiceBase _$InvoiceBaseFromJson(Map<String, dynamic> json) => InvoiceBase(
+      invoiceAmount: (json['invoiceAmount'] as num).toDouble(),
+      billedAmount: (json['billedAmount'] as num?)?.toDouble(),
+      reconciled: json['reconciled'] as bool,
+      planId: json['planId'] as String? ?? '',
+      planFee: (json['planFee'] as num?)?.toDouble(),
+      deviceModelFee: (json['deviceModelFee'] as num?)?.toDouble(),
+      modelParametersFee: (json['modelParametersFee'] as num?)?.toDouble(),
+      deviceFee: (json['deviceFee'] as num?)?.toDouble(),
+      clientFee: (json['clientFee'] as num?)?.toDouble(),
+      userFee: (json['userFee'] as num?)?.toDouble(),
+      dataFee: (json['dataFee'] as num?)?.toDouble(),
+      archivalFee: (json['archivalFee'] as num?)?.toDouble(),
+      dashboardFee: (json['dashboardFee'] as num?)?.toDouble(),
+      deviceModelCount: (json['deviceModelCount'] as num?)?.toDouble(),
+      modelParametersCount: (json['modelParametersCount'] as num?)?.toDouble(),
+      deviceCount: (json['deviceCount'] as num?)?.toDouble(),
+      clientCount: (json['clientCount'] as num?)?.toDouble(),
+      userCount: (json['userCount'] as num?)?.toDouble(),
+      dataCount: (json['dataCount'] as num?)?.toDouble(),
+      archivalCount: (json['archivalCount'] as num?)?.toDouble(),
+      dashboardCount: (json['dashboardCount'] as num?)?.toDouble(),
+      paidOn: (json['paidOn'] as num?)?.toInt(),
+      providerId: json['providerId'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      metaData: json['metaData'],
+      graceDays: (json['graceDays'] as num?)?.toInt(),
+      paymentMode: json['paymentMode'] as String? ?? '',
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      paymentStatus: json['paymentStatus'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$InvoiceBaseToJson(InvoiceBase instance) {
+  final val = <String, dynamic>{
+    'invoiceAmount': instance.invoiceAmount,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('billedAmount', instance.billedAmount);
+  val['reconciled'] = instance.reconciled;
+  writeNotNull('planId', instance.planId);
+  writeNotNull('planFee', instance.planFee);
+  writeNotNull('deviceModelFee', instance.deviceModelFee);
+  writeNotNull('modelParametersFee', instance.modelParametersFee);
+  writeNotNull('deviceFee', instance.deviceFee);
+  writeNotNull('clientFee', instance.clientFee);
+  writeNotNull('userFee', instance.userFee);
+  writeNotNull('dataFee', instance.dataFee);
+  writeNotNull('archivalFee', instance.archivalFee);
+  writeNotNull('dashboardFee', instance.dashboardFee);
+  writeNotNull('deviceModelCount', instance.deviceModelCount);
+  writeNotNull('modelParametersCount', instance.modelParametersCount);
+  writeNotNull('deviceCount', instance.deviceCount);
+  writeNotNull('clientCount', instance.clientCount);
+  writeNotNull('userCount', instance.userCount);
+  writeNotNull('dataCount', instance.dataCount);
+  writeNotNull('archivalCount', instance.archivalCount);
+  writeNotNull('dashboardCount', instance.dashboardCount);
+  writeNotNull('paidOn', instance.paidOn);
+  writeNotNull('providerId', instance.providerId);
+  writeNotNull('transactionId', instance.transactionId);
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  writeNotNull('metaData', instance.metaData);
+  writeNotNull('graceDays', instance.graceDays);
+  writeNotNull('paymentMode', instance.paymentMode);
+  writeNotNull('paymentGateway', instance.paymentGateway);
+  val['paymentStatus'] = instance.paymentStatus;
+  return val;
+}
+
+Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      orgId: json['orgId'] as String? ?? '',
+      dueOn: (json['dueOn'] as num).toInt(),
+      invoiceAmount: (json['invoiceAmount'] as num).toDouble(),
+      billedAmount: (json['billedAmount'] as num?)?.toDouble(),
+      reconciled: json['reconciled'] as bool,
+      planId: json['planId'] as String? ?? '',
+      planFee: (json['planFee'] as num?)?.toDouble(),
+      deviceModelFee: (json['deviceModelFee'] as num?)?.toDouble(),
+      modelParametersFee: (json['modelParametersFee'] as num?)?.toDouble(),
+      deviceFee: (json['deviceFee'] as num?)?.toDouble(),
+      clientFee: (json['clientFee'] as num?)?.toDouble(),
+      userFee: (json['userFee'] as num?)?.toDouble(),
+      dataFee: (json['dataFee'] as num?)?.toDouble(),
+      archivalFee: (json['archivalFee'] as num?)?.toDouble(),
+      dashboardFee: (json['dashboardFee'] as num?)?.toDouble(),
+      deviceModelCount: (json['deviceModelCount'] as num?)?.toDouble(),
+      modelParametersCount: (json['modelParametersCount'] as num?)?.toDouble(),
+      deviceCount: (json['deviceCount'] as num?)?.toDouble(),
+      clientCount: (json['clientCount'] as num?)?.toDouble(),
+      userCount: (json['userCount'] as num?)?.toDouble(),
+      dataCount: (json['dataCount'] as num?)?.toDouble(),
+      archivalCount: (json['archivalCount'] as num?)?.toDouble(),
+      dashboardCount: (json['dashboardCount'] as num?)?.toDouble(),
+      paidOn: (json['paidOn'] as num?)?.toInt(),
+      providerId: json['providerId'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      metaData: json['metaData'],
+      graceDays: (json['graceDays'] as num?)?.toInt(),
+      paymentMode: json['paymentMode'] as String? ?? '',
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      paymentStatus: json['paymentStatus'] as String? ?? '',
+      id: json['id'] as String? ?? '',
+      rtype: json['rtype'] as String? ?? '',
+      createdBy: json['createdBy'] as String? ?? '',
+      createdStamp: (json['createdStamp'] as num).toInt(),
+      updatedBy: json['updatedBy'] as String? ?? '',
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
+      domainKey: json['domainKey'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$InvoiceToJson(Invoice instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['orgId'] = instance.orgId;
+  val['dueOn'] = instance.dueOn;
+  val['invoiceAmount'] = instance.invoiceAmount;
+  writeNotNull('billedAmount', instance.billedAmount);
+  val['reconciled'] = instance.reconciled;
+  writeNotNull('planId', instance.planId);
+  writeNotNull('planFee', instance.planFee);
+  writeNotNull('deviceModelFee', instance.deviceModelFee);
+  writeNotNull('modelParametersFee', instance.modelParametersFee);
+  writeNotNull('deviceFee', instance.deviceFee);
+  writeNotNull('clientFee', instance.clientFee);
+  writeNotNull('userFee', instance.userFee);
+  writeNotNull('dataFee', instance.dataFee);
+  writeNotNull('archivalFee', instance.archivalFee);
+  writeNotNull('dashboardFee', instance.dashboardFee);
+  writeNotNull('deviceModelCount', instance.deviceModelCount);
+  writeNotNull('modelParametersCount', instance.modelParametersCount);
+  writeNotNull('deviceCount', instance.deviceCount);
+  writeNotNull('clientCount', instance.clientCount);
+  writeNotNull('userCount', instance.userCount);
+  writeNotNull('dataCount', instance.dataCount);
+  writeNotNull('archivalCount', instance.archivalCount);
+  writeNotNull('dashboardCount', instance.dashboardCount);
+  writeNotNull('paidOn', instance.paidOn);
+  writeNotNull('providerId', instance.providerId);
+  writeNotNull('transactionId', instance.transactionId);
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  writeNotNull('metaData', instance.metaData);
+  writeNotNull('graceDays', instance.graceDays);
+  writeNotNull('paymentMode', instance.paymentMode);
+  writeNotNull('paymentGateway', instance.paymentGateway);
+  val['paymentStatus'] = instance.paymentStatus;
+  val['id'] = instance.id;
+  val['rtype'] = instance.rtype;
+  val['createdBy'] = instance.createdBy;
+  val['createdStamp'] = instance.createdStamp;
+  val['updatedBy'] = instance.updatedBy;
+  val['updatedStamp'] = instance.updatedStamp;
+  val['domainKey'] = instance.domainKey;
+  return val;
+}
+
+InvoiceEntity _$InvoiceEntityFromJson(Map<String, dynamic> json) =>
+    InvoiceEntity(
+      entity: json['entity'] == null
+          ? null
+          : Invoice.fromJson(json['entity'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$InvoiceEntityToJson(InvoiceEntity instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  return val;
+}
+
+InvoiceEntityRes _$InvoiceEntityResFromJson(Map<String, dynamic> json) =>
+    InvoiceEntityRes(
+      entity: json['entity'] == null
+          ? null
+          : Invoice.fromJson(json['entity'] as Map<String, dynamic>),
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$InvoiceEntityResToJson(InvoiceEntityRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  return val;
+}
+
+InvoiceArray _$InvoiceArrayFromJson(Map<String, dynamic> json) => InvoiceArray(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$InvoiceArrayToJson(InvoiceArray instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+InvoiceArrayRes _$InvoiceArrayResFromJson(Map<String, dynamic> json) =>
+    InvoiceArrayRes(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Invoice.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$InvoiceArrayResToJson(InvoiceArrayRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  writeNotNull('total', instance.total);
+  writeNotNull('page', instance.page);
+  writeNotNull('size', instance.size);
+  return val;
+}
+
+PlanChangeRequest _$PlanChangeRequestFromJson(Map<String, dynamic> json) =>
+    PlanChangeRequest(
+      orgId: json['orgId'] as String? ?? '',
+      planId: json['planId'] as String? ?? '',
+      orderId: json['orderId'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PlanChangeRequestToJson(PlanChangeRequest instance) {
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+    'planId': instance.planId,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('orderId', instance.orderId);
+  return val;
+}
+
+AddComponentRequest _$AddComponentRequestFromJson(Map<String, dynamic> json) =>
+    AddComponentRequest(
+      orgId: json['orgId'] as String? ?? '',
+      orderId: json['orderId'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$AddComponentRequestToJson(
+        AddComponentRequest instance) =>
+    <String, dynamic>{
+      'orgId': instance.orgId,
+      'orderId': instance.orderId,
+    };
+
+PaidInvoiceRequest _$PaidInvoiceRequestFromJson(Map<String, dynamic> json) =>
+    PaidInvoiceRequest(
+      orgId: json['orgId'] as String? ?? '',
+      invoiceId: json['invoiceId'] as String? ?? '',
+      billedAmount: (json['billedAmount'] as num).toDouble(),
+      paymentMode: json['paymentMode'] as String? ?? '',
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      metaData: json['metaData'],
+    );
+
+Map<String, dynamic> _$PaidInvoiceRequestToJson(PaidInvoiceRequest instance) {
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+    'invoiceId': instance.invoiceId,
+    'billedAmount': instance.billedAmount,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('paymentMode', instance.paymentMode);
+  writeNotNull('paymentGateway', instance.paymentGateway);
+  writeNotNull('transactionId', instance.transactionId);
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  writeNotNull('metaData', instance.metaData);
+  return val;
+}
+
+OrderInfo _$OrderInfoFromJson(Map<String, dynamic> json) => OrderInfo(
+      description: json['description'] as String? ?? '',
+      orgId: json['orgId'] as String? ?? '',
+      couponCode: json['couponCode'] as String? ?? '',
+      planId: json['planId'] as String? ?? '',
+      modelCount: (json['modelCount'] as num?)?.toInt(),
+      parameterCount: (json['parameterCount'] as num?)?.toInt(),
+      deviceCount: (json['deviceCount'] as num?)?.toInt(),
+      clientCount: (json['clientCount'] as num?)?.toInt(),
+      dataCount: (json['dataCount'] as num?)?.toInt(),
+      userCount: (json['userCount'] as num?)?.toInt(),
+      archivalCount: (json['archivalCount'] as num?)?.toInt(),
+      dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['orgId'] = instance.orgId;
+  writeNotNull('couponCode', instance.couponCode);
+  writeNotNull('planId', instance.planId);
+  writeNotNull('modelCount', instance.modelCount);
+  writeNotNull('parameterCount', instance.parameterCount);
+  writeNotNull('deviceCount', instance.deviceCount);
+  writeNotNull('clientCount', instance.clientCount);
+  writeNotNull('dataCount', instance.dataCount);
+  writeNotNull('userCount', instance.userCount);
+  writeNotNull('archivalCount', instance.archivalCount);
+  writeNotNull('dashboardCount', instance.dashboardCount);
+  return val;
+}
+
+OrderBase _$OrderBaseFromJson(Map<String, dynamic> json) => OrderBase(
+      orderAmount: (json['orderAmount'] as num).toDouble(),
+      reconciled: json['reconciled'] as bool,
+      processed: json['processed'] as bool,
+      billedAmount: (json['billedAmount'] as num?)?.toDouble(),
+      planPrice: (json['planPrice'] as num?)?.toDouble(),
+      modelPrice: (json['modelPrice'] as num?)?.toDouble(),
+      parameterPrice: (json['parameterPrice'] as num?)?.toDouble(),
+      devicePrice: (json['devicePrice'] as num?)?.toDouble(),
+      clientPrice: (json['clientPrice'] as num?)?.toDouble(),
+      dataPrice: (json['dataPrice'] as num?)?.toDouble(),
+      userPrice: (json['userPrice'] as num?)?.toDouble(),
+      archivalPrice: (json['archivalPrice'] as num?)?.toDouble(),
+      dashboardPrice: (json['dashboardPrice'] as num?)?.toDouble(),
+      providerId: json['providerId'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      discount: (json['discount'] as num?)?.toDouble(),
+      metaData: json['metaData'],
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      stripePaymentSecret: json['stripePaymentSecret'] as String? ?? '',
+      orderStatus: json['orderStatus'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrderBaseToJson(OrderBase instance) {
+  final val = <String, dynamic>{
+    'orderAmount': instance.orderAmount,
+    'reconciled': instance.reconciled,
+    'processed': instance.processed,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('billedAmount', instance.billedAmount);
+  writeNotNull('planPrice', instance.planPrice);
+  writeNotNull('modelPrice', instance.modelPrice);
+  writeNotNull('parameterPrice', instance.parameterPrice);
+  writeNotNull('devicePrice', instance.devicePrice);
+  writeNotNull('clientPrice', instance.clientPrice);
+  writeNotNull('dataPrice', instance.dataPrice);
+  writeNotNull('userPrice', instance.userPrice);
+  writeNotNull('archivalPrice', instance.archivalPrice);
+  writeNotNull('dashboardPrice', instance.dashboardPrice);
+  writeNotNull('providerId', instance.providerId);
+  writeNotNull('transactionId', instance.transactionId);
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  writeNotNull('discount', instance.discount);
+  writeNotNull('metaData', instance.metaData);
+  writeNotNull('paymentGateway', instance.paymentGateway);
+  writeNotNull('stripePaymentSecret', instance.stripePaymentSecret);
+  val['orderStatus'] = instance.orderStatus;
+  return val;
+}
+
+Order _$OrderFromJson(Map<String, dynamic> json) => Order(
+      description: json['description'] as String? ?? '',
+      orgId: json['orgId'] as String? ?? '',
+      couponCode: json['couponCode'] as String? ?? '',
+      planId: json['planId'] as String? ?? '',
+      modelCount: (json['modelCount'] as num?)?.toInt(),
+      parameterCount: (json['parameterCount'] as num?)?.toInt(),
+      deviceCount: (json['deviceCount'] as num?)?.toInt(),
+      clientCount: (json['clientCount'] as num?)?.toInt(),
+      dataCount: (json['dataCount'] as num?)?.toInt(),
+      userCount: (json['userCount'] as num?)?.toInt(),
+      archivalCount: (json['archivalCount'] as num?)?.toInt(),
+      dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
+      orderAmount: (json['orderAmount'] as num).toDouble(),
+      reconciled: json['reconciled'] as bool,
+      processed: json['processed'] as bool,
+      billedAmount: (json['billedAmount'] as num?)?.toDouble(),
+      planPrice: (json['planPrice'] as num?)?.toDouble(),
+      modelPrice: (json['modelPrice'] as num?)?.toDouble(),
+      parameterPrice: (json['parameterPrice'] as num?)?.toDouble(),
+      devicePrice: (json['devicePrice'] as num?)?.toDouble(),
+      clientPrice: (json['clientPrice'] as num?)?.toDouble(),
+      dataPrice: (json['dataPrice'] as num?)?.toDouble(),
+      userPrice: (json['userPrice'] as num?)?.toDouble(),
+      archivalPrice: (json['archivalPrice'] as num?)?.toDouble(),
+      dashboardPrice: (json['dashboardPrice'] as num?)?.toDouble(),
+      providerId: json['providerId'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      discount: (json['discount'] as num?)?.toDouble(),
+      metaData: json['metaData'],
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      stripePaymentSecret: json['stripePaymentSecret'] as String? ?? '',
+      orderStatus: json['orderStatus'] as String? ?? '',
+      id: json['id'] as String? ?? '',
+      rtype: json['rtype'] as String? ?? '',
+      createdBy: json['createdBy'] as String? ?? '',
+      createdStamp: (json['createdStamp'] as num).toInt(),
+      updatedBy: json['updatedBy'] as String? ?? '',
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
+      domainKey: json['domainKey'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrderToJson(Order instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['orgId'] = instance.orgId;
+  writeNotNull('couponCode', instance.couponCode);
+  writeNotNull('planId', instance.planId);
+  writeNotNull('modelCount', instance.modelCount);
+  writeNotNull('parameterCount', instance.parameterCount);
+  writeNotNull('deviceCount', instance.deviceCount);
+  writeNotNull('clientCount', instance.clientCount);
+  writeNotNull('dataCount', instance.dataCount);
+  writeNotNull('userCount', instance.userCount);
+  writeNotNull('archivalCount', instance.archivalCount);
+  writeNotNull('dashboardCount', instance.dashboardCount);
+  val['orderAmount'] = instance.orderAmount;
+  val['reconciled'] = instance.reconciled;
+  val['processed'] = instance.processed;
+  writeNotNull('billedAmount', instance.billedAmount);
+  writeNotNull('planPrice', instance.planPrice);
+  writeNotNull('modelPrice', instance.modelPrice);
+  writeNotNull('parameterPrice', instance.parameterPrice);
+  writeNotNull('devicePrice', instance.devicePrice);
+  writeNotNull('clientPrice', instance.clientPrice);
+  writeNotNull('dataPrice', instance.dataPrice);
+  writeNotNull('userPrice', instance.userPrice);
+  writeNotNull('archivalPrice', instance.archivalPrice);
+  writeNotNull('dashboardPrice', instance.dashboardPrice);
+  writeNotNull('providerId', instance.providerId);
+  writeNotNull('transactionId', instance.transactionId);
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  writeNotNull('discount', instance.discount);
+  writeNotNull('metaData', instance.metaData);
+  writeNotNull('paymentGateway', instance.paymentGateway);
+  writeNotNull('stripePaymentSecret', instance.stripePaymentSecret);
+  val['orderStatus'] = instance.orderStatus;
+  val['id'] = instance.id;
+  val['rtype'] = instance.rtype;
+  val['createdBy'] = instance.createdBy;
+  val['createdStamp'] = instance.createdStamp;
+  val['updatedBy'] = instance.updatedBy;
+  val['updatedStamp'] = instance.updatedStamp;
+  val['domainKey'] = instance.domainKey;
+  return val;
+}
+
+OrderEntity _$OrderEntityFromJson(Map<String, dynamic> json) => OrderEntity(
+      entity: json['entity'] == null
+          ? null
+          : Order.fromJson(json['entity'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$OrderEntityToJson(OrderEntity instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  return val;
+}
+
+OrderEntityRes _$OrderEntityResFromJson(Map<String, dynamic> json) =>
+    OrderEntityRes(
+      entity: json['entity'] == null
+          ? null
+          : Order.fromJson(json['entity'] as Map<String, dynamic>),
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrderEntityResToJson(OrderEntityRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  return val;
+}
+
+OrderArray _$OrderArrayFromJson(Map<String, dynamic> json) => OrderArray(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$OrderArrayToJson(OrderArray instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+OrderArrayRes _$OrderArrayResFromJson(Map<String, dynamic> json) =>
+    OrderArrayRes(
+      values: (json['values'] as List<dynamic>?)
+              ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+      total: (json['total'] as num?)?.toInt(),
+      page: (json['page'] as num?)?.toInt(),
+      size: (json['size'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$OrderArrayResToJson(OrderArrayRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('values', instance.values?.map((e) => e.toJson()).toList());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  writeNotNull('total', instance.total);
+  writeNotNull('page', instance.page);
+  writeNotNull('size', instance.size);
+  return val;
+}
+
+PaidOrderRequest _$PaidOrderRequestFromJson(Map<String, dynamic> json) =>
+    PaidOrderRequest(
+      orgId: json['orgId'] as String? ?? '',
+      orderId: json['orderId'] as String? ?? '',
+      paymentGateway: json['paymentGateway'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
+      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
+      billedAmount: (json['billedAmount'] as num).toDouble(),
+      metaData: json['metaData'],
+    );
+
+Map<String, dynamic> _$PaidOrderRequestToJson(PaidOrderRequest instance) {
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+    'orderId': instance.orderId,
+    'paymentGateway': instance.paymentGateway,
+    'transactionId': instance.transactionId,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('transactionStamp', instance.transactionStamp);
+  val['billedAmount'] = instance.billedAmount;
+  writeNotNull('metaData', instance.metaData);
+  return val;
+}
+
+OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
+      planId: json['planId'] as String? ?? '',
+      planType: json['planType'] as String? ?? '',
+      deviceModelCount: (json['deviceModelCount'] as num).toInt(),
+      modelParametersCount: (json['modelParametersCount'] as num).toInt(),
+      devicesCount: (json['devicesCount'] as num).toInt(),
+      clientCount: (json['clientCount'] as num).toInt(),
+      userCount: (json['userCount'] as num).toInt(),
+      dashboardCount: (json['dashboardCount'] as num).toInt(),
+      dataPointsCount: (json['dataPointsCount'] as num).toInt(),
+      archivalYears: (json['archivalYears'] as num).toInt(),
+      purchaseModels: (json['purchaseModels'] as num).toInt(),
+      purchasedParameters: (json['purchasedParameters'] as num).toInt(),
+      purchasedDevices: (json['purchasedDevices'] as num).toInt(),
+      purchasedClients: (json['purchasedClients'] as num).toInt(),
+      purchasedUsers: (json['purchasedUsers'] as num).toInt(),
+      purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
+      purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
+      purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
+      canBuyDataPlan: json['canBuyDataPlan'] as bool?,
+      canBuyArchivalPlan: json['canBuyArchivalPlan'] as bool?,
+      canBuyClientPlan: json['canBuyClientPlan'] as bool?,
+      canBrand: json['canBrand'] as bool?,
+      canWhiteLabel: json['canWhiteLabel'] as bool?,
+    );
+
+Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
+  final val = <String, dynamic>{
+    'planId': instance.planId,
+    'planType': instance.planType,
+    'deviceModelCount': instance.deviceModelCount,
+    'modelParametersCount': instance.modelParametersCount,
+    'devicesCount': instance.devicesCount,
+    'clientCount': instance.clientCount,
+    'userCount': instance.userCount,
+    'dashboardCount': instance.dashboardCount,
+    'dataPointsCount': instance.dataPointsCount,
+    'archivalYears': instance.archivalYears,
+    'purchaseModels': instance.purchaseModels,
+    'purchasedParameters': instance.purchasedParameters,
+    'purchasedDevices': instance.purchasedDevices,
+    'purchasedClients': instance.purchasedClients,
+    'purchasedUsers': instance.purchasedUsers,
+    'purchasedDashboards': instance.purchasedDashboards,
+    'purchasedDataPoints': instance.purchasedDataPoints,
+    'purchasedArchivals': instance.purchasedArchivals,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
+  writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
+  writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
+  writeNotNull('canBrand', instance.canBrand);
+  writeNotNull('canWhiteLabel', instance.canWhiteLabel);
+  return val;
+}
+
+OrgPlanBase _$OrgPlanBaseFromJson(Map<String, dynamic> json) => OrgPlanBase(
+      orgId: json['orgId'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrgPlanBaseToJson(OrgPlanBase instance) =>
+    <String, dynamic>{
+      'orgId': instance.orgId,
+    };
+
+OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
+      orgId: json['orgId'] as String? ?? '',
+      planId: json['planId'] as String? ?? '',
+      planType: json['planType'] as String? ?? '',
+      deviceModelCount: (json['deviceModelCount'] as num).toInt(),
+      modelParametersCount: (json['modelParametersCount'] as num).toInt(),
+      devicesCount: (json['devicesCount'] as num).toInt(),
+      clientCount: (json['clientCount'] as num).toInt(),
+      userCount: (json['userCount'] as num).toInt(),
+      dashboardCount: (json['dashboardCount'] as num).toInt(),
+      dataPointsCount: (json['dataPointsCount'] as num).toInt(),
+      archivalYears: (json['archivalYears'] as num).toInt(),
+      purchaseModels: (json['purchaseModels'] as num).toInt(),
+      purchasedParameters: (json['purchasedParameters'] as num).toInt(),
+      purchasedDevices: (json['purchasedDevices'] as num).toInt(),
+      purchasedClients: (json['purchasedClients'] as num).toInt(),
+      purchasedUsers: (json['purchasedUsers'] as num).toInt(),
+      purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
+      purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
+      purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
+      canBuyDataPlan: json['canBuyDataPlan'] as bool?,
+      canBuyArchivalPlan: json['canBuyArchivalPlan'] as bool?,
+      canBuyClientPlan: json['canBuyClientPlan'] as bool?,
+      canBrand: json['canBrand'] as bool?,
+      canWhiteLabel: json['canWhiteLabel'] as bool?,
+      id: json['id'] as String? ?? '',
+      rtype: json['rtype'] as String? ?? '',
+      createdBy: json['createdBy'] as String? ?? '',
+      createdStamp: (json['createdStamp'] as num).toInt(),
+      updatedBy: json['updatedBy'] as String? ?? '',
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
+      domainKey: json['domainKey'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+    'planId': instance.planId,
+    'planType': instance.planType,
+    'deviceModelCount': instance.deviceModelCount,
+    'modelParametersCount': instance.modelParametersCount,
+    'devicesCount': instance.devicesCount,
+    'clientCount': instance.clientCount,
+    'userCount': instance.userCount,
+    'dashboardCount': instance.dashboardCount,
+    'dataPointsCount': instance.dataPointsCount,
+    'archivalYears': instance.archivalYears,
+    'purchaseModels': instance.purchaseModels,
+    'purchasedParameters': instance.purchasedParameters,
+    'purchasedDevices': instance.purchasedDevices,
+    'purchasedClients': instance.purchasedClients,
+    'purchasedUsers': instance.purchasedUsers,
+    'purchasedDashboards': instance.purchasedDashboards,
+    'purchasedDataPoints': instance.purchasedDataPoints,
+    'purchasedArchivals': instance.purchasedArchivals,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
+  writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
+  writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
+  writeNotNull('canBrand', instance.canBrand);
+  writeNotNull('canWhiteLabel', instance.canWhiteLabel);
+  val['id'] = instance.id;
+  val['rtype'] = instance.rtype;
+  val['createdBy'] = instance.createdBy;
+  val['createdStamp'] = instance.createdStamp;
+  val['updatedBy'] = instance.updatedBy;
+  val['updatedStamp'] = instance.updatedStamp;
+  val['domainKey'] = instance.domainKey;
+  return val;
+}
+
+OrgPlanEntity _$OrgPlanEntityFromJson(Map<String, dynamic> json) =>
+    OrgPlanEntity(
+      entity: json['entity'] == null
+          ? null
+          : OrgPlan.fromJson(json['entity'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$OrgPlanEntityToJson(OrgPlanEntity instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  return val;
+}
+
+OrgPlanEntityRes _$OrgPlanEntityResFromJson(Map<String, dynamic> json) =>
+    OrgPlanEntityRes(
+      entity: json['entity'] == null
+          ? null
+          : OrgPlan.fromJson(json['entity'] as Map<String, dynamic>),
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$OrgPlanEntityResToJson(OrgPlanEntityRes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('entity', instance.entity?.toJson());
+  val['ok'] = instance.ok;
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  return val;
+}
+
+StripePaymentSecretArgs _$StripePaymentSecretArgsFromJson(
+        Map<String, dynamic> json) =>
+    StripePaymentSecretArgs(
+      orgId: json['orgId'] as String? ?? '',
+      orderId: json['orderId'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$StripePaymentSecretArgsToJson(
+        StripePaymentSecretArgs instance) =>
+    <String, dynamic>{
+      'orgId': instance.orgId,
+      'orderId': instance.orderId,
+      'currency': instance.currency,
+    };
