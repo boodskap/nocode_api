@@ -3786,10 +3786,16 @@
     "TeamProfile": {
       "allOf": [
         {
-          "$ref": "#/definitions/OrgProfile"
+          "$ref": "#/definitions/ProfileInfo"
+        },
+        {
+          "$ref": "#/definitions/OrgProfileBase"
         },
         {
           "$ref": "#/definitions/TeamProfileBase"
+        },
+        {
+          "$ref": "#/definitions/BaseEntity"
         },
         {
           "type": "object"

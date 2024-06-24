@@ -442,19 +442,65 @@ Map<String, dynamic> _$TeamProfileBaseToJson(TeamProfileBase instance) =>
     };
 
 TeamProfile _$TeamProfileFromJson(Map<String, dynamic> json) => TeamProfile(
-      teamId: json['teamId'] as String? ?? '',
+      address: json['address'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      website: json['website'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      icon: json['icon'] as String? ?? '',
+      logo: json['logo'] as String? ?? '',
+      landscapeBanner: json['landscapeBanner'] as String? ?? '',
+      portraitBanner: json['portraitBanner'] as String? ?? '',
+      settings: json['settings'] == null
+          ? null
+          : ProfileSettings.fromJson(json['settings'] as Map<String, dynamic>),
       subscribed: json['subscribed'] as bool? ?? false,
       orgId: json['orgId'] as String? ?? '',
       profileId: json['profileId'] as String? ?? '',
+      teamId: json['teamId'] as String? ?? '',
+      id: json['id'] as String? ?? '',
+      rtype: json['rtype'] as String? ?? '',
+      createdBy: json['createdBy'] as String? ?? '',
+      createdStamp: (json['createdStamp'] as num).toInt(),
+      updatedBy: json['updatedBy'] as String? ?? '',
+      updatedStamp: (json['updatedStamp'] as num).toInt(),
+      domainKey: json['domainKey'] as String? ?? '',
     );
 
-Map<String, dynamic> _$TeamProfileToJson(TeamProfile instance) =>
-    <String, dynamic>{
-      'teamId': instance.teamId,
-      'subscribed': instance.subscribed,
-      'orgId': instance.orgId,
-      'profileId': instance.profileId,
-    };
+Map<String, dynamic> _$TeamProfileToJson(TeamProfile instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('address', instance.address);
+  val['email'] = instance.email;
+  val['name'] = instance.name;
+  writeNotNull('phone', instance.phone);
+  writeNotNull('website', instance.website);
+  writeNotNull('description', instance.description);
+  writeNotNull('icon', instance.icon);
+  writeNotNull('logo', instance.logo);
+  writeNotNull('landscapeBanner', instance.landscapeBanner);
+  writeNotNull('portraitBanner', instance.portraitBanner);
+  writeNotNull('settings', instance.settings?.toJson());
+  val['subscribed'] = instance.subscribed;
+  val['orgId'] = instance.orgId;
+  val['profileId'] = instance.profileId;
+  val['teamId'] = instance.teamId;
+  val['id'] = instance.id;
+  val['rtype'] = instance.rtype;
+  val['createdBy'] = instance.createdBy;
+  val['createdStamp'] = instance.createdStamp;
+  val['updatedBy'] = instance.updatedBy;
+  val['updatedStamp'] = instance.updatedStamp;
+  val['domainKey'] = instance.domainKey;
+  return val;
+}
 
 TeamProfileEntity _$TeamProfileEntityFromJson(Map<String, dynamic> json) =>
     TeamProfileEntity(
