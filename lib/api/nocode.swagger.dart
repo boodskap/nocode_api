@@ -3449,10 +3449,28 @@ extension $TeamProfileBaseExtension on TeamProfileBase {
 @JsonSerializable(explicitToJson: true)
 class TeamProfile {
   const TeamProfile({
-    required this.teamId,
+    this.address,
+    required this.email,
+    required this.name,
+    this.phone,
+    this.website,
+    this.description,
+    this.icon,
+    this.logo,
+    this.landscapeBanner,
+    this.portraitBanner,
+    this.settings,
     required this.subscribed,
     required this.orgId,
     required this.profileId,
+    required this.teamId,
+    required this.id,
+    required this.rtype,
+    required this.createdBy,
+    required this.createdStamp,
+    required this.updatedBy,
+    required this.updatedStamp,
+    required this.domainKey,
   });
 
   factory TeamProfile.fromJson(Map<String, dynamic> json) =>
@@ -3461,22 +3479,84 @@ class TeamProfile {
   static const toJsonFactory = _$TeamProfileToJson;
   Map<String, dynamic> toJson() => _$TeamProfileToJson(this);
 
-  @JsonKey(name: 'teamId', includeIfNull: false, defaultValue: '')
-  final String teamId;
+  @JsonKey(name: 'address', includeIfNull: false, defaultValue: '')
+  final String? address;
+  @JsonKey(name: 'email', includeIfNull: false, defaultValue: '')
+  final String email;
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
+  @JsonKey(name: 'phone', includeIfNull: false, defaultValue: '')
+  final String? phone;
+  @JsonKey(name: 'website', includeIfNull: false, defaultValue: '')
+  final String? website;
+  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
+  final String? description;
+  @JsonKey(name: 'icon', includeIfNull: false, defaultValue: '')
+  final String? icon;
+  @JsonKey(name: 'logo', includeIfNull: false, defaultValue: '')
+  final String? logo;
+  @JsonKey(name: 'landscapeBanner', includeIfNull: false, defaultValue: '')
+  final String? landscapeBanner;
+  @JsonKey(name: 'portraitBanner', includeIfNull: false, defaultValue: '')
+  final String? portraitBanner;
+  @JsonKey(name: 'settings', includeIfNull: false)
+  final ProfileSettings? settings;
   @JsonKey(name: 'subscribed', includeIfNull: false, defaultValue: false)
   final bool subscribed;
   @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
   final String orgId;
   @JsonKey(name: 'profileId', includeIfNull: false, defaultValue: '')
   final String profileId;
+  @JsonKey(name: 'teamId', includeIfNull: false, defaultValue: '')
+  final String teamId;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
+  @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
+  final String rtype;
+  @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
+  final String createdBy;
+  @JsonKey(name: 'createdStamp', includeIfNull: false)
+  final int createdStamp;
+  @JsonKey(name: 'updatedBy', includeIfNull: false, defaultValue: '')
+  final String updatedBy;
+  @JsonKey(name: 'updatedStamp', includeIfNull: false)
+  final int updatedStamp;
+  @JsonKey(name: 'domainKey', includeIfNull: false, defaultValue: '')
+  final String domainKey;
   static const fromJsonFactory = _$TeamProfileFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TeamProfile &&
-            (identical(other.teamId, teamId) ||
-                const DeepCollectionEquality().equals(other.teamId, teamId)) &&
+            (identical(other.address, address) ||
+                const DeepCollectionEquality()
+                    .equals(other.address, address)) &&
+            (identical(other.email, email) ||
+                const DeepCollectionEquality().equals(other.email, email)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.phone, phone) ||
+                const DeepCollectionEquality().equals(other.phone, phone)) &&
+            (identical(other.website, website) ||
+                const DeepCollectionEquality()
+                    .equals(other.website, website)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.icon, icon) ||
+                const DeepCollectionEquality().equals(other.icon, icon)) &&
+            (identical(other.logo, logo) ||
+                const DeepCollectionEquality().equals(other.logo, logo)) &&
+            (identical(other.landscapeBanner, landscapeBanner) ||
+                const DeepCollectionEquality()
+                    .equals(other.landscapeBanner, landscapeBanner)) &&
+            (identical(other.portraitBanner, portraitBanner) ||
+                const DeepCollectionEquality()
+                    .equals(other.portraitBanner, portraitBanner)) &&
+            (identical(other.settings, settings) ||
+                const DeepCollectionEquality()
+                    .equals(other.settings, settings)) &&
             (identical(other.subscribed, subscribed) ||
                 const DeepCollectionEquality()
                     .equals(other.subscribed, subscribed)) &&
@@ -3484,7 +3564,28 @@ class TeamProfile {
                 const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.profileId, profileId) ||
                 const DeepCollectionEquality()
-                    .equals(other.profileId, profileId)));
+                    .equals(other.profileId, profileId)) &&
+            (identical(other.teamId, teamId) ||
+                const DeepCollectionEquality().equals(other.teamId, teamId)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.rtype, rtype) ||
+                const DeepCollectionEquality().equals(other.rtype, rtype)) &&
+            (identical(other.createdBy, createdBy) ||
+                const DeepCollectionEquality()
+                    .equals(other.createdBy, createdBy)) &&
+            (identical(other.createdStamp, createdStamp) ||
+                const DeepCollectionEquality()
+                    .equals(other.createdStamp, createdStamp)) &&
+            (identical(other.updatedBy, updatedBy) ||
+                const DeepCollectionEquality()
+                    .equals(other.updatedBy, updatedBy)) &&
+            (identical(other.updatedStamp, updatedStamp) ||
+                const DeepCollectionEquality()
+                    .equals(other.updatedStamp, updatedStamp)) &&
+            (identical(other.domainKey, domainKey) ||
+                const DeepCollectionEquality()
+                    .equals(other.domainKey, domainKey)));
   }
 
   @override
@@ -3492,33 +3593,133 @@ class TeamProfile {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(teamId) ^
+      const DeepCollectionEquality().hash(address) ^
+      const DeepCollectionEquality().hash(email) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(phone) ^
+      const DeepCollectionEquality().hash(website) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(icon) ^
+      const DeepCollectionEquality().hash(logo) ^
+      const DeepCollectionEquality().hash(landscapeBanner) ^
+      const DeepCollectionEquality().hash(portraitBanner) ^
+      const DeepCollectionEquality().hash(settings) ^
       const DeepCollectionEquality().hash(subscribed) ^
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(profileId) ^
+      const DeepCollectionEquality().hash(teamId) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(rtype) ^
+      const DeepCollectionEquality().hash(createdBy) ^
+      const DeepCollectionEquality().hash(createdStamp) ^
+      const DeepCollectionEquality().hash(updatedBy) ^
+      const DeepCollectionEquality().hash(updatedStamp) ^
+      const DeepCollectionEquality().hash(domainKey) ^
       runtimeType.hashCode;
 }
 
 extension $TeamProfileExtension on TeamProfile {
   TeamProfile copyWith(
-      {String? teamId, bool? subscribed, String? orgId, String? profileId}) {
+      {String? address,
+      String? email,
+      String? name,
+      String? phone,
+      String? website,
+      String? description,
+      String? icon,
+      String? logo,
+      String? landscapeBanner,
+      String? portraitBanner,
+      ProfileSettings? settings,
+      bool? subscribed,
+      String? orgId,
+      String? profileId,
+      String? teamId,
+      String? id,
+      String? rtype,
+      String? createdBy,
+      int? createdStamp,
+      String? updatedBy,
+      int? updatedStamp,
+      String? domainKey}) {
     return TeamProfile(
-        teamId: teamId ?? this.teamId,
+        address: address ?? this.address,
+        email: email ?? this.email,
+        name: name ?? this.name,
+        phone: phone ?? this.phone,
+        website: website ?? this.website,
+        description: description ?? this.description,
+        icon: icon ?? this.icon,
+        logo: logo ?? this.logo,
+        landscapeBanner: landscapeBanner ?? this.landscapeBanner,
+        portraitBanner: portraitBanner ?? this.portraitBanner,
+        settings: settings ?? this.settings,
         subscribed: subscribed ?? this.subscribed,
         orgId: orgId ?? this.orgId,
-        profileId: profileId ?? this.profileId);
+        profileId: profileId ?? this.profileId,
+        teamId: teamId ?? this.teamId,
+        id: id ?? this.id,
+        rtype: rtype ?? this.rtype,
+        createdBy: createdBy ?? this.createdBy,
+        createdStamp: createdStamp ?? this.createdStamp,
+        updatedBy: updatedBy ?? this.updatedBy,
+        updatedStamp: updatedStamp ?? this.updatedStamp,
+        domainKey: domainKey ?? this.domainKey);
   }
 
   TeamProfile copyWithWrapped(
-      {Wrapped<String>? teamId,
+      {Wrapped<String?>? address,
+      Wrapped<String>? email,
+      Wrapped<String>? name,
+      Wrapped<String?>? phone,
+      Wrapped<String?>? website,
+      Wrapped<String?>? description,
+      Wrapped<String?>? icon,
+      Wrapped<String?>? logo,
+      Wrapped<String?>? landscapeBanner,
+      Wrapped<String?>? portraitBanner,
+      Wrapped<ProfileSettings?>? settings,
       Wrapped<bool>? subscribed,
       Wrapped<String>? orgId,
-      Wrapped<String>? profileId}) {
+      Wrapped<String>? profileId,
+      Wrapped<String>? teamId,
+      Wrapped<String>? id,
+      Wrapped<String>? rtype,
+      Wrapped<String>? createdBy,
+      Wrapped<int>? createdStamp,
+      Wrapped<String>? updatedBy,
+      Wrapped<int>? updatedStamp,
+      Wrapped<String>? domainKey}) {
     return TeamProfile(
-        teamId: (teamId != null ? teamId.value : this.teamId),
+        address: (address != null ? address.value : this.address),
+        email: (email != null ? email.value : this.email),
+        name: (name != null ? name.value : this.name),
+        phone: (phone != null ? phone.value : this.phone),
+        website: (website != null ? website.value : this.website),
+        description:
+            (description != null ? description.value : this.description),
+        icon: (icon != null ? icon.value : this.icon),
+        logo: (logo != null ? logo.value : this.logo),
+        landscapeBanner: (landscapeBanner != null
+            ? landscapeBanner.value
+            : this.landscapeBanner),
+        portraitBanner: (portraitBanner != null
+            ? portraitBanner.value
+            : this.portraitBanner),
+        settings: (settings != null ? settings.value : this.settings),
         subscribed: (subscribed != null ? subscribed.value : this.subscribed),
         orgId: (orgId != null ? orgId.value : this.orgId),
-        profileId: (profileId != null ? profileId.value : this.profileId));
+        profileId: (profileId != null ? profileId.value : this.profileId),
+        teamId: (teamId != null ? teamId.value : this.teamId),
+        id: (id != null ? id.value : this.id),
+        rtype: (rtype != null ? rtype.value : this.rtype),
+        createdBy: (createdBy != null ? createdBy.value : this.createdBy),
+        createdStamp:
+            (createdStamp != null ? createdStamp.value : this.createdStamp),
+        updatedBy: (updatedBy != null ? updatedBy.value : this.updatedBy),
+        updatedStamp:
+            (updatedStamp != null ? updatedStamp.value : this.updatedStamp),
+        domainKey: (domainKey != null ? domainKey.value : this.domainKey));
   }
 }
 
