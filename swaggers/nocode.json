@@ -5516,15 +5516,21 @@
         "userCount",
         "dashboardCount",
         "dataPointsCount",
-        "archivalYears",
-        "purchaseModels",
+        "archivalYearsCount",
+        "purchasedModels",
         "purchasedParameters",
         "purchasedDevices",
         "purchasedClients",
         "purchasedUsers",
         "purchasedDashboards",
         "purchasedDataPoints",
-        "purchasedArchivals"
+        "purchasedArchivals",
+        "totalDevicesCount",
+        "totalClientCount",
+        "totalUserCount",
+        "totalDashboardCount",
+        "totalArchivalYearsCount",
+        "pooledDataPointsCount"
       ],
       "properties": {
         "planId": {
@@ -5561,11 +5567,11 @@
           "type": "integer",
           "format": "int64"
         },
-        "archivalYears": {
+        "archivalYearsCount": {
           "type": "integer",
           "format": "int64"
         },
-        "purchaseModels": {
+        "purchasedModels": {
           "type": "integer",
           "format": "int64"
         },
@@ -5594,6 +5600,38 @@
           "format": "int64"
         },
         "purchasedArchivals": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalDeviceModelCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalModelParametersCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalDevicesCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalClientCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalUserCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalDashboardCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalArchivalYearsCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "pooledDataPointsCount": {
           "type": "integer",
           "format": "int64"
         },

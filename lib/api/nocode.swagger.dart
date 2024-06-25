@@ -12657,8 +12657,8 @@ class OrgPlanInfo {
     required this.userCount,
     required this.dashboardCount,
     required this.dataPointsCount,
-    required this.archivalYears,
-    required this.purchaseModels,
+    required this.archivalYearsCount,
+    required this.purchasedModels,
     required this.purchasedParameters,
     required this.purchasedDevices,
     required this.purchasedClients,
@@ -12666,6 +12666,14 @@ class OrgPlanInfo {
     required this.purchasedDashboards,
     required this.purchasedDataPoints,
     required this.purchasedArchivals,
+    this.totalDeviceModelCount,
+    this.totalModelParametersCount,
+    required this.totalDevicesCount,
+    required this.totalClientCount,
+    required this.totalUserCount,
+    required this.totalDashboardCount,
+    required this.totalArchivalYearsCount,
+    required this.pooledDataPointsCount,
     this.canBuyDataPlan,
     this.canBuyArchivalPlan,
     this.canBuyClientPlan,
@@ -12697,10 +12705,10 @@ class OrgPlanInfo {
   final int dashboardCount;
   @JsonKey(name: 'dataPointsCount', includeIfNull: false)
   final int dataPointsCount;
-  @JsonKey(name: 'archivalYears', includeIfNull: false)
-  final int archivalYears;
-  @JsonKey(name: 'purchaseModels', includeIfNull: false)
-  final int purchaseModels;
+  @JsonKey(name: 'archivalYearsCount', includeIfNull: false)
+  final int archivalYearsCount;
+  @JsonKey(name: 'purchasedModels', includeIfNull: false)
+  final int purchasedModels;
   @JsonKey(name: 'purchasedParameters', includeIfNull: false)
   final int purchasedParameters;
   @JsonKey(name: 'purchasedDevices', includeIfNull: false)
@@ -12715,6 +12723,22 @@ class OrgPlanInfo {
   final int purchasedDataPoints;
   @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
   final int purchasedArchivals;
+  @JsonKey(name: 'totalDeviceModelCount', includeIfNull: false)
+  final int? totalDeviceModelCount;
+  @JsonKey(name: 'totalModelParametersCount', includeIfNull: false)
+  final int? totalModelParametersCount;
+  @JsonKey(name: 'totalDevicesCount', includeIfNull: false)
+  final int totalDevicesCount;
+  @JsonKey(name: 'totalClientCount', includeIfNull: false)
+  final int totalClientCount;
+  @JsonKey(name: 'totalUserCount', includeIfNull: false)
+  final int totalUserCount;
+  @JsonKey(name: 'totalDashboardCount', includeIfNull: false)
+  final int totalDashboardCount;
+  @JsonKey(name: 'totalArchivalYearsCount', includeIfNull: false)
+  final int totalArchivalYearsCount;
+  @JsonKey(name: 'pooledDataPointsCount', includeIfNull: false)
+  final int pooledDataPointsCount;
   @JsonKey(name: 'canBuyDataPlan', includeIfNull: false)
   final bool? canBuyDataPlan;
   @JsonKey(name: 'canBuyArchivalPlan', includeIfNull: false)
@@ -12757,12 +12781,12 @@ class OrgPlanInfo {
             (identical(other.dataPointsCount, dataPointsCount) ||
                 const DeepCollectionEquality()
                     .equals(other.dataPointsCount, dataPointsCount)) &&
-            (identical(other.archivalYears, archivalYears) ||
+            (identical(other.archivalYearsCount, archivalYearsCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.archivalYears, archivalYears)) &&
-            (identical(other.purchaseModels, purchaseModels) ||
+                    .equals(other.archivalYearsCount, archivalYearsCount)) &&
+            (identical(other.purchasedModels, purchasedModels) ||
                 const DeepCollectionEquality()
-                    .equals(other.purchaseModels, purchaseModels)) &&
+                    .equals(other.purchasedModels, purchasedModels)) &&
             (identical(other.purchasedParameters, purchasedParameters) ||
                 const DeepCollectionEquality()
                     .equals(other.purchasedParameters, purchasedParameters)) &&
@@ -12784,18 +12808,25 @@ class OrgPlanInfo {
             (identical(other.purchasedArchivals, purchasedArchivals) ||
                 const DeepCollectionEquality()
                     .equals(other.purchasedArchivals, purchasedArchivals)) &&
-            (identical(other.canBuyDataPlan, canBuyDataPlan) ||
+            (identical(other.totalDeviceModelCount, totalDeviceModelCount) ||
+                const DeepCollectionEquality().equals(
+                    other.totalDeviceModelCount, totalDeviceModelCount)) &&
+            (identical(other.totalModelParametersCount, totalModelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.totalModelParametersCount,
+                    totalModelParametersCount)) &&
+            (identical(other.totalDevicesCount, totalDevicesCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.canBuyDataPlan, canBuyDataPlan)) &&
-            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
-            (identical(other.canBuyClientPlan, canBuyClientPlan) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBuyClientPlan, canBuyClientPlan)) &&
-            (identical(other.canBrand, canBrand) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBrand, canBrand)) &&
+                    .equals(other.totalDevicesCount, totalDevicesCount)) &&
+            (identical(other.totalClientCount, totalClientCount) || const DeepCollectionEquality().equals(other.totalClientCount, totalClientCount)) &&
+            (identical(other.totalUserCount, totalUserCount) || const DeepCollectionEquality().equals(other.totalUserCount, totalUserCount)) &&
+            (identical(other.totalDashboardCount, totalDashboardCount) || const DeepCollectionEquality().equals(other.totalDashboardCount, totalDashboardCount)) &&
+            (identical(other.totalArchivalYearsCount, totalArchivalYearsCount) || const DeepCollectionEquality().equals(other.totalArchivalYearsCount, totalArchivalYearsCount)) &&
+            (identical(other.pooledDataPointsCount, pooledDataPointsCount) || const DeepCollectionEquality().equals(other.pooledDataPointsCount, pooledDataPointsCount)) &&
+            (identical(other.canBuyDataPlan, canBuyDataPlan) || const DeepCollectionEquality().equals(other.canBuyDataPlan, canBuyDataPlan)) &&
+            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) || const DeepCollectionEquality().equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
+            (identical(other.canBuyClientPlan, canBuyClientPlan) || const DeepCollectionEquality().equals(other.canBuyClientPlan, canBuyClientPlan)) &&
+            (identical(other.canBrand, canBrand) || const DeepCollectionEquality().equals(other.canBrand, canBrand)) &&
             (identical(other.canWhiteLabel, canWhiteLabel) || const DeepCollectionEquality().equals(other.canWhiteLabel, canWhiteLabel)));
   }
 
@@ -12813,8 +12844,8 @@ class OrgPlanInfo {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
       const DeepCollectionEquality().hash(dataPointsCount) ^
-      const DeepCollectionEquality().hash(archivalYears) ^
-      const DeepCollectionEquality().hash(purchaseModels) ^
+      const DeepCollectionEquality().hash(archivalYearsCount) ^
+      const DeepCollectionEquality().hash(purchasedModels) ^
       const DeepCollectionEquality().hash(purchasedParameters) ^
       const DeepCollectionEquality().hash(purchasedDevices) ^
       const DeepCollectionEquality().hash(purchasedClients) ^
@@ -12822,6 +12853,14 @@ class OrgPlanInfo {
       const DeepCollectionEquality().hash(purchasedDashboards) ^
       const DeepCollectionEquality().hash(purchasedDataPoints) ^
       const DeepCollectionEquality().hash(purchasedArchivals) ^
+      const DeepCollectionEquality().hash(totalDeviceModelCount) ^
+      const DeepCollectionEquality().hash(totalModelParametersCount) ^
+      const DeepCollectionEquality().hash(totalDevicesCount) ^
+      const DeepCollectionEquality().hash(totalClientCount) ^
+      const DeepCollectionEquality().hash(totalUserCount) ^
+      const DeepCollectionEquality().hash(totalDashboardCount) ^
+      const DeepCollectionEquality().hash(totalArchivalYearsCount) ^
+      const DeepCollectionEquality().hash(pooledDataPointsCount) ^
       const DeepCollectionEquality().hash(canBuyDataPlan) ^
       const DeepCollectionEquality().hash(canBuyArchivalPlan) ^
       const DeepCollectionEquality().hash(canBuyClientPlan) ^
@@ -12841,8 +12880,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
       int? userCount,
       int? dashboardCount,
       int? dataPointsCount,
-      int? archivalYears,
-      int? purchaseModels,
+      int? archivalYearsCount,
+      int? purchasedModels,
       int? purchasedParameters,
       int? purchasedDevices,
       int? purchasedClients,
@@ -12850,6 +12889,14 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
       int? purchasedDashboards,
       int? purchasedDataPoints,
       int? purchasedArchivals,
+      int? totalDeviceModelCount,
+      int? totalModelParametersCount,
+      int? totalDevicesCount,
+      int? totalClientCount,
+      int? totalUserCount,
+      int? totalDashboardCount,
+      int? totalArchivalYearsCount,
+      int? pooledDataPointsCount,
       bool? canBuyDataPlan,
       bool? canBuyArchivalPlan,
       bool? canBuyClientPlan,
@@ -12865,8 +12912,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
         userCount: userCount ?? this.userCount,
         dashboardCount: dashboardCount ?? this.dashboardCount,
         dataPointsCount: dataPointsCount ?? this.dataPointsCount,
-        archivalYears: archivalYears ?? this.archivalYears,
-        purchaseModels: purchaseModels ?? this.purchaseModels,
+        archivalYearsCount: archivalYearsCount ?? this.archivalYearsCount,
+        purchasedModels: purchasedModels ?? this.purchasedModels,
         purchasedParameters: purchasedParameters ?? this.purchasedParameters,
         purchasedDevices: purchasedDevices ?? this.purchasedDevices,
         purchasedClients: purchasedClients ?? this.purchasedClients,
@@ -12874,6 +12921,18 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
         purchasedDashboards: purchasedDashboards ?? this.purchasedDashboards,
         purchasedDataPoints: purchasedDataPoints ?? this.purchasedDataPoints,
         purchasedArchivals: purchasedArchivals ?? this.purchasedArchivals,
+        totalDeviceModelCount:
+            totalDeviceModelCount ?? this.totalDeviceModelCount,
+        totalModelParametersCount:
+            totalModelParametersCount ?? this.totalModelParametersCount,
+        totalDevicesCount: totalDevicesCount ?? this.totalDevicesCount,
+        totalClientCount: totalClientCount ?? this.totalClientCount,
+        totalUserCount: totalUserCount ?? this.totalUserCount,
+        totalDashboardCount: totalDashboardCount ?? this.totalDashboardCount,
+        totalArchivalYearsCount:
+            totalArchivalYearsCount ?? this.totalArchivalYearsCount,
+        pooledDataPointsCount:
+            pooledDataPointsCount ?? this.pooledDataPointsCount,
         canBuyDataPlan: canBuyDataPlan ?? this.canBuyDataPlan,
         canBuyArchivalPlan: canBuyArchivalPlan ?? this.canBuyArchivalPlan,
         canBuyClientPlan: canBuyClientPlan ?? this.canBuyClientPlan,
@@ -12891,8 +12950,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
       Wrapped<int>? userCount,
       Wrapped<int>? dashboardCount,
       Wrapped<int>? dataPointsCount,
-      Wrapped<int>? archivalYears,
-      Wrapped<int>? purchaseModels,
+      Wrapped<int>? archivalYearsCount,
+      Wrapped<int>? purchasedModels,
       Wrapped<int>? purchasedParameters,
       Wrapped<int>? purchasedDevices,
       Wrapped<int>? purchasedClients,
@@ -12900,6 +12959,14 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
       Wrapped<int>? purchasedDashboards,
       Wrapped<int>? purchasedDataPoints,
       Wrapped<int>? purchasedArchivals,
+      Wrapped<int?>? totalDeviceModelCount,
+      Wrapped<int?>? totalModelParametersCount,
+      Wrapped<int>? totalDevicesCount,
+      Wrapped<int>? totalClientCount,
+      Wrapped<int>? totalUserCount,
+      Wrapped<int>? totalDashboardCount,
+      Wrapped<int>? totalArchivalYearsCount,
+      Wrapped<int>? pooledDataPointsCount,
       Wrapped<bool?>? canBuyDataPlan,
       Wrapped<bool?>? canBuyArchivalPlan,
       Wrapped<bool?>? canBuyClientPlan,
@@ -12925,11 +12992,12 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
         dataPointsCount: (dataPointsCount != null
             ? dataPointsCount.value
             : this.dataPointsCount),
-        archivalYears:
-            (archivalYears != null ? archivalYears.value : this.archivalYears),
-        purchaseModels: (purchaseModels != null
-            ? purchaseModels.value
-            : this.purchaseModels),
+        archivalYearsCount: (archivalYearsCount != null
+            ? archivalYearsCount.value
+            : this.archivalYearsCount),
+        purchasedModels: (purchasedModels != null
+            ? purchasedModels.value
+            : this.purchasedModels),
         purchasedParameters: (purchasedParameters != null
             ? purchasedParameters.value
             : this.purchasedParameters),
@@ -12951,6 +13019,30 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
         purchasedArchivals: (purchasedArchivals != null
             ? purchasedArchivals.value
             : this.purchasedArchivals),
+        totalDeviceModelCount: (totalDeviceModelCount != null
+            ? totalDeviceModelCount.value
+            : this.totalDeviceModelCount),
+        totalModelParametersCount: (totalModelParametersCount != null
+            ? totalModelParametersCount.value
+            : this.totalModelParametersCount),
+        totalDevicesCount: (totalDevicesCount != null
+            ? totalDevicesCount.value
+            : this.totalDevicesCount),
+        totalClientCount: (totalClientCount != null
+            ? totalClientCount.value
+            : this.totalClientCount),
+        totalUserCount: (totalUserCount != null
+            ? totalUserCount.value
+            : this.totalUserCount),
+        totalDashboardCount: (totalDashboardCount != null
+            ? totalDashboardCount.value
+            : this.totalDashboardCount),
+        totalArchivalYearsCount: (totalArchivalYearsCount != null
+            ? totalArchivalYearsCount.value
+            : this.totalArchivalYearsCount),
+        pooledDataPointsCount: (pooledDataPointsCount != null
+            ? pooledDataPointsCount.value
+            : this.pooledDataPointsCount),
         canBuyDataPlan: (canBuyDataPlan != null
             ? canBuyDataPlan.value
             : this.canBuyDataPlan),
@@ -13021,8 +13113,8 @@ class OrgPlan {
     required this.userCount,
     required this.dashboardCount,
     required this.dataPointsCount,
-    required this.archivalYears,
-    required this.purchaseModels,
+    required this.archivalYearsCount,
+    required this.purchasedModels,
     required this.purchasedParameters,
     required this.purchasedDevices,
     required this.purchasedClients,
@@ -13030,6 +13122,14 @@ class OrgPlan {
     required this.purchasedDashboards,
     required this.purchasedDataPoints,
     required this.purchasedArchivals,
+    this.totalDeviceModelCount,
+    this.totalModelParametersCount,
+    required this.totalDevicesCount,
+    required this.totalClientCount,
+    required this.totalUserCount,
+    required this.totalDashboardCount,
+    required this.totalArchivalYearsCount,
+    required this.pooledDataPointsCount,
     this.canBuyDataPlan,
     this.canBuyArchivalPlan,
     this.canBuyClientPlan,
@@ -13070,10 +13170,10 @@ class OrgPlan {
   final int dashboardCount;
   @JsonKey(name: 'dataPointsCount', includeIfNull: false)
   final int dataPointsCount;
-  @JsonKey(name: 'archivalYears', includeIfNull: false)
-  final int archivalYears;
-  @JsonKey(name: 'purchaseModels', includeIfNull: false)
-  final int purchaseModels;
+  @JsonKey(name: 'archivalYearsCount', includeIfNull: false)
+  final int archivalYearsCount;
+  @JsonKey(name: 'purchasedModels', includeIfNull: false)
+  final int purchasedModels;
   @JsonKey(name: 'purchasedParameters', includeIfNull: false)
   final int purchasedParameters;
   @JsonKey(name: 'purchasedDevices', includeIfNull: false)
@@ -13088,6 +13188,22 @@ class OrgPlan {
   final int purchasedDataPoints;
   @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
   final int purchasedArchivals;
+  @JsonKey(name: 'totalDeviceModelCount', includeIfNull: false)
+  final int? totalDeviceModelCount;
+  @JsonKey(name: 'totalModelParametersCount', includeIfNull: false)
+  final int? totalModelParametersCount;
+  @JsonKey(name: 'totalDevicesCount', includeIfNull: false)
+  final int totalDevicesCount;
+  @JsonKey(name: 'totalClientCount', includeIfNull: false)
+  final int totalClientCount;
+  @JsonKey(name: 'totalUserCount', includeIfNull: false)
+  final int totalUserCount;
+  @JsonKey(name: 'totalDashboardCount', includeIfNull: false)
+  final int totalDashboardCount;
+  @JsonKey(name: 'totalArchivalYearsCount', includeIfNull: false)
+  final int totalArchivalYearsCount;
+  @JsonKey(name: 'pooledDataPointsCount', includeIfNull: false)
+  final int pooledDataPointsCount;
   @JsonKey(name: 'canBuyDataPlan', includeIfNull: false)
   final bool? canBuyDataPlan;
   @JsonKey(name: 'canBuyArchivalPlan', includeIfNull: false)
@@ -13146,12 +13262,12 @@ class OrgPlan {
             (identical(other.dataPointsCount, dataPointsCount) ||
                 const DeepCollectionEquality()
                     .equals(other.dataPointsCount, dataPointsCount)) &&
-            (identical(other.archivalYears, archivalYears) ||
+            (identical(other.archivalYearsCount, archivalYearsCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.archivalYears, archivalYears)) &&
-            (identical(other.purchaseModels, purchaseModels) ||
+                    .equals(other.archivalYearsCount, archivalYearsCount)) &&
+            (identical(other.purchasedModels, purchasedModels) ||
                 const DeepCollectionEquality()
-                    .equals(other.purchaseModels, purchaseModels)) &&
+                    .equals(other.purchasedModels, purchasedModels)) &&
             (identical(other.purchasedParameters, purchasedParameters) ||
                 const DeepCollectionEquality()
                     .equals(other.purchasedParameters, purchasedParameters)) &&
@@ -13173,17 +13289,24 @@ class OrgPlan {
             (identical(other.purchasedArchivals, purchasedArchivals) ||
                 const DeepCollectionEquality()
                     .equals(other.purchasedArchivals, purchasedArchivals)) &&
-            (identical(other.canBuyDataPlan, canBuyDataPlan) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBuyDataPlan, canBuyDataPlan)) &&
-            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
-            (identical(other.canBuyClientPlan, canBuyClientPlan) ||
-                const DeepCollectionEquality()
-                    .equals(other.canBuyClientPlan, canBuyClientPlan)) &&
-            (identical(other.canBrand, canBrand) ||
-                const DeepCollectionEquality().equals(other.canBrand, canBrand)) &&
+            (identical(other.totalDeviceModelCount, totalDeviceModelCount) ||
+                const DeepCollectionEquality().equals(
+                    other.totalDeviceModelCount, totalDeviceModelCount)) &&
+            (identical(other.totalModelParametersCount, totalModelParametersCount) ||
+                const DeepCollectionEquality().equals(
+                    other.totalModelParametersCount,
+                    totalModelParametersCount)) &&
+            (identical(other.totalDevicesCount, totalDevicesCount) ||
+                const DeepCollectionEquality().equals(other.totalDevicesCount, totalDevicesCount)) &&
+            (identical(other.totalClientCount, totalClientCount) || const DeepCollectionEquality().equals(other.totalClientCount, totalClientCount)) &&
+            (identical(other.totalUserCount, totalUserCount) || const DeepCollectionEquality().equals(other.totalUserCount, totalUserCount)) &&
+            (identical(other.totalDashboardCount, totalDashboardCount) || const DeepCollectionEquality().equals(other.totalDashboardCount, totalDashboardCount)) &&
+            (identical(other.totalArchivalYearsCount, totalArchivalYearsCount) || const DeepCollectionEquality().equals(other.totalArchivalYearsCount, totalArchivalYearsCount)) &&
+            (identical(other.pooledDataPointsCount, pooledDataPointsCount) || const DeepCollectionEquality().equals(other.pooledDataPointsCount, pooledDataPointsCount)) &&
+            (identical(other.canBuyDataPlan, canBuyDataPlan) || const DeepCollectionEquality().equals(other.canBuyDataPlan, canBuyDataPlan)) &&
+            (identical(other.canBuyArchivalPlan, canBuyArchivalPlan) || const DeepCollectionEquality().equals(other.canBuyArchivalPlan, canBuyArchivalPlan)) &&
+            (identical(other.canBuyClientPlan, canBuyClientPlan) || const DeepCollectionEquality().equals(other.canBuyClientPlan, canBuyClientPlan)) &&
+            (identical(other.canBrand, canBrand) || const DeepCollectionEquality().equals(other.canBrand, canBrand)) &&
             (identical(other.canWhiteLabel, canWhiteLabel) || const DeepCollectionEquality().equals(other.canWhiteLabel, canWhiteLabel)) &&
             (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
@@ -13209,8 +13332,8 @@ class OrgPlan {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
       const DeepCollectionEquality().hash(dataPointsCount) ^
-      const DeepCollectionEquality().hash(archivalYears) ^
-      const DeepCollectionEquality().hash(purchaseModels) ^
+      const DeepCollectionEquality().hash(archivalYearsCount) ^
+      const DeepCollectionEquality().hash(purchasedModels) ^
       const DeepCollectionEquality().hash(purchasedParameters) ^
       const DeepCollectionEquality().hash(purchasedDevices) ^
       const DeepCollectionEquality().hash(purchasedClients) ^
@@ -13218,6 +13341,14 @@ class OrgPlan {
       const DeepCollectionEquality().hash(purchasedDashboards) ^
       const DeepCollectionEquality().hash(purchasedDataPoints) ^
       const DeepCollectionEquality().hash(purchasedArchivals) ^
+      const DeepCollectionEquality().hash(totalDeviceModelCount) ^
+      const DeepCollectionEquality().hash(totalModelParametersCount) ^
+      const DeepCollectionEquality().hash(totalDevicesCount) ^
+      const DeepCollectionEquality().hash(totalClientCount) ^
+      const DeepCollectionEquality().hash(totalUserCount) ^
+      const DeepCollectionEquality().hash(totalDashboardCount) ^
+      const DeepCollectionEquality().hash(totalArchivalYearsCount) ^
+      const DeepCollectionEquality().hash(pooledDataPointsCount) ^
       const DeepCollectionEquality().hash(canBuyDataPlan) ^
       const DeepCollectionEquality().hash(canBuyArchivalPlan) ^
       const DeepCollectionEquality().hash(canBuyClientPlan) ^
@@ -13245,8 +13376,8 @@ extension $OrgPlanExtension on OrgPlan {
       int? userCount,
       int? dashboardCount,
       int? dataPointsCount,
-      int? archivalYears,
-      int? purchaseModels,
+      int? archivalYearsCount,
+      int? purchasedModels,
       int? purchasedParameters,
       int? purchasedDevices,
       int? purchasedClients,
@@ -13254,6 +13385,14 @@ extension $OrgPlanExtension on OrgPlan {
       int? purchasedDashboards,
       int? purchasedDataPoints,
       int? purchasedArchivals,
+      int? totalDeviceModelCount,
+      int? totalModelParametersCount,
+      int? totalDevicesCount,
+      int? totalClientCount,
+      int? totalUserCount,
+      int? totalDashboardCount,
+      int? totalArchivalYearsCount,
+      int? pooledDataPointsCount,
       bool? canBuyDataPlan,
       bool? canBuyArchivalPlan,
       bool? canBuyClientPlan,
@@ -13277,8 +13416,8 @@ extension $OrgPlanExtension on OrgPlan {
         userCount: userCount ?? this.userCount,
         dashboardCount: dashboardCount ?? this.dashboardCount,
         dataPointsCount: dataPointsCount ?? this.dataPointsCount,
-        archivalYears: archivalYears ?? this.archivalYears,
-        purchaseModels: purchaseModels ?? this.purchaseModels,
+        archivalYearsCount: archivalYearsCount ?? this.archivalYearsCount,
+        purchasedModels: purchasedModels ?? this.purchasedModels,
         purchasedParameters: purchasedParameters ?? this.purchasedParameters,
         purchasedDevices: purchasedDevices ?? this.purchasedDevices,
         purchasedClients: purchasedClients ?? this.purchasedClients,
@@ -13286,6 +13425,18 @@ extension $OrgPlanExtension on OrgPlan {
         purchasedDashboards: purchasedDashboards ?? this.purchasedDashboards,
         purchasedDataPoints: purchasedDataPoints ?? this.purchasedDataPoints,
         purchasedArchivals: purchasedArchivals ?? this.purchasedArchivals,
+        totalDeviceModelCount:
+            totalDeviceModelCount ?? this.totalDeviceModelCount,
+        totalModelParametersCount:
+            totalModelParametersCount ?? this.totalModelParametersCount,
+        totalDevicesCount: totalDevicesCount ?? this.totalDevicesCount,
+        totalClientCount: totalClientCount ?? this.totalClientCount,
+        totalUserCount: totalUserCount ?? this.totalUserCount,
+        totalDashboardCount: totalDashboardCount ?? this.totalDashboardCount,
+        totalArchivalYearsCount:
+            totalArchivalYearsCount ?? this.totalArchivalYearsCount,
+        pooledDataPointsCount:
+            pooledDataPointsCount ?? this.pooledDataPointsCount,
         canBuyDataPlan: canBuyDataPlan ?? this.canBuyDataPlan,
         canBuyArchivalPlan: canBuyArchivalPlan ?? this.canBuyArchivalPlan,
         canBuyClientPlan: canBuyClientPlan ?? this.canBuyClientPlan,
@@ -13311,8 +13462,8 @@ extension $OrgPlanExtension on OrgPlan {
       Wrapped<int>? userCount,
       Wrapped<int>? dashboardCount,
       Wrapped<int>? dataPointsCount,
-      Wrapped<int>? archivalYears,
-      Wrapped<int>? purchaseModels,
+      Wrapped<int>? archivalYearsCount,
+      Wrapped<int>? purchasedModels,
       Wrapped<int>? purchasedParameters,
       Wrapped<int>? purchasedDevices,
       Wrapped<int>? purchasedClients,
@@ -13320,6 +13471,14 @@ extension $OrgPlanExtension on OrgPlan {
       Wrapped<int>? purchasedDashboards,
       Wrapped<int>? purchasedDataPoints,
       Wrapped<int>? purchasedArchivals,
+      Wrapped<int?>? totalDeviceModelCount,
+      Wrapped<int?>? totalModelParametersCount,
+      Wrapped<int>? totalDevicesCount,
+      Wrapped<int>? totalClientCount,
+      Wrapped<int>? totalUserCount,
+      Wrapped<int>? totalDashboardCount,
+      Wrapped<int>? totalArchivalYearsCount,
+      Wrapped<int>? pooledDataPointsCount,
       Wrapped<bool?>? canBuyDataPlan,
       Wrapped<bool?>? canBuyArchivalPlan,
       Wrapped<bool?>? canBuyClientPlan,
@@ -13353,11 +13512,12 @@ extension $OrgPlanExtension on OrgPlan {
         dataPointsCount: (dataPointsCount != null
             ? dataPointsCount.value
             : this.dataPointsCount),
-        archivalYears:
-            (archivalYears != null ? archivalYears.value : this.archivalYears),
-        purchaseModels: (purchaseModels != null
-            ? purchaseModels.value
-            : this.purchaseModels),
+        archivalYearsCount: (archivalYearsCount != null
+            ? archivalYearsCount.value
+            : this.archivalYearsCount),
+        purchasedModels: (purchasedModels != null
+            ? purchasedModels.value
+            : this.purchasedModels),
         purchasedParameters: (purchasedParameters != null
             ? purchasedParameters.value
             : this.purchasedParameters),
@@ -13379,6 +13539,30 @@ extension $OrgPlanExtension on OrgPlan {
         purchasedArchivals: (purchasedArchivals != null
             ? purchasedArchivals.value
             : this.purchasedArchivals),
+        totalDeviceModelCount: (totalDeviceModelCount != null
+            ? totalDeviceModelCount.value
+            : this.totalDeviceModelCount),
+        totalModelParametersCount: (totalModelParametersCount != null
+            ? totalModelParametersCount.value
+            : this.totalModelParametersCount),
+        totalDevicesCount: (totalDevicesCount != null
+            ? totalDevicesCount.value
+            : this.totalDevicesCount),
+        totalClientCount: (totalClientCount != null
+            ? totalClientCount.value
+            : this.totalClientCount),
+        totalUserCount: (totalUserCount != null
+            ? totalUserCount.value
+            : this.totalUserCount),
+        totalDashboardCount: (totalDashboardCount != null
+            ? totalDashboardCount.value
+            : this.totalDashboardCount),
+        totalArchivalYearsCount: (totalArchivalYearsCount != null
+            ? totalArchivalYearsCount.value
+            : this.totalArchivalYearsCount),
+        pooledDataPointsCount: (pooledDataPointsCount != null
+            ? pooledDataPointsCount.value
+            : this.pooledDataPointsCount),
         canBuyDataPlan: (canBuyDataPlan != null
             ? canBuyDataPlan.value
             : this.canBuyDataPlan),
