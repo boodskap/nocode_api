@@ -2933,8 +2933,8 @@ OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
       userCount: (json['userCount'] as num).toInt(),
       dashboardCount: (json['dashboardCount'] as num).toInt(),
       dataPointsCount: (json['dataPointsCount'] as num).toInt(),
-      archivalYears: (json['archivalYears'] as num).toInt(),
-      purchaseModels: (json['purchaseModels'] as num).toInt(),
+      archivalYearsCount: (json['archivalYearsCount'] as num).toInt(),
+      purchasedModels: (json['purchasedModels'] as num).toInt(),
       purchasedParameters: (json['purchasedParameters'] as num).toInt(),
       purchasedDevices: (json['purchasedDevices'] as num).toInt(),
       purchasedClients: (json['purchasedClients'] as num).toInt(),
@@ -2942,6 +2942,15 @@ OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
       purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
       purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
       purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
+      totalDeviceModelCount: (json['totalDeviceModelCount'] as num?)?.toInt(),
+      totalModelParametersCount:
+          (json['totalModelParametersCount'] as num?)?.toInt(),
+      totalDevicesCount: (json['totalDevicesCount'] as num).toInt(),
+      totalClientCount: (json['totalClientCount'] as num).toInt(),
+      totalUserCount: (json['totalUserCount'] as num).toInt(),
+      totalDashboardCount: (json['totalDashboardCount'] as num).toInt(),
+      totalArchivalYearsCount: (json['totalArchivalYearsCount'] as num).toInt(),
+      pooledDataPointsCount: (json['pooledDataPointsCount'] as num).toInt(),
       canBuyDataPlan: json['canBuyDataPlan'] as bool?,
       canBuyArchivalPlan: json['canBuyArchivalPlan'] as bool?,
       canBuyClientPlan: json['canBuyClientPlan'] as bool?,
@@ -2960,8 +2969,8 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
     'userCount': instance.userCount,
     'dashboardCount': instance.dashboardCount,
     'dataPointsCount': instance.dataPointsCount,
-    'archivalYears': instance.archivalYears,
-    'purchaseModels': instance.purchaseModels,
+    'archivalYearsCount': instance.archivalYearsCount,
+    'purchasedModels': instance.purchasedModels,
     'purchasedParameters': instance.purchasedParameters,
     'purchasedDevices': instance.purchasedDevices,
     'purchasedClients': instance.purchasedClients,
@@ -2977,6 +2986,14 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
     }
   }
 
+  writeNotNull('totalDeviceModelCount', instance.totalDeviceModelCount);
+  writeNotNull('totalModelParametersCount', instance.totalModelParametersCount);
+  val['totalDevicesCount'] = instance.totalDevicesCount;
+  val['totalClientCount'] = instance.totalClientCount;
+  val['totalUserCount'] = instance.totalUserCount;
+  val['totalDashboardCount'] = instance.totalDashboardCount;
+  val['totalArchivalYearsCount'] = instance.totalArchivalYearsCount;
+  val['pooledDataPointsCount'] = instance.pooledDataPointsCount;
   writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
   writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
   writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
@@ -3005,8 +3022,8 @@ OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       userCount: (json['userCount'] as num).toInt(),
       dashboardCount: (json['dashboardCount'] as num).toInt(),
       dataPointsCount: (json['dataPointsCount'] as num).toInt(),
-      archivalYears: (json['archivalYears'] as num).toInt(),
-      purchaseModels: (json['purchaseModels'] as num).toInt(),
+      archivalYearsCount: (json['archivalYearsCount'] as num).toInt(),
+      purchasedModels: (json['purchasedModels'] as num).toInt(),
       purchasedParameters: (json['purchasedParameters'] as num).toInt(),
       purchasedDevices: (json['purchasedDevices'] as num).toInt(),
       purchasedClients: (json['purchasedClients'] as num).toInt(),
@@ -3014,6 +3031,15 @@ OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
       purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
       purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
+      totalDeviceModelCount: (json['totalDeviceModelCount'] as num?)?.toInt(),
+      totalModelParametersCount:
+          (json['totalModelParametersCount'] as num?)?.toInt(),
+      totalDevicesCount: (json['totalDevicesCount'] as num).toInt(),
+      totalClientCount: (json['totalClientCount'] as num).toInt(),
+      totalUserCount: (json['totalUserCount'] as num).toInt(),
+      totalDashboardCount: (json['totalDashboardCount'] as num).toInt(),
+      totalArchivalYearsCount: (json['totalArchivalYearsCount'] as num).toInt(),
+      pooledDataPointsCount: (json['pooledDataPointsCount'] as num).toInt(),
       canBuyDataPlan: json['canBuyDataPlan'] as bool?,
       canBuyArchivalPlan: json['canBuyArchivalPlan'] as bool?,
       canBuyClientPlan: json['canBuyClientPlan'] as bool?,
@@ -3040,8 +3066,8 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
     'userCount': instance.userCount,
     'dashboardCount': instance.dashboardCount,
     'dataPointsCount': instance.dataPointsCount,
-    'archivalYears': instance.archivalYears,
-    'purchaseModels': instance.purchaseModels,
+    'archivalYearsCount': instance.archivalYearsCount,
+    'purchasedModels': instance.purchasedModels,
     'purchasedParameters': instance.purchasedParameters,
     'purchasedDevices': instance.purchasedDevices,
     'purchasedClients': instance.purchasedClients,
@@ -3057,6 +3083,14 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
     }
   }
 
+  writeNotNull('totalDeviceModelCount', instance.totalDeviceModelCount);
+  writeNotNull('totalModelParametersCount', instance.totalModelParametersCount);
+  val['totalDevicesCount'] = instance.totalDevicesCount;
+  val['totalClientCount'] = instance.totalClientCount;
+  val['totalUserCount'] = instance.totalUserCount;
+  val['totalDashboardCount'] = instance.totalDashboardCount;
+  val['totalArchivalYearsCount'] = instance.totalArchivalYearsCount;
+  val['pooledDataPointsCount'] = instance.pooledDataPointsCount;
   writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
   writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
   writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
