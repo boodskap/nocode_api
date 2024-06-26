@@ -999,9 +999,11 @@ final class _$Nocode extends Nocode {
   @override
   Future<Response<PlanEntityRes>> _getPlan({
     required String? planId,
+    required String? planFrequency,
     required String? currency,
   }) {
-    final Uri $url = Uri.parse('/Plan/get/${planId}/${currency}');
+    final Uri $url =
+        Uri.parse('/Plan/get/${planId}/${planFrequency}/${currency}');
     final Request $request = Request(
       'GET',
       $url,

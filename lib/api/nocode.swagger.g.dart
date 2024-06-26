@@ -1990,6 +1990,8 @@ Map<String, dynamic> _$PageSettingsToJson(PageSettings instance) {
 PlanInfo _$PlanInfoFromJson(Map<String, dynamic> json) => PlanInfo(
       id: json['id'] as String? ?? '',
       description: json['description'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+      currencySymbol: json['currencySymbol'] as String? ?? '',
       planFee: (json['planFee'] as num).toDouble(),
       defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
       defaultDevicesCount: (json['defaultDevicesCount'] as num).toInt(),
@@ -2009,8 +2011,7 @@ PlanInfo _$PlanInfoFromJson(Map<String, dynamic> json) => PlanInfo(
       extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
       extraModelParametersFee:
           (json['extraModelParametersFee'] as num).toDouble(),
-      currency: json['currency'] as String? ?? '',
-      currencySymbol: json['currencySymbol'] as String? ?? '',
+      planFrequency: planInfoPlanFrequencyFromJson(json['planFrequency']),
       planType: planInfoPlanTypeFromJson(json['planType']),
     );
 
@@ -2026,6 +2027,8 @@ Map<String, dynamic> _$PlanInfoToJson(PlanInfo instance) {
   }
 
   writeNotNull('description', instance.description);
+  val['currency'] = instance.currency;
+  val['currencySymbol'] = instance.currencySymbol;
   val['planFee'] = instance.planFee;
   val['defaultDeviceModelCount'] = instance.defaultDeviceModelCount;
   val['defaultDevicesCount'] = instance.defaultDevicesCount;
@@ -2043,8 +2046,8 @@ Map<String, dynamic> _$PlanInfoToJson(PlanInfo instance) {
   val['extraArchivalFee'] = instance.extraArchivalFee;
   val['extraDashboardFee'] = instance.extraDashboardFee;
   val['extraModelParametersFee'] = instance.extraModelParametersFee;
-  val['currency'] = instance.currency;
-  val['currencySymbol'] = instance.currencySymbol;
+  writeNotNull(
+      'planFrequency', planInfoPlanFrequencyToJson(instance.planFrequency));
   writeNotNull('planType', planInfoPlanTypeToJson(instance.planType));
   return val;
 }
@@ -2063,6 +2066,8 @@ Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       customPlan: json['customPlan'] as bool,
       id: json['id'] as String? ?? '',
       description: json['description'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+      currencySymbol: json['currencySymbol'] as String? ?? '',
       planFee: (json['planFee'] as num).toDouble(),
       defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
       defaultDevicesCount: (json['defaultDevicesCount'] as num).toInt(),
@@ -2082,8 +2087,7 @@ Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
       extraModelParametersFee:
           (json['extraModelParametersFee'] as num).toDouble(),
-      currency: json['currency'] as String? ?? '',
-      currencySymbol: json['currencySymbol'] as String? ?? '',
+      planFrequency: planPlanFrequencyFromJson(json['planFrequency']),
       planType: planPlanTypeFromJson(json['planType']),
       name: json['name'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
@@ -2107,6 +2111,8 @@ Map<String, dynamic> _$PlanToJson(Plan instance) {
   }
 
   writeNotNull('description', instance.description);
+  val['currency'] = instance.currency;
+  val['currencySymbol'] = instance.currencySymbol;
   val['planFee'] = instance.planFee;
   val['defaultDeviceModelCount'] = instance.defaultDeviceModelCount;
   val['defaultDevicesCount'] = instance.defaultDevicesCount;
@@ -2124,8 +2130,8 @@ Map<String, dynamic> _$PlanToJson(Plan instance) {
   val['extraArchivalFee'] = instance.extraArchivalFee;
   val['extraDashboardFee'] = instance.extraDashboardFee;
   val['extraModelParametersFee'] = instance.extraModelParametersFee;
-  val['currency'] = instance.currency;
-  val['currencySymbol'] = instance.currencySymbol;
+  writeNotNull(
+      'planFrequency', planPlanFrequencyToJson(instance.planFrequency));
   writeNotNull('planType', planPlanTypeToJson(instance.planType));
   val['name'] = instance.name;
   val['rtype'] = instance.rtype;
@@ -2952,6 +2958,7 @@ Map<String, dynamic> _$PaidOrderRequestToJson(PaidOrderRequest instance) {
 OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
       planId: json['planId'] as String? ?? '',
       planType: json['planType'] as String? ?? '',
+      planFrequency: json['planFrequency'] as String? ?? '',
       deviceModelCount: (json['deviceModelCount'] as num).toInt(),
       modelParametersCount: (json['modelParametersCount'] as num).toInt(),
       devicesCount: (json['devicesCount'] as num).toInt(),
@@ -2988,6 +2995,7 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
   final val = <String, dynamic>{
     'planId': instance.planId,
     'planType': instance.planType,
+    'planFrequency': instance.planFrequency,
     'deviceModelCount': instance.deviceModelCount,
     'modelParametersCount': instance.modelParametersCount,
     'devicesCount': instance.devicesCount,
@@ -3054,6 +3062,7 @@ OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       orgId: json['orgId'] as String? ?? '',
       planId: json['planId'] as String? ?? '',
       planType: json['planType'] as String? ?? '',
+      planFrequency: json['planFrequency'] as String? ?? '',
       deviceModelCount: (json['deviceModelCount'] as num).toInt(),
       modelParametersCount: (json['modelParametersCount'] as num).toInt(),
       devicesCount: (json['devicesCount'] as num).toInt(),
@@ -3100,6 +3109,7 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
     'orgId': instance.orgId,
     'planId': instance.planId,
     'planType': instance.planType,
+    'planFrequency': instance.planFrequency,
     'deviceModelCount': instance.deviceModelCount,
     'modelParametersCount': instance.modelParametersCount,
     'devicesCount': instance.devicesCount,

@@ -161,6 +161,20 @@ enum ImageFileImageTarget {
   const ImageFileImageTarget(this.value);
 }
 
+enum PlanInfoPlanFrequency {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('M')
+  m('M'),
+  @JsonValue('Y')
+  y('Y');
+
+  final String? value;
+
+  const PlanInfoPlanFrequency(this.value);
+}
+
 enum PlanInfoPlanType {
   @JsonValue(null)
   swaggerGeneratedUnknown(null),
@@ -179,6 +193,20 @@ enum PlanInfoPlanType {
   final String? value;
 
   const PlanInfoPlanType(this.value);
+}
+
+enum PlanPlanFrequency {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('M')
+  m('M'),
+  @JsonValue('Y')
+  y('Y');
+
+  final String? value;
+
+  const PlanPlanFrequency(this.value);
 }
 
 enum PlanPlanType {
