@@ -2627,7 +2627,7 @@
         ]
       }
     },
-    "/Plan/get/{planId}": {
+    "/Plan/get/{planId}/{currency}": {
       "get": {
         "tags": [
           "Plan"
@@ -2646,6 +2646,13 @@
             "name": "planId",
             "in": "path",
             "description": "Plan ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "currency",
+            "in": "path",
+            "description": "ISO 3 letter currency code",
             "type": "string",
             "required": true
           }
@@ -2671,34 +2678,26 @@
         ]
       }
     },
-    "/Plan/remove/{planId}": {
+    "/Plan/clear": {
       "delete": {
         "tags": [
           "Plan"
         ],
-        "summary": "Delete plan",
+        "summary": "Clear all plans",
+        "description": "Clear all plans",
         "consumes": [
           "text/plain"
         ],
         "produces": [
           "application/json"
         ],
-        "description": "Delete plan",
-        "operationId": "deletePlan",
-        "parameters": [
-          {
-            "name": "planId",
-            "in": "path",
-            "description": "Plan ID",
-            "type": "string",
-            "required": true
-          }
-        ],
+        "operationId": "clearAllPlans",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/PlanEntityRes"
+              "$ref": "#/definitions/BaseRes"
             }
           },
           "401": {
@@ -2833,6 +2832,42 @@
             "description": "Successful operation",
             "schema": {
               "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
+    "/OrgPlan/clean": {
+      "delete": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Remove all organization plans",
+        "description": "Remove all organization plans",
+        "operationId": "clearOrgPlans",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
             }
           },
           "401": {
@@ -4798,7 +4833,7 @@
     "PlanInfo": {
       "type": "object",
       "required": [
-        "name",
+        "id",
         "planType",
         "planFee",
         "defaultDeviceModelCount",
@@ -4825,10 +4860,12 @@
         "userPrice",
         "archivePrice",
         "dashboardPrice",
-        "modelParameterPrice"
+        "modelParameterPrice",
+        "currency",
+        "currencySymbol"
       ],
       "properties": {
-        "name": {
+        "id": {
           "type": "string"
         },
         "description": {
@@ -4902,6 +4939,12 @@
           "type": "number",
           "format": "double"
         },
+        "currency": {
+          "type": "string"
+        },
+        "currencySymbol": {
+          "type": "string"
+        },
         "planType": {
           "type": "string",
           "enum": [
@@ -4917,9 +4960,13 @@
     "PlanBase": {
       "type": "object",
       "required": [
+        "name",
         "customPlan"
       ],
       "properties": {
+        "name": {
+          "type": "string"
+        },
         "customPlan": {
           "type": "boolean"
         }
@@ -5655,10 +5702,18 @@
     "OrgPlanBase": {
       "type": "object",
       "required": [
-        "orgId"
+        "orgId",
+        "currency",
+        "currencySymbol"
       ],
       "properties": {
         "orgId": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "currencySumbol": {
           "type": "string"
         }
       }

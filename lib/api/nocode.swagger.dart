@@ -1393,43 +1393,40 @@ abstract class Nocode extends ChopperService {
 
   ///Get plan
   ///@param planId Plan ID
+  ///@param currency ISO 3 letter currency code
   Future<chopper.Response<PlanEntityRes>> getPlan({
     required String? planId,
+    required String? currency,
     dynamic token,
   }) {
     generatedMapping.putIfAbsent(
         PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
 
-    return _getPlan(planId: planId, token: token?.toString());
+    return _getPlan(
+        planId: planId, currency: currency, token: token?.toString());
   }
 
   ///Get plan
   ///@param planId Plan ID
-  @Get(path: '/Plan/get/{planId}')
+  ///@param currency ISO 3 letter currency code
+  @Get(path: '/Plan/get/{planId}/{currency}')
   Future<chopper.Response<PlanEntityRes>> _getPlan({
     @Path('planId') required String? planId,
+    @Path('currency') required String? currency,
     @Header('TOKEN') String? token,
   });
 
-  ///Delete plan
-  ///@param planId Plan ID
-  Future<chopper.Response<PlanEntityRes>> deletePlan({
-    required String? planId,
-    dynamic token,
-  }) {
-    generatedMapping.putIfAbsent(
-        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+  ///Clear all plans
+  Future<chopper.Response<BaseRes>> clearAllPlans({dynamic token}) {
+    generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
 
-    return _deletePlan(planId: planId, token: token?.toString());
+    return _clearAllPlans(token: token?.toString());
   }
 
-  ///Delete plan
-  ///@param planId Plan ID
-  @Delete(path: '/Plan/remove/{planId}')
-  Future<chopper.Response<PlanEntityRes>> _deletePlan({
-    @Path('planId') required String? planId,
-    @Header('TOKEN') String? token,
-  });
+  ///Clear all plans
+  @Delete(path: '/Plan/clear')
+  Future<chopper.Response<BaseRes>> _clearAllPlans(
+      {@Header('TOKEN') String? token});
 
   ///Create or update org plan
   ///@param body
@@ -1494,6 +1491,18 @@ abstract class Nocode extends ChopperService {
     @Path('orgId') required String? orgId,
     @Header('TOKEN') String? token,
   });
+
+  ///Remove all organization plans
+  Future<chopper.Response<BaseRes>> clearOrgPlans({dynamic token}) {
+    generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
+
+    return _clearOrgPlans(token: token?.toString());
+  }
+
+  ///Remove all organization plans
+  @Delete(path: '/OrgPlan/clean')
+  Future<chopper.Response<BaseRes>> _clearOrgPlans(
+      {@Header('TOKEN') String? token});
 
   ///Search invoices
   ///@param orgId Organization ID (empty id requires admin access)
@@ -8868,7 +8877,7 @@ extension $PageSettingsExtension on PageSettings {
 @JsonSerializable(explicitToJson: true)
 class PlanInfo {
   const PlanInfo({
-    required this.name,
+    required this.id,
     this.description,
     required this.planFee,
     required this.defaultDeviceModelCount,
@@ -8887,6 +8896,8 @@ class PlanInfo {
     required this.extraArchivalFee,
     required this.extraDashboardFee,
     required this.extraModelParametersFee,
+    required this.currency,
+    required this.currencySymbol,
     required this.planType,
   });
 
@@ -8896,8 +8907,8 @@ class PlanInfo {
   static const toJsonFactory = _$PlanInfoToJson;
   Map<String, dynamic> toJson() => _$PlanInfoToJson(this);
 
-  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
-  final String name;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
   @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
   final String? description;
   @JsonKey(name: 'planFee', includeIfNull: false)
@@ -8934,6 +8945,10 @@ class PlanInfo {
   final double extraDashboardFee;
   @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
   final double extraModelParametersFee;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
+  final String currencySymbol;
   @JsonKey(
     name: 'planType',
     includeIfNull: false,
@@ -8947,8 +8962,8 @@ class PlanInfo {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PlanInfo &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
@@ -8996,6 +9011,8 @@ class PlanInfo {
             (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
             (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
             (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
+            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
+            (identical(other.currencySymbol, currencySymbol) || const DeepCollectionEquality().equals(other.currencySymbol, currencySymbol)) &&
             (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)));
   }
 
@@ -9004,7 +9021,7 @@ class PlanInfo {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(planFee) ^
       const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
@@ -9023,13 +9040,15 @@ class PlanInfo {
       const DeepCollectionEquality().hash(extraArchivalFee) ^
       const DeepCollectionEquality().hash(extraDashboardFee) ^
       const DeepCollectionEquality().hash(extraModelParametersFee) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySymbol) ^
       const DeepCollectionEquality().hash(planType) ^
       runtimeType.hashCode;
 }
 
 extension $PlanInfoExtension on PlanInfo {
   PlanInfo copyWith(
-      {String? name,
+      {String? id,
       String? description,
       double? planFee,
       int? defaultDeviceModelCount,
@@ -9048,9 +9067,11 @@ extension $PlanInfoExtension on PlanInfo {
       double? extraArchivalFee,
       double? extraDashboardFee,
       double? extraModelParametersFee,
+      String? currency,
+      String? currencySymbol,
       enums.PlanInfoPlanType? planType}) {
     return PlanInfo(
-        name: name ?? this.name,
+        id: id ?? this.id,
         description: description ?? this.description,
         planFee: planFee ?? this.planFee,
         defaultDeviceModelCount:
@@ -9074,11 +9095,13 @@ extension $PlanInfoExtension on PlanInfo {
         extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
         extraModelParametersFee:
             extraModelParametersFee ?? this.extraModelParametersFee,
+        currency: currency ?? this.currency,
+        currencySymbol: currencySymbol ?? this.currencySymbol,
         planType: planType ?? this.planType);
   }
 
   PlanInfo copyWithWrapped(
-      {Wrapped<String>? name,
+      {Wrapped<String>? id,
       Wrapped<String?>? description,
       Wrapped<double>? planFee,
       Wrapped<int>? defaultDeviceModelCount,
@@ -9097,9 +9120,11 @@ extension $PlanInfoExtension on PlanInfo {
       Wrapped<double>? extraArchivalFee,
       Wrapped<double>? extraDashboardFee,
       Wrapped<double>? extraModelParametersFee,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencySymbol,
       Wrapped<enums.PlanInfoPlanType>? planType}) {
     return PlanInfo(
-        name: (name != null ? name.value : this.name),
+        id: (id != null ? id.value : this.id),
         description:
             (description != null ? description.value : this.description),
         planFee: (planFee != null ? planFee.value : this.planFee),
@@ -9150,6 +9175,10 @@ extension $PlanInfoExtension on PlanInfo {
         extraModelParametersFee: (extraModelParametersFee != null
             ? extraModelParametersFee.value
             : this.extraModelParametersFee),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySymbol: (currencySymbol != null
+            ? currencySymbol.value
+            : this.currencySymbol),
         planType: (planType != null ? planType.value : this.planType));
   }
 }
@@ -9157,6 +9186,7 @@ extension $PlanInfoExtension on PlanInfo {
 @JsonSerializable(explicitToJson: true)
 class PlanBase {
   const PlanBase({
+    required this.name,
     required this.customPlan,
   });
 
@@ -9166,6 +9196,8 @@ class PlanBase {
   static const toJsonFactory = _$PlanBaseToJson;
   Map<String, dynamic> toJson() => _$PlanBaseToJson(this);
 
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
   @JsonKey(name: 'customPlan', includeIfNull: false)
   final bool customPlan;
   static const fromJsonFactory = _$PlanBaseFromJson;
@@ -9174,6 +9206,8 @@ class PlanBase {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PlanBase &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.customPlan, customPlan) ||
                 const DeepCollectionEquality()
                     .equals(other.customPlan, customPlan)));
@@ -9184,16 +9218,20 @@ class PlanBase {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(customPlan) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(customPlan) ^
+      runtimeType.hashCode;
 }
 
 extension $PlanBaseExtension on PlanBase {
-  PlanBase copyWith({bool? customPlan}) {
-    return PlanBase(customPlan: customPlan ?? this.customPlan);
+  PlanBase copyWith({String? name, bool? customPlan}) {
+    return PlanBase(
+        name: name ?? this.name, customPlan: customPlan ?? this.customPlan);
   }
 
-  PlanBase copyWithWrapped({Wrapped<bool>? customPlan}) {
+  PlanBase copyWithWrapped({Wrapped<String>? name, Wrapped<bool>? customPlan}) {
     return PlanBase(
+        name: (name != null ? name.value : this.name),
         customPlan: (customPlan != null ? customPlan.value : this.customPlan));
   }
 }
@@ -9202,7 +9240,7 @@ extension $PlanBaseExtension on PlanBase {
 class Plan {
   const Plan({
     required this.customPlan,
-    required this.name,
+    required this.id,
     this.description,
     required this.planFee,
     required this.defaultDeviceModelCount,
@@ -9221,8 +9259,10 @@ class Plan {
     required this.extraArchivalFee,
     required this.extraDashboardFee,
     required this.extraModelParametersFee,
+    required this.currency,
+    required this.currencySymbol,
     required this.planType,
-    required this.id,
+    required this.name,
     required this.rtype,
     required this.createdBy,
     required this.createdStamp,
@@ -9238,8 +9278,8 @@ class Plan {
 
   @JsonKey(name: 'customPlan', includeIfNull: false)
   final bool customPlan;
-  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
-  final String name;
+  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
+  final String id;
   @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
   final String? description;
   @JsonKey(name: 'planFee', includeIfNull: false)
@@ -9276,6 +9316,10 @@ class Plan {
   final double extraDashboardFee;
   @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
   final double extraModelParametersFee;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
+  final String currencySymbol;
   @JsonKey(
     name: 'planType',
     includeIfNull: false,
@@ -9283,8 +9327,8 @@ class Plan {
     fromJson: planPlanTypeFromJson,
   )
   final enums.PlanPlanType planType;
-  @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
-  final String id;
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String name;
   @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
   final String rtype;
   @JsonKey(name: 'createdBy', includeIfNull: false, defaultValue: '')
@@ -9306,8 +9350,8 @@ class Plan {
             (identical(other.customPlan, customPlan) ||
                 const DeepCollectionEquality()
                     .equals(other.customPlan, customPlan)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
@@ -9354,8 +9398,10 @@ class Plan {
             (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
             (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
             (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
+            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
+            (identical(other.currencySymbol, currencySymbol) || const DeepCollectionEquality().equals(other.currencySymbol, currencySymbol)) &&
             (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)) &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
             (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
             (identical(other.createdStamp, createdStamp) || const DeepCollectionEquality().equals(other.createdStamp, createdStamp)) &&
@@ -9370,7 +9416,7 @@ class Plan {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(customPlan) ^
-      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(planFee) ^
       const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
@@ -9389,8 +9435,10 @@ class Plan {
       const DeepCollectionEquality().hash(extraArchivalFee) ^
       const DeepCollectionEquality().hash(extraDashboardFee) ^
       const DeepCollectionEquality().hash(extraModelParametersFee) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySymbol) ^
       const DeepCollectionEquality().hash(planType) ^
-      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(rtype) ^
       const DeepCollectionEquality().hash(createdBy) ^
       const DeepCollectionEquality().hash(createdStamp) ^
@@ -9403,7 +9451,7 @@ class Plan {
 extension $PlanExtension on Plan {
   Plan copyWith(
       {bool? customPlan,
-      String? name,
+      String? id,
       String? description,
       double? planFee,
       int? defaultDeviceModelCount,
@@ -9422,8 +9470,10 @@ extension $PlanExtension on Plan {
       double? extraArchivalFee,
       double? extraDashboardFee,
       double? extraModelParametersFee,
+      String? currency,
+      String? currencySymbol,
       enums.PlanPlanType? planType,
-      String? id,
+      String? name,
       String? rtype,
       String? createdBy,
       int? createdStamp,
@@ -9432,7 +9482,7 @@ extension $PlanExtension on Plan {
       String? domainKey}) {
     return Plan(
         customPlan: customPlan ?? this.customPlan,
-        name: name ?? this.name,
+        id: id ?? this.id,
         description: description ?? this.description,
         planFee: planFee ?? this.planFee,
         defaultDeviceModelCount:
@@ -9456,8 +9506,10 @@ extension $PlanExtension on Plan {
         extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
         extraModelParametersFee:
             extraModelParametersFee ?? this.extraModelParametersFee,
+        currency: currency ?? this.currency,
+        currencySymbol: currencySymbol ?? this.currencySymbol,
         planType: planType ?? this.planType,
-        id: id ?? this.id,
+        name: name ?? this.name,
         rtype: rtype ?? this.rtype,
         createdBy: createdBy ?? this.createdBy,
         createdStamp: createdStamp ?? this.createdStamp,
@@ -9468,7 +9520,7 @@ extension $PlanExtension on Plan {
 
   Plan copyWithWrapped(
       {Wrapped<bool>? customPlan,
-      Wrapped<String>? name,
+      Wrapped<String>? id,
       Wrapped<String?>? description,
       Wrapped<double>? planFee,
       Wrapped<int>? defaultDeviceModelCount,
@@ -9487,8 +9539,10 @@ extension $PlanExtension on Plan {
       Wrapped<double>? extraArchivalFee,
       Wrapped<double>? extraDashboardFee,
       Wrapped<double>? extraModelParametersFee,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencySymbol,
       Wrapped<enums.PlanPlanType>? planType,
-      Wrapped<String>? id,
+      Wrapped<String>? name,
       Wrapped<String>? rtype,
       Wrapped<String>? createdBy,
       Wrapped<int>? createdStamp,
@@ -9497,7 +9551,7 @@ extension $PlanExtension on Plan {
       Wrapped<String>? domainKey}) {
     return Plan(
         customPlan: (customPlan != null ? customPlan.value : this.customPlan),
-        name: (name != null ? name.value : this.name),
+        id: (id != null ? id.value : this.id),
         description:
             (description != null ? description.value : this.description),
         planFee: (planFee != null ? planFee.value : this.planFee),
@@ -9548,8 +9602,12 @@ extension $PlanExtension on Plan {
         extraModelParametersFee: (extraModelParametersFee != null
             ? extraModelParametersFee.value
             : this.extraModelParametersFee),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySymbol: (currencySymbol != null
+            ? currencySymbol.value
+            : this.currencySymbol),
         planType: (planType != null ? planType.value : this.planType),
-        id: (id != null ? id.value : this.id),
+        name: (name != null ? name.value : this.name),
         rtype: (rtype != null ? rtype.value : this.rtype),
         createdBy: (createdBy != null ? createdBy.value : this.createdBy),
         createdStamp:
@@ -13062,6 +13120,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
 class OrgPlanBase {
   const OrgPlanBase({
     required this.orgId,
+    required this.currency,
+    this.currencySumbol,
   });
 
   factory OrgPlanBase.fromJson(Map<String, dynamic> json) =>
@@ -13072,6 +13132,10 @@ class OrgPlanBase {
 
   @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
   final String orgId;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySumbol', includeIfNull: false, defaultValue: '')
+  final String? currencySumbol;
   static const fromJsonFactory = _$OrgPlanBaseFromJson;
 
   @override
@@ -13079,7 +13143,13 @@ class OrgPlanBase {
     return identical(this, other) ||
         (other is OrgPlanBase &&
             (identical(other.orgId, orgId) ||
-                const DeepCollectionEquality().equals(other.orgId, orgId)));
+                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.currencySumbol, currencySumbol) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencySumbol, currencySumbol)));
   }
 
   @override
@@ -13087,16 +13157,31 @@ class OrgPlanBase {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(orgId) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(orgId) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySumbol) ^
+      runtimeType.hashCode;
 }
 
 extension $OrgPlanBaseExtension on OrgPlanBase {
-  OrgPlanBase copyWith({String? orgId}) {
-    return OrgPlanBase(orgId: orgId ?? this.orgId);
+  OrgPlanBase copyWith(
+      {String? orgId, String? currency, String? currencySumbol}) {
+    return OrgPlanBase(
+        orgId: orgId ?? this.orgId,
+        currency: currency ?? this.currency,
+        currencySumbol: currencySumbol ?? this.currencySumbol);
   }
 
-  OrgPlanBase copyWithWrapped({Wrapped<String>? orgId}) {
-    return OrgPlanBase(orgId: (orgId != null ? orgId.value : this.orgId));
+  OrgPlanBase copyWithWrapped(
+      {Wrapped<String>? orgId,
+      Wrapped<String>? currency,
+      Wrapped<String?>? currencySumbol}) {
+    return OrgPlanBase(
+        orgId: (orgId != null ? orgId.value : this.orgId),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySumbol: (currencySumbol != null
+            ? currencySumbol.value
+            : this.currencySumbol));
   }
 }
 
@@ -13135,6 +13220,8 @@ class OrgPlan {
     this.canBuyClientPlan,
     this.canBrand,
     this.canWhiteLabel,
+    required this.currency,
+    this.currencySumbol,
     required this.id,
     required this.rtype,
     required this.createdBy,
@@ -13214,6 +13301,10 @@ class OrgPlan {
   final bool? canBrand;
   @JsonKey(name: 'canWhiteLabel', includeIfNull: false)
   final bool? canWhiteLabel;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySumbol', includeIfNull: false, defaultValue: '')
+  final String? currencySumbol;
   @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
   final String id;
   @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
@@ -13308,6 +13399,8 @@ class OrgPlan {
             (identical(other.canBuyClientPlan, canBuyClientPlan) || const DeepCollectionEquality().equals(other.canBuyClientPlan, canBuyClientPlan)) &&
             (identical(other.canBrand, canBrand) || const DeepCollectionEquality().equals(other.canBrand, canBrand)) &&
             (identical(other.canWhiteLabel, canWhiteLabel) || const DeepCollectionEquality().equals(other.canWhiteLabel, canWhiteLabel)) &&
+            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
+            (identical(other.currencySumbol, currencySumbol) || const DeepCollectionEquality().equals(other.currencySumbol, currencySumbol)) &&
             (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
             (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
@@ -13354,6 +13447,8 @@ class OrgPlan {
       const DeepCollectionEquality().hash(canBuyClientPlan) ^
       const DeepCollectionEquality().hash(canBrand) ^
       const DeepCollectionEquality().hash(canWhiteLabel) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySumbol) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(rtype) ^
       const DeepCollectionEquality().hash(createdBy) ^
@@ -13398,6 +13493,8 @@ extension $OrgPlanExtension on OrgPlan {
       bool? canBuyClientPlan,
       bool? canBrand,
       bool? canWhiteLabel,
+      String? currency,
+      String? currencySumbol,
       String? id,
       String? rtype,
       String? createdBy,
@@ -13442,6 +13539,8 @@ extension $OrgPlanExtension on OrgPlan {
         canBuyClientPlan: canBuyClientPlan ?? this.canBuyClientPlan,
         canBrand: canBrand ?? this.canBrand,
         canWhiteLabel: canWhiteLabel ?? this.canWhiteLabel,
+        currency: currency ?? this.currency,
+        currencySumbol: currencySumbol ?? this.currencySumbol,
         id: id ?? this.id,
         rtype: rtype ?? this.rtype,
         createdBy: createdBy ?? this.createdBy,
@@ -13484,6 +13583,8 @@ extension $OrgPlanExtension on OrgPlan {
       Wrapped<bool?>? canBuyClientPlan,
       Wrapped<bool?>? canBrand,
       Wrapped<bool?>? canWhiteLabel,
+      Wrapped<String>? currency,
+      Wrapped<String?>? currencySumbol,
       Wrapped<String>? id,
       Wrapped<String>? rtype,
       Wrapped<String>? createdBy,
@@ -13575,6 +13676,10 @@ extension $OrgPlanExtension on OrgPlan {
         canBrand: (canBrand != null ? canBrand.value : this.canBrand),
         canWhiteLabel:
             (canWhiteLabel != null ? canWhiteLabel.value : this.canWhiteLabel),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySumbol: (currencySumbol != null
+            ? currencySumbol.value
+            : this.currencySumbol),
         id: (id != null ? id.value : this.id),
         rtype: (rtype != null ? rtype.value : this.rtype),
         createdBy: (createdBy != null ? createdBy.value : this.createdBy),

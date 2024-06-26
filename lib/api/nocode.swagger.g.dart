@@ -1988,7 +1988,7 @@ Map<String, dynamic> _$PageSettingsToJson(PageSettings instance) {
 }
 
 PlanInfo _$PlanInfoFromJson(Map<String, dynamic> json) => PlanInfo(
-      name: json['name'] as String? ?? '',
+      id: json['id'] as String? ?? '',
       description: json['description'] as String? ?? '',
       planFee: (json['planFee'] as num).toDouble(),
       defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
@@ -2009,12 +2009,14 @@ PlanInfo _$PlanInfoFromJson(Map<String, dynamic> json) => PlanInfo(
       extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
       extraModelParametersFee:
           (json['extraModelParametersFee'] as num).toDouble(),
+      currency: json['currency'] as String? ?? '',
+      currencySymbol: json['currencySymbol'] as String? ?? '',
       planType: planInfoPlanTypeFromJson(json['planType']),
     );
 
 Map<String, dynamic> _$PlanInfoToJson(PlanInfo instance) {
   final val = <String, dynamic>{
-    'name': instance.name,
+    'id': instance.id,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -2041,21 +2043,25 @@ Map<String, dynamic> _$PlanInfoToJson(PlanInfo instance) {
   val['extraArchivalFee'] = instance.extraArchivalFee;
   val['extraDashboardFee'] = instance.extraDashboardFee;
   val['extraModelParametersFee'] = instance.extraModelParametersFee;
+  val['currency'] = instance.currency;
+  val['currencySymbol'] = instance.currencySymbol;
   writeNotNull('planType', planInfoPlanTypeToJson(instance.planType));
   return val;
 }
 
 PlanBase _$PlanBaseFromJson(Map<String, dynamic> json) => PlanBase(
+      name: json['name'] as String? ?? '',
       customPlan: json['customPlan'] as bool,
     );
 
 Map<String, dynamic> _$PlanBaseToJson(PlanBase instance) => <String, dynamic>{
+      'name': instance.name,
       'customPlan': instance.customPlan,
     };
 
 Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       customPlan: json['customPlan'] as bool,
-      name: json['name'] as String? ?? '',
+      id: json['id'] as String? ?? '',
       description: json['description'] as String? ?? '',
       planFee: (json['planFee'] as num).toDouble(),
       defaultDeviceModelCount: (json['defaultDeviceModelCount'] as num).toInt(),
@@ -2076,8 +2082,10 @@ Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       extraDashboardFee: (json['extraDashboardFee'] as num).toDouble(),
       extraModelParametersFee:
           (json['extraModelParametersFee'] as num).toDouble(),
+      currency: json['currency'] as String? ?? '',
+      currencySymbol: json['currencySymbol'] as String? ?? '',
       planType: planPlanTypeFromJson(json['planType']),
-      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
       createdStamp: (json['createdStamp'] as num).toInt(),
@@ -2089,7 +2097,7 @@ Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
 Map<String, dynamic> _$PlanToJson(Plan instance) {
   final val = <String, dynamic>{
     'customPlan': instance.customPlan,
-    'name': instance.name,
+    'id': instance.id,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -2116,8 +2124,10 @@ Map<String, dynamic> _$PlanToJson(Plan instance) {
   val['extraArchivalFee'] = instance.extraArchivalFee;
   val['extraDashboardFee'] = instance.extraDashboardFee;
   val['extraModelParametersFee'] = instance.extraModelParametersFee;
+  val['currency'] = instance.currency;
+  val['currencySymbol'] = instance.currencySymbol;
   writeNotNull('planType', planPlanTypeToJson(instance.planType));
-  val['id'] = instance.id;
+  val['name'] = instance.name;
   val['rtype'] = instance.rtype;
   val['createdBy'] = instance.createdBy;
   val['createdStamp'] = instance.createdStamp;
@@ -3004,12 +3014,25 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
 
 OrgPlanBase _$OrgPlanBaseFromJson(Map<String, dynamic> json) => OrgPlanBase(
       orgId: json['orgId'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+      currencySumbol: json['currencySumbol'] as String? ?? '',
     );
 
-Map<String, dynamic> _$OrgPlanBaseToJson(OrgPlanBase instance) =>
-    <String, dynamic>{
-      'orgId': instance.orgId,
-    };
+Map<String, dynamic> _$OrgPlanBaseToJson(OrgPlanBase instance) {
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+    'currency': instance.currency,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('currencySumbol', instance.currencySumbol);
+  return val;
+}
 
 OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       orgId: json['orgId'] as String? ?? '',
@@ -3045,6 +3068,8 @@ OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       canBuyClientPlan: json['canBuyClientPlan'] as bool?,
       canBrand: json['canBrand'] as bool?,
       canWhiteLabel: json['canWhiteLabel'] as bool?,
+      currency: json['currency'] as String? ?? '',
+      currencySumbol: json['currencySumbol'] as String? ?? '',
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
@@ -3096,6 +3121,8 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
   writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
   writeNotNull('canBrand', instance.canBrand);
   writeNotNull('canWhiteLabel', instance.canWhiteLabel);
+  val['currency'] = instance.currency;
+  writeNotNull('currencySumbol', instance.currencySumbol);
   val['id'] = instance.id;
   val['rtype'] = instance.rtype;
   val['createdBy'] = instance.createdBy;
