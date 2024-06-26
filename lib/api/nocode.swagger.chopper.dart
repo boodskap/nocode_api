@@ -1000,19 +1000,25 @@ final class _$Nocode extends Nocode {
   Future<Response<PlanEntityRes>> _getPlan({
     required String? planId,
     required String? currency,
-    String? token,
   }) {
     final Uri $url = Uri.parse('/Plan/get/${planId}/${currency}');
-    final Map<String, String> $headers = {
-      if (token != null) 'TOKEN': token,
-    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
-      headers: $headers,
     );
     return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<PlanCurrencyListRes>> _listCurrencies() {
+    final Uri $url = Uri.parse('/Plan/list/currencies');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<PlanCurrencyListRes, PlanCurrencyListRes>($request);
   }
 
   @override

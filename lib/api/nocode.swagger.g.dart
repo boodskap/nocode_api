@@ -3196,3 +3196,66 @@ Map<String, dynamic> _$StripePaymentSecretArgsToJson(
       'orderId': instance.orderId,
       'currency': instance.currency,
     };
+
+PlanCurrency _$PlanCurrencyFromJson(Map<String, dynamic> json) => PlanCurrency(
+      currency: json['currency'] as String? ?? '',
+      symbol: json['symbol'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PlanCurrencyToJson(PlanCurrency instance) {
+  final val = <String, dynamic>{
+    'currency': instance.currency,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('symbol', instance.symbol);
+  return val;
+}
+
+PlanCurrencyList _$PlanCurrencyListFromJson(Map<String, dynamic> json) =>
+    PlanCurrencyList(
+      currencies: (json['currencies'] as List<dynamic>?)
+              ?.map((e) => PlanCurrency.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$PlanCurrencyListToJson(PlanCurrencyList instance) =>
+    <String, dynamic>{
+      'currencies': instance.currencies.map((e) => e.toJson()).toList(),
+    };
+
+PlanCurrencyListRes _$PlanCurrencyListResFromJson(Map<String, dynamic> json) =>
+    PlanCurrencyListRes(
+      currencies: (json['currencies'] as List<dynamic>?)
+              ?.map((e) => PlanCurrency.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      ok: json['ok'] as bool,
+      msg: json['msg'] as String? ?? '',
+      trace: json['trace'] as String? ?? '',
+      errorCode: json['errorCode'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PlanCurrencyListResToJson(PlanCurrencyListRes instance) {
+  final val = <String, dynamic>{
+    'currencies': instance.currencies.map((e) => e.toJson()).toList(),
+    'ok': instance.ok,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('msg', instance.msg);
+  writeNotNull('trace', instance.trace);
+  writeNotNull('errorCode', instance.errorCode);
+  return val;
+}
