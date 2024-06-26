@@ -999,9 +999,10 @@ final class _$Nocode extends Nocode {
   @override
   Future<Response<PlanEntityRes>> _getPlan({
     required String? planId,
+    required String? currency,
     String? token,
   }) {
-    final Uri $url = Uri.parse('/Plan/get/${planId}');
+    final Uri $url = Uri.parse('/Plan/get/${planId}/${currency}');
     final Map<String, String> $headers = {
       if (token != null) 'TOKEN': token,
     };
@@ -1015,11 +1016,8 @@ final class _$Nocode extends Nocode {
   }
 
   @override
-  Future<Response<PlanEntityRes>> _deletePlan({
-    required String? planId,
-    String? token,
-  }) {
-    final Uri $url = Uri.parse('/Plan/remove/${planId}');
+  Future<Response<BaseRes>> _clearAllPlans({String? token}) {
+    final Uri $url = Uri.parse('/Plan/clear');
     final Map<String, String> $headers = {
       if (token != null) 'TOKEN': token,
     };
@@ -1029,7 +1027,7 @@ final class _$Nocode extends Nocode {
       client.baseUrl,
       headers: $headers,
     );
-    return client.send<PlanEntityRes, PlanEntityRes>($request);
+    return client.send<BaseRes, BaseRes>($request);
   }
 
   @override
@@ -1088,6 +1086,21 @@ final class _$Nocode extends Nocode {
       headers: $headers,
     );
     return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<BaseRes>> _clearOrgPlans({String? token}) {
+    final Uri $url = Uri.parse('/OrgPlan/clean');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<BaseRes, BaseRes>($request);
   }
 
   @override
