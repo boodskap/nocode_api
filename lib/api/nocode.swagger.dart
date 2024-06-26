@@ -9996,7 +9996,7 @@ class InvoiceBase {
     required this.invoiceAmount,
     this.billedAmount,
     required this.reconciled,
-    this.planId,
+    required this.planId,
     this.planFee,
     this.deviceModelFee,
     this.modelParametersFee,
@@ -10023,6 +10023,8 @@ class InvoiceBase {
     this.paymentMode,
     this.paymentGateway,
     required this.paymentStatus,
+    required this.currency,
+    required this.currencyCode,
   });
 
   factory InvoiceBase.fromJson(Map<String, dynamic> json) =>
@@ -10038,7 +10040,7 @@ class InvoiceBase {
   @JsonKey(name: 'reconciled', includeIfNull: false)
   final bool reconciled;
   @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
-  final String? planId;
+  final String planId;
   @JsonKey(name: 'planFee', includeIfNull: false)
   final double? planFee;
   @JsonKey(name: 'deviceModelFee', includeIfNull: false)
@@ -10091,6 +10093,10 @@ class InvoiceBase {
   final String? paymentGateway;
   @JsonKey(name: 'paymentStatus', includeIfNull: false, defaultValue: '')
   final String paymentStatus;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
+  final String currencyCode;
   static const fromJsonFactory = _$InvoiceBaseFromJson;
 
   @override
@@ -10169,7 +10175,9 @@ class InvoiceBase {
             (identical(other.graceDays, graceDays) || const DeepCollectionEquality().equals(other.graceDays, graceDays)) &&
             (identical(other.paymentMode, paymentMode) || const DeepCollectionEquality().equals(other.paymentMode, paymentMode)) &&
             (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
-            (identical(other.paymentStatus, paymentStatus) || const DeepCollectionEquality().equals(other.paymentStatus, paymentStatus)));
+            (identical(other.paymentStatus, paymentStatus) || const DeepCollectionEquality().equals(other.paymentStatus, paymentStatus)) &&
+            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
+            (identical(other.currencyCode, currencyCode) || const DeepCollectionEquality().equals(other.currencyCode, currencyCode)));
   }
 
   @override
@@ -10207,6 +10215,8 @@ class InvoiceBase {
       const DeepCollectionEquality().hash(paymentMode) ^
       const DeepCollectionEquality().hash(paymentGateway) ^
       const DeepCollectionEquality().hash(paymentStatus) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencyCode) ^
       runtimeType.hashCode;
 }
 
@@ -10241,7 +10251,9 @@ extension $InvoiceBaseExtension on InvoiceBase {
       int? graceDays,
       String? paymentMode,
       String? paymentGateway,
-      String? paymentStatus}) {
+      String? paymentStatus,
+      String? currency,
+      String? currencyCode}) {
     return InvoiceBase(
         invoiceAmount: invoiceAmount ?? this.invoiceAmount,
         billedAmount: billedAmount ?? this.billedAmount,
@@ -10272,14 +10284,16 @@ extension $InvoiceBaseExtension on InvoiceBase {
         graceDays: graceDays ?? this.graceDays,
         paymentMode: paymentMode ?? this.paymentMode,
         paymentGateway: paymentGateway ?? this.paymentGateway,
-        paymentStatus: paymentStatus ?? this.paymentStatus);
+        paymentStatus: paymentStatus ?? this.paymentStatus,
+        currency: currency ?? this.currency,
+        currencyCode: currencyCode ?? this.currencyCode);
   }
 
   InvoiceBase copyWithWrapped(
       {Wrapped<double>? invoiceAmount,
       Wrapped<double?>? billedAmount,
       Wrapped<bool>? reconciled,
-      Wrapped<String?>? planId,
+      Wrapped<String>? planId,
       Wrapped<double?>? planFee,
       Wrapped<double?>? deviceModelFee,
       Wrapped<double?>? modelParametersFee,
@@ -10305,7 +10319,9 @@ extension $InvoiceBaseExtension on InvoiceBase {
       Wrapped<int?>? graceDays,
       Wrapped<String?>? paymentMode,
       Wrapped<String?>? paymentGateway,
-      Wrapped<String>? paymentStatus}) {
+      Wrapped<String>? paymentStatus,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencyCode}) {
     return InvoiceBase(
         invoiceAmount:
             (invoiceAmount != null ? invoiceAmount.value : this.invoiceAmount),
@@ -10360,7 +10376,10 @@ extension $InvoiceBaseExtension on InvoiceBase {
             ? paymentGateway.value
             : this.paymentGateway),
         paymentStatus:
-            (paymentStatus != null ? paymentStatus.value : this.paymentStatus));
+            (paymentStatus != null ? paymentStatus.value : this.paymentStatus),
+        currency: (currency != null ? currency.value : this.currency),
+        currencyCode:
+            (currencyCode != null ? currencyCode.value : this.currencyCode));
   }
 }
 
@@ -10374,7 +10393,7 @@ class Invoice {
     required this.invoiceAmount,
     this.billedAmount,
     required this.reconciled,
-    this.planId,
+    required this.planId,
     this.planFee,
     this.deviceModelFee,
     this.modelParametersFee,
@@ -10401,6 +10420,8 @@ class Invoice {
     this.paymentMode,
     this.paymentGateway,
     required this.paymentStatus,
+    required this.currency,
+    required this.currencyCode,
     required this.id,
     required this.rtype,
     required this.createdBy,
@@ -10431,7 +10452,7 @@ class Invoice {
   @JsonKey(name: 'reconciled', includeIfNull: false)
   final bool reconciled;
   @JsonKey(name: 'planId', includeIfNull: false, defaultValue: '')
-  final String? planId;
+  final String planId;
   @JsonKey(name: 'planFee', includeIfNull: false)
   final double? planFee;
   @JsonKey(name: 'deviceModelFee', includeIfNull: false)
@@ -10484,6 +10505,10 @@ class Invoice {
   final String? paymentGateway;
   @JsonKey(name: 'paymentStatus', includeIfNull: false, defaultValue: '')
   final String paymentStatus;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
+  final String currencyCode;
   @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
   final String id;
   @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
@@ -10580,6 +10605,8 @@ class Invoice {
             (identical(other.paymentMode, paymentMode) || const DeepCollectionEquality().equals(other.paymentMode, paymentMode)) &&
             (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
             (identical(other.paymentStatus, paymentStatus) || const DeepCollectionEquality().equals(other.paymentStatus, paymentStatus)) &&
+            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
+            (identical(other.currencyCode, currencyCode) || const DeepCollectionEquality().equals(other.currencyCode, currencyCode)) &&
             (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
             (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
@@ -10628,6 +10655,8 @@ class Invoice {
       const DeepCollectionEquality().hash(paymentMode) ^
       const DeepCollectionEquality().hash(paymentGateway) ^
       const DeepCollectionEquality().hash(paymentStatus) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencyCode) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(rtype) ^
       const DeepCollectionEquality().hash(createdBy) ^
@@ -10674,6 +10703,8 @@ extension $InvoiceExtension on Invoice {
       String? paymentMode,
       String? paymentGateway,
       String? paymentStatus,
+      String? currency,
+      String? currencyCode,
       String? id,
       String? rtype,
       String? createdBy,
@@ -10716,6 +10747,8 @@ extension $InvoiceExtension on Invoice {
         paymentMode: paymentMode ?? this.paymentMode,
         paymentGateway: paymentGateway ?? this.paymentGateway,
         paymentStatus: paymentStatus ?? this.paymentStatus,
+        currency: currency ?? this.currency,
+        currencyCode: currencyCode ?? this.currencyCode,
         id: id ?? this.id,
         rtype: rtype ?? this.rtype,
         createdBy: createdBy ?? this.createdBy,
@@ -10733,7 +10766,7 @@ extension $InvoiceExtension on Invoice {
       Wrapped<double>? invoiceAmount,
       Wrapped<double?>? billedAmount,
       Wrapped<bool>? reconciled,
-      Wrapped<String?>? planId,
+      Wrapped<String>? planId,
       Wrapped<double?>? planFee,
       Wrapped<double?>? deviceModelFee,
       Wrapped<double?>? modelParametersFee,
@@ -10760,6 +10793,8 @@ extension $InvoiceExtension on Invoice {
       Wrapped<String?>? paymentMode,
       Wrapped<String?>? paymentGateway,
       Wrapped<String>? paymentStatus,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencyCode,
       Wrapped<String>? id,
       Wrapped<String>? rtype,
       Wrapped<String>? createdBy,
@@ -10827,6 +10862,9 @@ extension $InvoiceExtension on Invoice {
             : this.paymentGateway),
         paymentStatus:
             (paymentStatus != null ? paymentStatus.value : this.paymentStatus),
+        currency: (currency != null ? currency.value : this.currency),
+        currencyCode:
+            (currencyCode != null ? currencyCode.value : this.currencyCode),
         id: (id != null ? id.value : this.id),
         rtype: (rtype != null ? rtype.value : this.rtype),
         createdBy: (createdBy != null ? createdBy.value : this.createdBy),
@@ -11392,6 +11430,8 @@ class OrderInfo {
     this.userCount,
     this.archivalCount,
     this.dashboardCount,
+    required this.currency,
+    required this.currencyCode,
   });
 
   factory OrderInfo.fromJson(Map<String, dynamic> json) =>
@@ -11424,6 +11464,10 @@ class OrderInfo {
   final int? archivalCount;
   @JsonKey(name: 'dashboardCount', includeIfNull: false)
   final int? dashboardCount;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
+  final String currencyCode;
   static const fromJsonFactory = _$OrderInfoFromJson;
 
   @override
@@ -11463,7 +11507,13 @@ class OrderInfo {
                     .equals(other.archivalCount, archivalCount)) &&
             (identical(other.dashboardCount, dashboardCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.dashboardCount, dashboardCount)));
+                    .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.currencyCode, currencyCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencyCode, currencyCode)));
   }
 
   @override
@@ -11483,6 +11533,8 @@ class OrderInfo {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(archivalCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencyCode) ^
       runtimeType.hashCode;
 }
 
@@ -11499,7 +11551,9 @@ extension $OrderInfoExtension on OrderInfo {
       int? dataCount,
       int? userCount,
       int? archivalCount,
-      int? dashboardCount}) {
+      int? dashboardCount,
+      String? currency,
+      String? currencyCode}) {
     return OrderInfo(
         description: description ?? this.description,
         orgId: orgId ?? this.orgId,
@@ -11512,7 +11566,9 @@ extension $OrderInfoExtension on OrderInfo {
         dataCount: dataCount ?? this.dataCount,
         userCount: userCount ?? this.userCount,
         archivalCount: archivalCount ?? this.archivalCount,
-        dashboardCount: dashboardCount ?? this.dashboardCount);
+        dashboardCount: dashboardCount ?? this.dashboardCount,
+        currency: currency ?? this.currency,
+        currencyCode: currencyCode ?? this.currencyCode);
   }
 
   OrderInfo copyWithWrapped(
@@ -11527,7 +11583,9 @@ extension $OrderInfoExtension on OrderInfo {
       Wrapped<int?>? dataCount,
       Wrapped<int?>? userCount,
       Wrapped<int?>? archivalCount,
-      Wrapped<int?>? dashboardCount}) {
+      Wrapped<int?>? dashboardCount,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencyCode}) {
     return OrderInfo(
         description:
             (description != null ? description.value : this.description),
@@ -11548,7 +11606,10 @@ extension $OrderInfoExtension on OrderInfo {
             (archivalCount != null ? archivalCount.value : this.archivalCount),
         dashboardCount: (dashboardCount != null
             ? dashboardCount.value
-            : this.dashboardCount));
+            : this.dashboardCount),
+        currency: (currency != null ? currency.value : this.currency),
+        currencyCode:
+            (currencyCode != null ? currencyCode.value : this.currencyCode));
   }
 }
 
@@ -11852,6 +11913,8 @@ class Order {
     this.userCount,
     this.archivalCount,
     this.dashboardCount,
+    required this.currency,
+    required this.currencyCode,
     required this.orderAmount,
     required this.reconciled,
     required this.processed,
@@ -11911,6 +11974,10 @@ class Order {
   final int? archivalCount;
   @JsonKey(name: 'dashboardCount', includeIfNull: false)
   final int? dashboardCount;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
+  final String currencyCode;
   @JsonKey(name: 'orderAmount', includeIfNull: false)
   final double orderAmount;
   @JsonKey(name: 'reconciled', includeIfNull: false)
@@ -12007,6 +12074,12 @@ class Order {
             (identical(other.dashboardCount, dashboardCount) ||
                 const DeepCollectionEquality()
                     .equals(other.dashboardCount, dashboardCount)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.currencyCode, currencyCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencyCode, currencyCode)) &&
             (identical(other.orderAmount, orderAmount) ||
                 const DeepCollectionEquality()
                     .equals(other.orderAmount, orderAmount)) &&
@@ -12032,13 +12105,9 @@ class Order {
                 const DeepCollectionEquality()
                     .equals(other.devicePrice, devicePrice)) &&
             (identical(other.clientPrice, clientPrice) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientPrice, clientPrice)) &&
-            (identical(other.dataPrice, dataPrice) ||
-                const DeepCollectionEquality()
-                    .equals(other.dataPrice, dataPrice)) &&
-            (identical(other.userPrice, userPrice) ||
-                const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
+                const DeepCollectionEquality().equals(other.clientPrice, clientPrice)) &&
+            (identical(other.dataPrice, dataPrice) || const DeepCollectionEquality().equals(other.dataPrice, dataPrice)) &&
+            (identical(other.userPrice, userPrice) || const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
             (identical(other.archivalPrice, archivalPrice) || const DeepCollectionEquality().equals(other.archivalPrice, archivalPrice)) &&
             (identical(other.dashboardPrice, dashboardPrice) || const DeepCollectionEquality().equals(other.dashboardPrice, dashboardPrice)) &&
             (identical(other.providerId, providerId) || const DeepCollectionEquality().equals(other.providerId, providerId)) &&
@@ -12075,6 +12144,8 @@ class Order {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(archivalCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencyCode) ^
       const DeepCollectionEquality().hash(orderAmount) ^
       const DeepCollectionEquality().hash(reconciled) ^
       const DeepCollectionEquality().hash(processed) ^
@@ -12120,6 +12191,8 @@ extension $OrderExtension on Order {
       int? userCount,
       int? archivalCount,
       int? dashboardCount,
+      String? currency,
+      String? currencyCode,
       double? orderAmount,
       bool? reconciled,
       bool? processed,
@@ -12161,6 +12234,8 @@ extension $OrderExtension on Order {
         userCount: userCount ?? this.userCount,
         archivalCount: archivalCount ?? this.archivalCount,
         dashboardCount: dashboardCount ?? this.dashboardCount,
+        currency: currency ?? this.currency,
+        currencyCode: currencyCode ?? this.currencyCode,
         orderAmount: orderAmount ?? this.orderAmount,
         reconciled: reconciled ?? this.reconciled,
         processed: processed ?? this.processed,
@@ -12204,6 +12279,8 @@ extension $OrderExtension on Order {
       Wrapped<int?>? userCount,
       Wrapped<int?>? archivalCount,
       Wrapped<int?>? dashboardCount,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencyCode,
       Wrapped<double>? orderAmount,
       Wrapped<bool>? reconciled,
       Wrapped<bool>? processed,
@@ -12253,6 +12330,9 @@ extension $OrderExtension on Order {
         dashboardCount: (dashboardCount != null
             ? dashboardCount.value
             : this.dashboardCount),
+        currency: (currency != null ? currency.value : this.currency),
+        currencyCode:
+            (currencyCode != null ? currencyCode.value : this.currencyCode),
         orderAmount:
             (orderAmount != null ? orderAmount.value : this.orderAmount),
         reconciled: (reconciled != null ? reconciled.value : this.reconciled),
