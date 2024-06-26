@@ -5095,7 +5095,10 @@
       "required": [
         "invoiceAmount",
         "paymentStatus",
-        "reconciled"
+        "reconciled",
+        "planId",
+        "currency",
+        "currencyCode"
       ],
       "properties": {
         "invoiceAmount": {
@@ -5207,6 +5210,12 @@
           "type": "string"
         },
         "paymentStatus": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "currencyCode": {
           "type": "string"
         }
       }
@@ -5345,7 +5354,9 @@
       "type": "object",
       "required": [
         "orgId",
-        "orderStatus"
+        "orderStatus",
+        "currency",
+        "currencyCode"
       ],
       "properties": {
         "description": {
@@ -5391,6 +5402,12 @@
         "dashboardCount": {
           "type": "integer",
           "format": "int64"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "currencyCode": {
+          "type": "string"
         }
       }
     },

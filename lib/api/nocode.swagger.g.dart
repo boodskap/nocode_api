@@ -2293,6 +2293,8 @@ InvoiceBase _$InvoiceBaseFromJson(Map<String, dynamic> json) => InvoiceBase(
       paymentMode: json['paymentMode'] as String? ?? '',
       paymentGateway: json['paymentGateway'] as String? ?? '',
       paymentStatus: json['paymentStatus'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+      currencyCode: json['currencyCode'] as String? ?? '',
     );
 
 Map<String, dynamic> _$InvoiceBaseToJson(InvoiceBase instance) {
@@ -2308,7 +2310,7 @@ Map<String, dynamic> _$InvoiceBaseToJson(InvoiceBase instance) {
 
   writeNotNull('billedAmount', instance.billedAmount);
   val['reconciled'] = instance.reconciled;
-  writeNotNull('planId', instance.planId);
+  val['planId'] = instance.planId;
   writeNotNull('planFee', instance.planFee);
   writeNotNull('deviceModelFee', instance.deviceModelFee);
   writeNotNull('modelParametersFee', instance.modelParametersFee);
@@ -2335,6 +2337,8 @@ Map<String, dynamic> _$InvoiceBaseToJson(InvoiceBase instance) {
   writeNotNull('paymentMode', instance.paymentMode);
   writeNotNull('paymentGateway', instance.paymentGateway);
   val['paymentStatus'] = instance.paymentStatus;
+  val['currency'] = instance.currency;
+  val['currencyCode'] = instance.currencyCode;
   return val;
 }
 
@@ -2373,6 +2377,8 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) => Invoice(
       paymentMode: json['paymentMode'] as String? ?? '',
       paymentGateway: json['paymentGateway'] as String? ?? '',
       paymentStatus: json['paymentStatus'] as String? ?? '',
+      currency: json['currency'] as String? ?? '',
+      currencyCode: json['currencyCode'] as String? ?? '',
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
@@ -2399,7 +2405,7 @@ Map<String, dynamic> _$InvoiceToJson(Invoice instance) {
   val['invoiceAmount'] = instance.invoiceAmount;
   writeNotNull('billedAmount', instance.billedAmount);
   val['reconciled'] = instance.reconciled;
-  writeNotNull('planId', instance.planId);
+  val['planId'] = instance.planId;
   writeNotNull('planFee', instance.planFee);
   writeNotNull('deviceModelFee', instance.deviceModelFee);
   writeNotNull('modelParametersFee', instance.modelParametersFee);
@@ -2426,6 +2432,8 @@ Map<String, dynamic> _$InvoiceToJson(Invoice instance) {
   writeNotNull('paymentMode', instance.paymentMode);
   writeNotNull('paymentGateway', instance.paymentGateway);
   val['paymentStatus'] = instance.paymentStatus;
+  val['currency'] = instance.currency;
+  val['currencyCode'] = instance.currencyCode;
   val['id'] = instance.id;
   val['rtype'] = instance.rtype;
   val['createdBy'] = instance.createdBy;
@@ -2621,6 +2629,8 @@ OrderInfo _$OrderInfoFromJson(Map<String, dynamic> json) => OrderInfo(
       userCount: (json['userCount'] as num?)?.toInt(),
       archivalCount: (json['archivalCount'] as num?)?.toInt(),
       dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
+      currency: json['currency'] as String? ?? '',
+      currencyCode: json['currencyCode'] as String? ?? '',
     );
 
 Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
@@ -2644,6 +2654,8 @@ Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
   writeNotNull('userCount', instance.userCount);
   writeNotNull('archivalCount', instance.archivalCount);
   writeNotNull('dashboardCount', instance.dashboardCount);
+  val['currency'] = instance.currency;
+  val['currencyCode'] = instance.currencyCode;
   return val;
 }
 
@@ -2718,6 +2730,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       userCount: (json['userCount'] as num?)?.toInt(),
       archivalCount: (json['archivalCount'] as num?)?.toInt(),
       dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
+      currency: json['currency'] as String? ?? '',
+      currencyCode: json['currencyCode'] as String? ?? '',
       orderAmount: (json['orderAmount'] as num).toDouble(),
       reconciled: json['reconciled'] as bool,
       processed: json['processed'] as bool,
@@ -2769,6 +2783,8 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('userCount', instance.userCount);
   writeNotNull('archivalCount', instance.archivalCount);
   writeNotNull('dashboardCount', instance.dashboardCount);
+  val['currency'] = instance.currency;
+  val['currencyCode'] = instance.currencyCode;
   val['orderAmount'] = instance.orderAmount;
   val['reconciled'] = instance.reconciled;
   val['processed'] = instance.processed;
