@@ -2627,7 +2627,7 @@
         ]
       }
     },
-    "/Plan/get/{planId}/{currency}": {
+    "/Plan/get/{planId}/{planFrequency}/{currency}": {
       "get": {
         "tags": [
           "Plan"
@@ -2646,6 +2646,13 @@
             "name": "planId",
             "in": "path",
             "description": "Plan ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "planFrequency",
+            "in": "path",
+            "description": "Plan Frequency (MONTH | YEAR)",
             "type": "string",
             "required": true
           },
@@ -4861,6 +4868,9 @@
       "required": [
         "id",
         "planType",
+        "currency",
+        "currencySymbol",
+        "planFrequency",
         "planFee",
         "defaultDeviceModelCount",
         "defaultDevicesCount",
@@ -4886,15 +4896,19 @@
         "userPrice",
         "archivePrice",
         "dashboardPrice",
-        "modelParameterPrice",
-        "currency",
-        "currencySymbol"
+        "modelParameterPrice"
       ],
       "properties": {
         "id": {
           "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "currencySymbol": {
           "type": "string"
         },
         "planFee": {
@@ -4965,11 +4979,12 @@
           "type": "number",
           "format": "double"
         },
-        "currency": {
-          "type": "string"
-        },
-        "currencySymbol": {
-          "type": "string"
+        "planFrequency": {
+          "type": "string",
+          "enum": [
+            "M",
+            "Y"
+          ]
         },
         "planType": {
           "type": "string",
@@ -5599,6 +5614,7 @@
       "required": [
         "planId",
         "planType",
+        "planFrequency",
         "deviceModelCount",
         "modelParametersCount",
         "devicesCount",
@@ -5627,6 +5643,10 @@
           "type": "string"
         },
         "planType": {
+          "type": "string",
+          "description": "BASIC | STANDARD | PROFESSIONAL | ENTERPRISE | CUSTOM"
+        },
+        "planFrequency": {
           "type": "string"
         },
         "deviceModelCount": {

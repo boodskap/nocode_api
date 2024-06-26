@@ -1393,23 +1393,28 @@ abstract class Nocode extends ChopperService {
 
   ///Get plan
   ///@param planId Plan ID
+  ///@param planFrequency Plan Frequency (MONTH | YEAR)
   ///@param currency ISO 3 letter currency code
   Future<chopper.Response<PlanEntityRes>> getPlan({
     required String? planId,
+    required String? planFrequency,
     required String? currency,
   }) {
     generatedMapping.putIfAbsent(
         PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
 
-    return _getPlan(planId: planId, currency: currency);
+    return _getPlan(
+        planId: planId, planFrequency: planFrequency, currency: currency);
   }
 
   ///Get plan
   ///@param planId Plan ID
+  ///@param planFrequency Plan Frequency (MONTH | YEAR)
   ///@param currency ISO 3 letter currency code
-  @Get(path: '/Plan/get/{planId}/{currency}')
+  @Get(path: '/Plan/get/{planId}/{planFrequency}/{currency}')
   Future<chopper.Response<PlanEntityRes>> _getPlan({
     @Path('planId') required String? planId,
+    @Path('planFrequency') required String? planFrequency,
     @Path('currency') required String? currency,
   });
 
@@ -8888,6 +8893,8 @@ class PlanInfo {
   const PlanInfo({
     required this.id,
     this.description,
+    required this.currency,
+    required this.currencySymbol,
     required this.planFee,
     required this.defaultDeviceModelCount,
     required this.defaultDevicesCount,
@@ -8905,8 +8912,7 @@ class PlanInfo {
     required this.extraArchivalFee,
     required this.extraDashboardFee,
     required this.extraModelParametersFee,
-    required this.currency,
-    required this.currencySymbol,
+    required this.planFrequency,
     required this.planType,
   });
 
@@ -8920,6 +8926,10 @@ class PlanInfo {
   final String id;
   @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
   final String? description;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
+  final String currencySymbol;
   @JsonKey(name: 'planFee', includeIfNull: false)
   final double planFee;
   @JsonKey(name: 'defaultDeviceModelCount', includeIfNull: false)
@@ -8954,10 +8964,13 @@ class PlanInfo {
   final double extraDashboardFee;
   @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
   final double extraModelParametersFee;
-  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
-  final String currency;
-  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
-  final String currencySymbol;
+  @JsonKey(
+    name: 'planFrequency',
+    includeIfNull: false,
+    toJson: planInfoPlanFrequencyToJson,
+    fromJson: planInfoPlanFrequencyFromJson,
+  )
+  final enums.PlanInfoPlanFrequency planFrequency;
   @JsonKey(
     name: 'planType',
     includeIfNull: false,
@@ -8976,6 +8989,12 @@ class PlanInfo {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.currencySymbol, currencySymbol) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencySymbol, currencySymbol)) &&
             (identical(other.planFee, planFee) ||
                 const DeepCollectionEquality()
                     .equals(other.planFee, planFee)) &&
@@ -9013,15 +9032,12 @@ class PlanInfo {
             (identical(other.extraDataPointsFee, extraDataPointsFee) ||
                 const DeepCollectionEquality()
                     .equals(other.extraDataPointsFee, extraDataPointsFee)) &&
-            (identical(other.extraClientFee, extraClientFee) ||
-                const DeepCollectionEquality()
-                    .equals(other.extraClientFee, extraClientFee)) &&
+            (identical(other.extraClientFee, extraClientFee) || const DeepCollectionEquality().equals(other.extraClientFee, extraClientFee)) &&
             (identical(other.extraUserFee, extraUserFee) || const DeepCollectionEquality().equals(other.extraUserFee, extraUserFee)) &&
             (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
             (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
             (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
-            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
-            (identical(other.currencySymbol, currencySymbol) || const DeepCollectionEquality().equals(other.currencySymbol, currencySymbol)) &&
+            (identical(other.planFrequency, planFrequency) || const DeepCollectionEquality().equals(other.planFrequency, planFrequency)) &&
             (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)));
   }
 
@@ -9032,6 +9048,8 @@ class PlanInfo {
   int get hashCode =>
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySymbol) ^
       const DeepCollectionEquality().hash(planFee) ^
       const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
       const DeepCollectionEquality().hash(defaultDevicesCount) ^
@@ -9049,8 +9067,7 @@ class PlanInfo {
       const DeepCollectionEquality().hash(extraArchivalFee) ^
       const DeepCollectionEquality().hash(extraDashboardFee) ^
       const DeepCollectionEquality().hash(extraModelParametersFee) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(currencySymbol) ^
+      const DeepCollectionEquality().hash(planFrequency) ^
       const DeepCollectionEquality().hash(planType) ^
       runtimeType.hashCode;
 }
@@ -9059,6 +9076,8 @@ extension $PlanInfoExtension on PlanInfo {
   PlanInfo copyWith(
       {String? id,
       String? description,
+      String? currency,
+      String? currencySymbol,
       double? planFee,
       int? defaultDeviceModelCount,
       int? defaultDevicesCount,
@@ -9076,12 +9095,13 @@ extension $PlanInfoExtension on PlanInfo {
       double? extraArchivalFee,
       double? extraDashboardFee,
       double? extraModelParametersFee,
-      String? currency,
-      String? currencySymbol,
+      enums.PlanInfoPlanFrequency? planFrequency,
       enums.PlanInfoPlanType? planType}) {
     return PlanInfo(
         id: id ?? this.id,
         description: description ?? this.description,
+        currency: currency ?? this.currency,
+        currencySymbol: currencySymbol ?? this.currencySymbol,
         planFee: planFee ?? this.planFee,
         defaultDeviceModelCount:
             defaultDeviceModelCount ?? this.defaultDeviceModelCount,
@@ -9104,14 +9124,15 @@ extension $PlanInfoExtension on PlanInfo {
         extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
         extraModelParametersFee:
             extraModelParametersFee ?? this.extraModelParametersFee,
-        currency: currency ?? this.currency,
-        currencySymbol: currencySymbol ?? this.currencySymbol,
+        planFrequency: planFrequency ?? this.planFrequency,
         planType: planType ?? this.planType);
   }
 
   PlanInfo copyWithWrapped(
       {Wrapped<String>? id,
       Wrapped<String?>? description,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencySymbol,
       Wrapped<double>? planFee,
       Wrapped<int>? defaultDeviceModelCount,
       Wrapped<int>? defaultDevicesCount,
@@ -9129,13 +9150,16 @@ extension $PlanInfoExtension on PlanInfo {
       Wrapped<double>? extraArchivalFee,
       Wrapped<double>? extraDashboardFee,
       Wrapped<double>? extraModelParametersFee,
-      Wrapped<String>? currency,
-      Wrapped<String>? currencySymbol,
+      Wrapped<enums.PlanInfoPlanFrequency>? planFrequency,
       Wrapped<enums.PlanInfoPlanType>? planType}) {
     return PlanInfo(
         id: (id != null ? id.value : this.id),
         description:
             (description != null ? description.value : this.description),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySymbol: (currencySymbol != null
+            ? currencySymbol.value
+            : this.currencySymbol),
         planFee: (planFee != null ? planFee.value : this.planFee),
         defaultDeviceModelCount: (defaultDeviceModelCount != null
             ? defaultDeviceModelCount.value
@@ -9184,10 +9208,8 @@ extension $PlanInfoExtension on PlanInfo {
         extraModelParametersFee: (extraModelParametersFee != null
             ? extraModelParametersFee.value
             : this.extraModelParametersFee),
-        currency: (currency != null ? currency.value : this.currency),
-        currencySymbol: (currencySymbol != null
-            ? currencySymbol.value
-            : this.currencySymbol),
+        planFrequency:
+            (planFrequency != null ? planFrequency.value : this.planFrequency),
         planType: (planType != null ? planType.value : this.planType));
   }
 }
@@ -9251,6 +9273,8 @@ class Plan {
     required this.customPlan,
     required this.id,
     this.description,
+    required this.currency,
+    required this.currencySymbol,
     required this.planFee,
     required this.defaultDeviceModelCount,
     required this.defaultDevicesCount,
@@ -9268,8 +9292,7 @@ class Plan {
     required this.extraArchivalFee,
     required this.extraDashboardFee,
     required this.extraModelParametersFee,
-    required this.currency,
-    required this.currencySymbol,
+    required this.planFrequency,
     required this.planType,
     required this.name,
     required this.rtype,
@@ -9291,6 +9314,10 @@ class Plan {
   final String id;
   @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
   final String? description;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
+  final String currencySymbol;
   @JsonKey(name: 'planFee', includeIfNull: false)
   final double planFee;
   @JsonKey(name: 'defaultDeviceModelCount', includeIfNull: false)
@@ -9325,10 +9352,13 @@ class Plan {
   final double extraDashboardFee;
   @JsonKey(name: 'extraModelParametersFee', includeIfNull: false)
   final double extraModelParametersFee;
-  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
-  final String currency;
-  @JsonKey(name: 'currencySymbol', includeIfNull: false, defaultValue: '')
-  final String currencySymbol;
+  @JsonKey(
+    name: 'planFrequency',
+    includeIfNull: false,
+    toJson: planPlanFrequencyToJson,
+    fromJson: planPlanFrequencyFromJson,
+  )
+  final enums.PlanPlanFrequency planFrequency;
   @JsonKey(
     name: 'planType',
     includeIfNull: false,
@@ -9364,6 +9394,12 @@ class Plan {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.currencySymbol, currencySymbol) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencySymbol, currencySymbol)) &&
             (identical(other.planFee, planFee) ||
                 const DeepCollectionEquality()
                     .equals(other.planFee, planFee)) &&
@@ -9399,16 +9435,13 @@ class Plan {
                 const DeepCollectionEquality()
                     .equals(other.extraDeviceModelFee, extraDeviceModelFee)) &&
             (identical(other.extraDataPointsFee, extraDataPointsFee) ||
-                const DeepCollectionEquality()
-                    .equals(other.extraDataPointsFee, extraDataPointsFee)) &&
-            (identical(other.extraClientFee, extraClientFee) ||
-                const DeepCollectionEquality().equals(other.extraClientFee, extraClientFee)) &&
+                const DeepCollectionEquality().equals(other.extraDataPointsFee, extraDataPointsFee)) &&
+            (identical(other.extraClientFee, extraClientFee) || const DeepCollectionEquality().equals(other.extraClientFee, extraClientFee)) &&
             (identical(other.extraUserFee, extraUserFee) || const DeepCollectionEquality().equals(other.extraUserFee, extraUserFee)) &&
             (identical(other.extraArchivalFee, extraArchivalFee) || const DeepCollectionEquality().equals(other.extraArchivalFee, extraArchivalFee)) &&
             (identical(other.extraDashboardFee, extraDashboardFee) || const DeepCollectionEquality().equals(other.extraDashboardFee, extraDashboardFee)) &&
             (identical(other.extraModelParametersFee, extraModelParametersFee) || const DeepCollectionEquality().equals(other.extraModelParametersFee, extraModelParametersFee)) &&
-            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
-            (identical(other.currencySymbol, currencySymbol) || const DeepCollectionEquality().equals(other.currencySymbol, currencySymbol)) &&
+            (identical(other.planFrequency, planFrequency) || const DeepCollectionEquality().equals(other.planFrequency, planFrequency)) &&
             (identical(other.planType, planType) || const DeepCollectionEquality().equals(other.planType, planType)) &&
             (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
@@ -9427,6 +9460,8 @@ class Plan {
       const DeepCollectionEquality().hash(customPlan) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(currencySymbol) ^
       const DeepCollectionEquality().hash(planFee) ^
       const DeepCollectionEquality().hash(defaultDeviceModelCount) ^
       const DeepCollectionEquality().hash(defaultDevicesCount) ^
@@ -9444,8 +9479,7 @@ class Plan {
       const DeepCollectionEquality().hash(extraArchivalFee) ^
       const DeepCollectionEquality().hash(extraDashboardFee) ^
       const DeepCollectionEquality().hash(extraModelParametersFee) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(currencySymbol) ^
+      const DeepCollectionEquality().hash(planFrequency) ^
       const DeepCollectionEquality().hash(planType) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(rtype) ^
@@ -9462,6 +9496,8 @@ extension $PlanExtension on Plan {
       {bool? customPlan,
       String? id,
       String? description,
+      String? currency,
+      String? currencySymbol,
       double? planFee,
       int? defaultDeviceModelCount,
       int? defaultDevicesCount,
@@ -9479,8 +9515,7 @@ extension $PlanExtension on Plan {
       double? extraArchivalFee,
       double? extraDashboardFee,
       double? extraModelParametersFee,
-      String? currency,
-      String? currencySymbol,
+      enums.PlanPlanFrequency? planFrequency,
       enums.PlanPlanType? planType,
       String? name,
       String? rtype,
@@ -9493,6 +9528,8 @@ extension $PlanExtension on Plan {
         customPlan: customPlan ?? this.customPlan,
         id: id ?? this.id,
         description: description ?? this.description,
+        currency: currency ?? this.currency,
+        currencySymbol: currencySymbol ?? this.currencySymbol,
         planFee: planFee ?? this.planFee,
         defaultDeviceModelCount:
             defaultDeviceModelCount ?? this.defaultDeviceModelCount,
@@ -9515,8 +9552,7 @@ extension $PlanExtension on Plan {
         extraDashboardFee: extraDashboardFee ?? this.extraDashboardFee,
         extraModelParametersFee:
             extraModelParametersFee ?? this.extraModelParametersFee,
-        currency: currency ?? this.currency,
-        currencySymbol: currencySymbol ?? this.currencySymbol,
+        planFrequency: planFrequency ?? this.planFrequency,
         planType: planType ?? this.planType,
         name: name ?? this.name,
         rtype: rtype ?? this.rtype,
@@ -9531,6 +9567,8 @@ extension $PlanExtension on Plan {
       {Wrapped<bool>? customPlan,
       Wrapped<String>? id,
       Wrapped<String?>? description,
+      Wrapped<String>? currency,
+      Wrapped<String>? currencySymbol,
       Wrapped<double>? planFee,
       Wrapped<int>? defaultDeviceModelCount,
       Wrapped<int>? defaultDevicesCount,
@@ -9548,8 +9586,7 @@ extension $PlanExtension on Plan {
       Wrapped<double>? extraArchivalFee,
       Wrapped<double>? extraDashboardFee,
       Wrapped<double>? extraModelParametersFee,
-      Wrapped<String>? currency,
-      Wrapped<String>? currencySymbol,
+      Wrapped<enums.PlanPlanFrequency>? planFrequency,
       Wrapped<enums.PlanPlanType>? planType,
       Wrapped<String>? name,
       Wrapped<String>? rtype,
@@ -9563,6 +9600,10 @@ extension $PlanExtension on Plan {
         id: (id != null ? id.value : this.id),
         description:
             (description != null ? description.value : this.description),
+        currency: (currency != null ? currency.value : this.currency),
+        currencySymbol: (currencySymbol != null
+            ? currencySymbol.value
+            : this.currencySymbol),
         planFee: (planFee != null ? planFee.value : this.planFee),
         defaultDeviceModelCount: (defaultDeviceModelCount != null
             ? defaultDeviceModelCount.value
@@ -9611,10 +9652,8 @@ extension $PlanExtension on Plan {
         extraModelParametersFee: (extraModelParametersFee != null
             ? extraModelParametersFee.value
             : this.extraModelParametersFee),
-        currency: (currency != null ? currency.value : this.currency),
-        currencySymbol: (currencySymbol != null
-            ? currencySymbol.value
-            : this.currencySymbol),
+        planFrequency:
+            (planFrequency != null ? planFrequency.value : this.planFrequency),
         planType: (planType != null ? planType.value : this.planType),
         name: (name != null ? name.value : this.name),
         rtype: (rtype != null ? rtype.value : this.rtype),
@@ -12797,6 +12836,7 @@ class OrgPlanInfo {
   const OrgPlanInfo({
     required this.planId,
     required this.planType,
+    required this.planFrequency,
     required this.deviceModelCount,
     required this.modelParametersCount,
     required this.devicesCount,
@@ -12838,6 +12878,8 @@ class OrgPlanInfo {
   final String planId;
   @JsonKey(name: 'planType', includeIfNull: false, defaultValue: '')
   final String planType;
+  @JsonKey(name: 'planFrequency', includeIfNull: false, defaultValue: '')
+  final String planFrequency;
   @JsonKey(name: 'deviceModelCount', includeIfNull: false)
   final int deviceModelCount;
   @JsonKey(name: 'modelParametersCount', includeIfNull: false)
@@ -12907,6 +12949,9 @@ class OrgPlanInfo {
             (identical(other.planType, planType) ||
                 const DeepCollectionEquality()
                     .equals(other.planType, planType)) &&
+            (identical(other.planFrequency, planFrequency) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFrequency, planFrequency)) &&
             (identical(other.deviceModelCount, deviceModelCount) ||
                 const DeepCollectionEquality()
                     .equals(other.deviceModelCount, deviceModelCount)) &&
@@ -12962,9 +13007,7 @@ class OrgPlanInfo {
                 const DeepCollectionEquality().equals(
                     other.totalModelParametersCount,
                     totalModelParametersCount)) &&
-            (identical(other.totalDevicesCount, totalDevicesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalDevicesCount, totalDevicesCount)) &&
+            (identical(other.totalDevicesCount, totalDevicesCount) || const DeepCollectionEquality().equals(other.totalDevicesCount, totalDevicesCount)) &&
             (identical(other.totalClientCount, totalClientCount) || const DeepCollectionEquality().equals(other.totalClientCount, totalClientCount)) &&
             (identical(other.totalUserCount, totalUserCount) || const DeepCollectionEquality().equals(other.totalUserCount, totalUserCount)) &&
             (identical(other.totalDashboardCount, totalDashboardCount) || const DeepCollectionEquality().equals(other.totalDashboardCount, totalDashboardCount)) &&
@@ -12984,6 +13027,7 @@ class OrgPlanInfo {
   int get hashCode =>
       const DeepCollectionEquality().hash(planId) ^
       const DeepCollectionEquality().hash(planType) ^
+      const DeepCollectionEquality().hash(planFrequency) ^
       const DeepCollectionEquality().hash(deviceModelCount) ^
       const DeepCollectionEquality().hash(modelParametersCount) ^
       const DeepCollectionEquality().hash(devicesCount) ^
@@ -13020,6 +13064,7 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
   OrgPlanInfo copyWith(
       {String? planId,
       String? planType,
+      String? planFrequency,
       int? deviceModelCount,
       int? modelParametersCount,
       int? devicesCount,
@@ -13052,6 +13097,7 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
     return OrgPlanInfo(
         planId: planId ?? this.planId,
         planType: planType ?? this.planType,
+        planFrequency: planFrequency ?? this.planFrequency,
         deviceModelCount: deviceModelCount ?? this.deviceModelCount,
         modelParametersCount: modelParametersCount ?? this.modelParametersCount,
         devicesCount: devicesCount ?? this.devicesCount,
@@ -13090,6 +13136,7 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
   OrgPlanInfo copyWithWrapped(
       {Wrapped<String>? planId,
       Wrapped<String>? planType,
+      Wrapped<String>? planFrequency,
       Wrapped<int>? deviceModelCount,
       Wrapped<int>? modelParametersCount,
       Wrapped<int>? devicesCount,
@@ -13122,6 +13169,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
     return OrgPlanInfo(
         planId: (planId != null ? planId.value : this.planId),
         planType: (planType != null ? planType.value : this.planType),
+        planFrequency:
+            (planFrequency != null ? planFrequency.value : this.planFrequency),
         deviceModelCount: (deviceModelCount != null
             ? deviceModelCount.value
             : this.deviceModelCount),
@@ -13280,6 +13329,7 @@ class OrgPlan {
     required this.orgId,
     required this.planId,
     required this.planType,
+    required this.planFrequency,
     required this.deviceModelCount,
     required this.modelParametersCount,
     required this.devicesCount,
@@ -13332,6 +13382,8 @@ class OrgPlan {
   final String planId;
   @JsonKey(name: 'planType', includeIfNull: false, defaultValue: '')
   final String planType;
+  @JsonKey(name: 'planFrequency', includeIfNull: false, defaultValue: '')
+  final String planFrequency;
   @JsonKey(name: 'deviceModelCount', includeIfNull: false)
   final int deviceModelCount;
   @JsonKey(name: 'modelParametersCount', includeIfNull: false)
@@ -13421,6 +13473,9 @@ class OrgPlan {
             (identical(other.planType, planType) ||
                 const DeepCollectionEquality()
                     .equals(other.planType, planType)) &&
+            (identical(other.planFrequency, planFrequency) ||
+                const DeepCollectionEquality()
+                    .equals(other.planFrequency, planFrequency)) &&
             (identical(other.deviceModelCount, deviceModelCount) ||
                 const DeepCollectionEquality()
                     .equals(other.deviceModelCount, deviceModelCount)) &&
@@ -13474,10 +13529,8 @@ class OrgPlan {
                     other.totalDeviceModelCount, totalDeviceModelCount)) &&
             (identical(other.totalModelParametersCount, totalModelParametersCount) ||
                 const DeepCollectionEquality().equals(
-                    other.totalModelParametersCount,
-                    totalModelParametersCount)) &&
-            (identical(other.totalDevicesCount, totalDevicesCount) ||
-                const DeepCollectionEquality().equals(other.totalDevicesCount, totalDevicesCount)) &&
+                    other.totalModelParametersCount, totalModelParametersCount)) &&
+            (identical(other.totalDevicesCount, totalDevicesCount) || const DeepCollectionEquality().equals(other.totalDevicesCount, totalDevicesCount)) &&
             (identical(other.totalClientCount, totalClientCount) || const DeepCollectionEquality().equals(other.totalClientCount, totalClientCount)) &&
             (identical(other.totalUserCount, totalUserCount) || const DeepCollectionEquality().equals(other.totalUserCount, totalUserCount)) &&
             (identical(other.totalDashboardCount, totalDashboardCount) || const DeepCollectionEquality().equals(other.totalDashboardCount, totalDashboardCount)) &&
@@ -13507,6 +13560,7 @@ class OrgPlan {
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(planId) ^
       const DeepCollectionEquality().hash(planType) ^
+      const DeepCollectionEquality().hash(planFrequency) ^
       const DeepCollectionEquality().hash(deviceModelCount) ^
       const DeepCollectionEquality().hash(modelParametersCount) ^
       const DeepCollectionEquality().hash(devicesCount) ^
@@ -13553,6 +13607,7 @@ extension $OrgPlanExtension on OrgPlan {
       {String? orgId,
       String? planId,
       String? planType,
+      String? planFrequency,
       int? deviceModelCount,
       int? modelParametersCount,
       int? devicesCount,
@@ -13595,6 +13650,7 @@ extension $OrgPlanExtension on OrgPlan {
         orgId: orgId ?? this.orgId,
         planId: planId ?? this.planId,
         planType: planType ?? this.planType,
+        planFrequency: planFrequency ?? this.planFrequency,
         deviceModelCount: deviceModelCount ?? this.deviceModelCount,
         modelParametersCount: modelParametersCount ?? this.modelParametersCount,
         devicesCount: devicesCount ?? this.devicesCount,
@@ -13643,6 +13699,7 @@ extension $OrgPlanExtension on OrgPlan {
       {Wrapped<String>? orgId,
       Wrapped<String>? planId,
       Wrapped<String>? planType,
+      Wrapped<String>? planFrequency,
       Wrapped<int>? deviceModelCount,
       Wrapped<int>? modelParametersCount,
       Wrapped<int>? devicesCount,
@@ -13685,6 +13742,8 @@ extension $OrgPlanExtension on OrgPlan {
         orgId: (orgId != null ? orgId.value : this.orgId),
         planId: (planId != null ? planId.value : this.planId),
         planType: (planType != null ? planType.value : this.planType),
+        planFrequency:
+            (planFrequency != null ? planFrequency.value : this.planFrequency),
         deviceModelCount: (deviceModelCount != null
             ? deviceModelCount.value
             : this.deviceModelCount),
@@ -14889,6 +14948,78 @@ List<enums.ImageFileImageTarget>? imageFileImageTargetNullableListFromJson(
       .toList();
 }
 
+String? planInfoPlanFrequencyNullableToJson(
+    enums.PlanInfoPlanFrequency? planInfoPlanFrequency) {
+  return planInfoPlanFrequency?.value;
+}
+
+String? planInfoPlanFrequencyToJson(
+    enums.PlanInfoPlanFrequency planInfoPlanFrequency) {
+  return planInfoPlanFrequency.value;
+}
+
+enums.PlanInfoPlanFrequency planInfoPlanFrequencyFromJson(
+  Object? planInfoPlanFrequency, [
+  enums.PlanInfoPlanFrequency? defaultValue,
+]) {
+  return enums.PlanInfoPlanFrequency.values
+          .firstWhereOrNull((e) => e.value == planInfoPlanFrequency) ??
+      defaultValue ??
+      enums.PlanInfoPlanFrequency.swaggerGeneratedUnknown;
+}
+
+enums.PlanInfoPlanFrequency? planInfoPlanFrequencyNullableFromJson(
+  Object? planInfoPlanFrequency, [
+  enums.PlanInfoPlanFrequency? defaultValue,
+]) {
+  if (planInfoPlanFrequency == null) {
+    return null;
+  }
+  return enums.PlanInfoPlanFrequency.values
+          .firstWhereOrNull((e) => e.value == planInfoPlanFrequency) ??
+      defaultValue;
+}
+
+String planInfoPlanFrequencyExplodedListToJson(
+    List<enums.PlanInfoPlanFrequency>? planInfoPlanFrequency) {
+  return planInfoPlanFrequency?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> planInfoPlanFrequencyListToJson(
+    List<enums.PlanInfoPlanFrequency>? planInfoPlanFrequency) {
+  if (planInfoPlanFrequency == null) {
+    return [];
+  }
+
+  return planInfoPlanFrequency.map((e) => e.value!).toList();
+}
+
+List<enums.PlanInfoPlanFrequency> planInfoPlanFrequencyListFromJson(
+  List? planInfoPlanFrequency, [
+  List<enums.PlanInfoPlanFrequency>? defaultValue,
+]) {
+  if (planInfoPlanFrequency == null) {
+    return defaultValue ?? [];
+  }
+
+  return planInfoPlanFrequency
+      .map((e) => planInfoPlanFrequencyFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.PlanInfoPlanFrequency>? planInfoPlanFrequencyNullableListFromJson(
+  List? planInfoPlanFrequency, [
+  List<enums.PlanInfoPlanFrequency>? defaultValue,
+]) {
+  if (planInfoPlanFrequency == null) {
+    return defaultValue;
+  }
+
+  return planInfoPlanFrequency
+      .map((e) => planInfoPlanFrequencyFromJson(e.toString()))
+      .toList();
+}
+
 String? planInfoPlanTypeNullableToJson(
     enums.PlanInfoPlanType? planInfoPlanType) {
   return planInfoPlanType?.value;
@@ -14957,6 +15088,77 @@ List<enums.PlanInfoPlanType>? planInfoPlanTypeNullableListFromJson(
 
   return planInfoPlanType
       .map((e) => planInfoPlanTypeFromJson(e.toString()))
+      .toList();
+}
+
+String? planPlanFrequencyNullableToJson(
+    enums.PlanPlanFrequency? planPlanFrequency) {
+  return planPlanFrequency?.value;
+}
+
+String? planPlanFrequencyToJson(enums.PlanPlanFrequency planPlanFrequency) {
+  return planPlanFrequency.value;
+}
+
+enums.PlanPlanFrequency planPlanFrequencyFromJson(
+  Object? planPlanFrequency, [
+  enums.PlanPlanFrequency? defaultValue,
+]) {
+  return enums.PlanPlanFrequency.values
+          .firstWhereOrNull((e) => e.value == planPlanFrequency) ??
+      defaultValue ??
+      enums.PlanPlanFrequency.swaggerGeneratedUnknown;
+}
+
+enums.PlanPlanFrequency? planPlanFrequencyNullableFromJson(
+  Object? planPlanFrequency, [
+  enums.PlanPlanFrequency? defaultValue,
+]) {
+  if (planPlanFrequency == null) {
+    return null;
+  }
+  return enums.PlanPlanFrequency.values
+          .firstWhereOrNull((e) => e.value == planPlanFrequency) ??
+      defaultValue;
+}
+
+String planPlanFrequencyExplodedListToJson(
+    List<enums.PlanPlanFrequency>? planPlanFrequency) {
+  return planPlanFrequency?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> planPlanFrequencyListToJson(
+    List<enums.PlanPlanFrequency>? planPlanFrequency) {
+  if (planPlanFrequency == null) {
+    return [];
+  }
+
+  return planPlanFrequency.map((e) => e.value!).toList();
+}
+
+List<enums.PlanPlanFrequency> planPlanFrequencyListFromJson(
+  List? planPlanFrequency, [
+  List<enums.PlanPlanFrequency>? defaultValue,
+]) {
+  if (planPlanFrequency == null) {
+    return defaultValue ?? [];
+  }
+
+  return planPlanFrequency
+      .map((e) => planPlanFrequencyFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.PlanPlanFrequency>? planPlanFrequencyNullableListFromJson(
+  List? planPlanFrequency, [
+  List<enums.PlanPlanFrequency>? defaultValue,
+]) {
+  if (planPlanFrequency == null) {
+    return defaultValue;
+  }
+
+  return planPlanFrequency
+      .map((e) => planPlanFrequencyFromJson(e.toString()))
       .toList();
 }
 
