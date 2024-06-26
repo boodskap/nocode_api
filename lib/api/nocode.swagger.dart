@@ -1397,13 +1397,11 @@ abstract class Nocode extends ChopperService {
   Future<chopper.Response<PlanEntityRes>> getPlan({
     required String? planId,
     required String? currency,
-    dynamic token,
   }) {
     generatedMapping.putIfAbsent(
         PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
 
-    return _getPlan(
-        planId: planId, currency: currency, token: token?.toString());
+    return _getPlan(planId: planId, currency: currency);
   }
 
   ///Get plan
@@ -1413,8 +1411,19 @@ abstract class Nocode extends ChopperService {
   Future<chopper.Response<PlanEntityRes>> _getPlan({
     @Path('planId') required String? planId,
     @Path('currency') required String? currency,
-    @Header('TOKEN') String? token,
   });
+
+  ///List currencies
+  Future<chopper.Response<PlanCurrencyListRes>> listCurrencies() {
+    generatedMapping.putIfAbsent(
+        PlanCurrencyListRes, () => PlanCurrencyListRes.fromJsonFactory);
+
+    return _listCurrencies();
+  }
+
+  ///List currencies
+  @Get(path: '/Plan/list/currencies')
+  Future<chopper.Response<PlanCurrencyListRes>> _listCurrencies();
 
   ///Clear all plans
   Future<chopper.Response<BaseRes>> clearAllPlans({dynamic token}) {
@@ -13886,6 +13895,195 @@ extension $StripePaymentSecretArgsExtension on StripePaymentSecretArgs {
         orgId: (orgId != null ? orgId.value : this.orgId),
         orderId: (orderId != null ? orderId.value : this.orderId),
         currency: (currency != null ? currency.value : this.currency));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanCurrency {
+  const PlanCurrency({
+    required this.currency,
+    this.symbol,
+  });
+
+  factory PlanCurrency.fromJson(Map<String, dynamic> json) =>
+      _$PlanCurrencyFromJson(json);
+
+  static const toJsonFactory = _$PlanCurrencyToJson;
+  Map<String, dynamic> toJson() => _$PlanCurrencyToJson(this);
+
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String currency;
+  @JsonKey(name: 'symbol', includeIfNull: false, defaultValue: '')
+  final String? symbol;
+  static const fromJsonFactory = _$PlanCurrencyFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanCurrency &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
+            (identical(other.symbol, symbol) ||
+                const DeepCollectionEquality().equals(other.symbol, symbol)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(currency) ^
+      const DeepCollectionEquality().hash(symbol) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanCurrencyExtension on PlanCurrency {
+  PlanCurrency copyWith({String? currency, String? symbol}) {
+    return PlanCurrency(
+        currency: currency ?? this.currency, symbol: symbol ?? this.symbol);
+  }
+
+  PlanCurrency copyWithWrapped(
+      {Wrapped<String>? currency, Wrapped<String?>? symbol}) {
+    return PlanCurrency(
+        currency: (currency != null ? currency.value : this.currency),
+        symbol: (symbol != null ? symbol.value : this.symbol));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanCurrencyList {
+  const PlanCurrencyList({
+    required this.currencies,
+  });
+
+  factory PlanCurrencyList.fromJson(Map<String, dynamic> json) =>
+      _$PlanCurrencyListFromJson(json);
+
+  static const toJsonFactory = _$PlanCurrencyListToJson;
+  Map<String, dynamic> toJson() => _$PlanCurrencyListToJson(this);
+
+  @JsonKey(
+      name: 'currencies', includeIfNull: false, defaultValue: <PlanCurrency>[])
+  final List<PlanCurrency> currencies;
+  static const fromJsonFactory = _$PlanCurrencyListFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanCurrencyList &&
+            (identical(other.currencies, currencies) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencies, currencies)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(currencies) ^ runtimeType.hashCode;
+}
+
+extension $PlanCurrencyListExtension on PlanCurrencyList {
+  PlanCurrencyList copyWith({List<PlanCurrency>? currencies}) {
+    return PlanCurrencyList(currencies: currencies ?? this.currencies);
+  }
+
+  PlanCurrencyList copyWithWrapped({Wrapped<List<PlanCurrency>>? currencies}) {
+    return PlanCurrencyList(
+        currencies: (currencies != null ? currencies.value : this.currencies));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PlanCurrencyListRes {
+  const PlanCurrencyListRes({
+    required this.currencies,
+    required this.ok,
+    this.msg,
+    this.trace,
+    this.errorCode,
+  });
+
+  factory PlanCurrencyListRes.fromJson(Map<String, dynamic> json) =>
+      _$PlanCurrencyListResFromJson(json);
+
+  static const toJsonFactory = _$PlanCurrencyListResToJson;
+  Map<String, dynamic> toJson() => _$PlanCurrencyListResToJson(this);
+
+  @JsonKey(
+      name: 'currencies', includeIfNull: false, defaultValue: <PlanCurrency>[])
+  final List<PlanCurrency> currencies;
+  @JsonKey(name: 'ok', includeIfNull: false)
+  final bool ok;
+  @JsonKey(name: 'msg', includeIfNull: false, defaultValue: '')
+  final String? msg;
+  @JsonKey(name: 'trace', includeIfNull: false, defaultValue: '')
+  final String? trace;
+  @JsonKey(name: 'errorCode', includeIfNull: false, defaultValue: '')
+  final String? errorCode;
+  static const fromJsonFactory = _$PlanCurrencyListResFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is PlanCurrencyListRes &&
+            (identical(other.currencies, currencies) ||
+                const DeepCollectionEquality()
+                    .equals(other.currencies, currencies)) &&
+            (identical(other.ok, ok) ||
+                const DeepCollectionEquality().equals(other.ok, ok)) &&
+            (identical(other.msg, msg) ||
+                const DeepCollectionEquality().equals(other.msg, msg)) &&
+            (identical(other.trace, trace) ||
+                const DeepCollectionEquality().equals(other.trace, trace)) &&
+            (identical(other.errorCode, errorCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.errorCode, errorCode)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(currencies) ^
+      const DeepCollectionEquality().hash(ok) ^
+      const DeepCollectionEquality().hash(msg) ^
+      const DeepCollectionEquality().hash(trace) ^
+      const DeepCollectionEquality().hash(errorCode) ^
+      runtimeType.hashCode;
+}
+
+extension $PlanCurrencyListResExtension on PlanCurrencyListRes {
+  PlanCurrencyListRes copyWith(
+      {List<PlanCurrency>? currencies,
+      bool? ok,
+      String? msg,
+      String? trace,
+      String? errorCode}) {
+    return PlanCurrencyListRes(
+        currencies: currencies ?? this.currencies,
+        ok: ok ?? this.ok,
+        msg: msg ?? this.msg,
+        trace: trace ?? this.trace,
+        errorCode: errorCode ?? this.errorCode);
+  }
+
+  PlanCurrencyListRes copyWithWrapped(
+      {Wrapped<List<PlanCurrency>>? currencies,
+      Wrapped<bool>? ok,
+      Wrapped<String?>? msg,
+      Wrapped<String?>? trace,
+      Wrapped<String?>? errorCode}) {
+    return PlanCurrencyListRes(
+        currencies: (currencies != null ? currencies.value : this.currencies),
+        ok: (ok != null ? ok.value : this.ok),
+        msg: (msg != null ? msg.value : this.msg),
+        trace: (trace != null ? trace.value : this.trace),
+        errorCode: (errorCode != null ? errorCode.value : this.errorCode));
   }
 }
 

@@ -2670,12 +2670,38 @@
           "417": {
             "description": "Platform error"
           }
-        },
-        "security": [
-          {
-            "authtoken": []
+        }
+      }
+    },
+    "/Plan/list/currencies": {
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "List currencies",
+        "description": "List currencies",
+        "operationId": "listCurrencies",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PlanCurrencyListRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
           }
-        ]
+        }
       }
     },
     "/Plan/clear": {
@@ -5781,6 +5807,48 @@
           "type": "string"
         }
       }
+    },
+    "PlanCurrency": {
+      "type": "object",
+      "required": [
+        "currency",
+        "currencySymbol"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        }
+      }
+    },
+    "PlanCurrencyList": {
+      "type": "object",
+      "required": [
+        "currencies"
+      ],
+      "properties": {
+        "currencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlanCurrency"
+          }
+        }
+      }
+    },
+    "PlanCurrencyListRes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/PlanCurrencyList"
+        },
+        {
+          "$ref": "#/definitions/BaseRes"
+        },
+        {
+          "type": "object"
+        }
+      ]
     }
   }
 }
