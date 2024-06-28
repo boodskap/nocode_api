@@ -1372,12 +1372,8 @@ final class _$Nocode extends Nocode {
   }
 
   @override
-  Future<Response<BaseRes>> _showPaymentSuccess({
-    required String? domainKey,
-    required String? orderId,
-  }) {
-    final Uri $url =
-        Uri.parse('/Orders/stripe/payment/success/${domainKey}/${orderId}');
+  Future<Response<BaseRes>> _showPaymentSuccess({required String? orderId}) {
+    final Uri $url = Uri.parse('/Orders/stripe/payment/success/${orderId}');
     final Request $request = Request(
       'GET',
       $url,
@@ -1387,12 +1383,8 @@ final class _$Nocode extends Nocode {
   }
 
   @override
-  Future<Response<BaseRes>> _showPaymentFailure({
-    required String? domainKey,
-    required String? orderId,
-  }) {
-    final Uri $url =
-        Uri.parse('/Orders/stripe/payment/failure/${domainKey}/${orderId}');
+  Future<Response<BaseRes>> _showPaymentFailure({required String? orderId}) {
+    final Uri $url = Uri.parse('/Orders/stripe/payment/failure/${orderId}');
     final Request $request = Request(
       'GET',
       $url,
