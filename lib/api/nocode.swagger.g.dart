@@ -2934,34 +2934,13 @@ Map<String, dynamic> _$OrderArrayResToJson(OrderArrayRes instance) {
 
 PaidOrderRequest _$PaidOrderRequestFromJson(Map<String, dynamic> json) =>
     PaidOrderRequest(
-      orgId: json['orgId'] as String? ?? '',
       orderId: json['orderId'] as String? ?? '',
-      paymentGateway: json['paymentGateway'] as String? ?? '',
-      transactionId: json['transactionId'] as String? ?? '',
-      transactionStamp: (json['transactionStamp'] as num?)?.toInt(),
-      billedAmount: (json['billedAmount'] as num).toDouble(),
-      metaData: json['metaData'],
     );
 
-Map<String, dynamic> _$PaidOrderRequestToJson(PaidOrderRequest instance) {
-  final val = <String, dynamic>{
-    'orgId': instance.orgId,
-    'orderId': instance.orderId,
-    'paymentGateway': instance.paymentGateway,
-    'transactionId': instance.transactionId,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('transactionStamp', instance.transactionStamp);
-  val['billedAmount'] = instance.billedAmount;
-  writeNotNull('metaData', instance.metaData);
-  return val;
-}
+Map<String, dynamic> _$PaidOrderRequestToJson(PaidOrderRequest instance) =>
+    <String, dynamic>{
+      'orderId': instance.orderId,
+    };
 
 OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
       planId: json['planId'] as String? ?? '',

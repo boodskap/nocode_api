@@ -1824,46 +1824,34 @@ abstract class Nocode extends ChopperService {
   });
 
   ///payment success
-  ///@param domainKey Domain Key
   ///@param orderId Order ID
-  Future<chopper.Response<BaseRes>> showPaymentSuccess({
-    required String? domainKey,
-    required String? orderId,
-  }) {
+  Future<chopper.Response<BaseRes>> showPaymentSuccess(
+      {required String? orderId}) {
     generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
 
-    return _showPaymentSuccess(domainKey: domainKey, orderId: orderId);
+    return _showPaymentSuccess(orderId: orderId);
   }
 
   ///payment success
-  ///@param domainKey Domain Key
   ///@param orderId Order ID
-  @Get(path: '/Orders/stripe/payment/success/{domainKey}/{orderId}')
-  Future<chopper.Response<BaseRes>> _showPaymentSuccess({
-    @Path('domainKey') required String? domainKey,
-    @Path('orderId') required String? orderId,
-  });
+  @Get(path: '/Orders/stripe/payment/success/{orderId}')
+  Future<chopper.Response<BaseRes>> _showPaymentSuccess(
+      {@Path('orderId') required String? orderId});
 
   ///payment failure
-  ///@param domainKey Domain Key
   ///@param orderId Order ID
-  Future<chopper.Response<BaseRes>> showPaymentFailure({
-    required String? domainKey,
-    required String? orderId,
-  }) {
+  Future<chopper.Response<BaseRes>> showPaymentFailure(
+      {required String? orderId}) {
     generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
 
-    return _showPaymentFailure(domainKey: domainKey, orderId: orderId);
+    return _showPaymentFailure(orderId: orderId);
   }
 
   ///payment failure
-  ///@param domainKey Domain Key
   ///@param orderId Order ID
-  @Get(path: '/Orders/stripe/payment/failure/{domainKey}/{orderId}')
-  Future<chopper.Response<BaseRes>> _showPaymentFailure({
-    @Path('domainKey') required String? domainKey,
-    @Path('orderId') required String? orderId,
-  });
+  @Get(path: '/Orders/stripe/payment/failure/{orderId}')
+  Future<chopper.Response<BaseRes>> _showPaymentFailure(
+      {@Path('orderId') required String? orderId});
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -12798,13 +12786,7 @@ extension $OrderArrayResExtension on OrderArrayRes {
 @JsonSerializable(explicitToJson: true)
 class PaidOrderRequest {
   const PaidOrderRequest({
-    required this.orgId,
     required this.orderId,
-    required this.paymentGateway,
-    required this.transactionId,
-    this.transactionStamp,
-    required this.billedAmount,
-    this.metaData,
   });
 
   factory PaidOrderRequest.fromJson(Map<String, dynamic> json) =>
@@ -12813,46 +12795,16 @@ class PaidOrderRequest {
   static const toJsonFactory = _$PaidOrderRequestToJson;
   Map<String, dynamic> toJson() => _$PaidOrderRequestToJson(this);
 
-  @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
-  final String orgId;
   @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
   final String orderId;
-  @JsonKey(name: 'paymentGateway', includeIfNull: false, defaultValue: '')
-  final String paymentGateway;
-  @JsonKey(name: 'transactionId', includeIfNull: false, defaultValue: '')
-  final String transactionId;
-  @JsonKey(name: 'transactionStamp', includeIfNull: false)
-  final int? transactionStamp;
-  @JsonKey(name: 'billedAmount', includeIfNull: false)
-  final double billedAmount;
-  @JsonKey(name: 'metaData', includeIfNull: false)
-  final Object? metaData;
   static const fromJsonFactory = _$PaidOrderRequestFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is PaidOrderRequest &&
-            (identical(other.orgId, orgId) ||
-                const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.orderId, orderId) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderId, orderId)) &&
-            (identical(other.paymentGateway, paymentGateway) ||
-                const DeepCollectionEquality()
-                    .equals(other.paymentGateway, paymentGateway)) &&
-            (identical(other.transactionId, transactionId) ||
-                const DeepCollectionEquality()
-                    .equals(other.transactionId, transactionId)) &&
-            (identical(other.transactionStamp, transactionStamp) ||
-                const DeepCollectionEquality()
-                    .equals(other.transactionStamp, transactionStamp)) &&
-            (identical(other.billedAmount, billedAmount) ||
-                const DeepCollectionEquality()
-                    .equals(other.billedAmount, billedAmount)) &&
-            (identical(other.metaData, metaData) ||
-                const DeepCollectionEquality()
-                    .equals(other.metaData, metaData)));
+                const DeepCollectionEquality().equals(other.orderId, orderId)));
   }
 
   @override
@@ -12860,57 +12812,17 @@ class PaidOrderRequest {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(orgId) ^
-      const DeepCollectionEquality().hash(orderId) ^
-      const DeepCollectionEquality().hash(paymentGateway) ^
-      const DeepCollectionEquality().hash(transactionId) ^
-      const DeepCollectionEquality().hash(transactionStamp) ^
-      const DeepCollectionEquality().hash(billedAmount) ^
-      const DeepCollectionEquality().hash(metaData) ^
-      runtimeType.hashCode;
+      const DeepCollectionEquality().hash(orderId) ^ runtimeType.hashCode;
 }
 
 extension $PaidOrderRequestExtension on PaidOrderRequest {
-  PaidOrderRequest copyWith(
-      {String? orgId,
-      String? orderId,
-      String? paymentGateway,
-      String? transactionId,
-      int? transactionStamp,
-      double? billedAmount,
-      Object? metaData}) {
-    return PaidOrderRequest(
-        orgId: orgId ?? this.orgId,
-        orderId: orderId ?? this.orderId,
-        paymentGateway: paymentGateway ?? this.paymentGateway,
-        transactionId: transactionId ?? this.transactionId,
-        transactionStamp: transactionStamp ?? this.transactionStamp,
-        billedAmount: billedAmount ?? this.billedAmount,
-        metaData: metaData ?? this.metaData);
+  PaidOrderRequest copyWith({String? orderId}) {
+    return PaidOrderRequest(orderId: orderId ?? this.orderId);
   }
 
-  PaidOrderRequest copyWithWrapped(
-      {Wrapped<String>? orgId,
-      Wrapped<String>? orderId,
-      Wrapped<String>? paymentGateway,
-      Wrapped<String>? transactionId,
-      Wrapped<int?>? transactionStamp,
-      Wrapped<double>? billedAmount,
-      Wrapped<Object?>? metaData}) {
+  PaidOrderRequest copyWithWrapped({Wrapped<String>? orderId}) {
     return PaidOrderRequest(
-        orgId: (orgId != null ? orgId.value : this.orgId),
-        orderId: (orderId != null ? orderId.value : this.orderId),
-        paymentGateway: (paymentGateway != null
-            ? paymentGateway.value
-            : this.paymentGateway),
-        transactionId:
-            (transactionId != null ? transactionId.value : this.transactionId),
-        transactionStamp: (transactionStamp != null
-            ? transactionStamp.value
-            : this.transactionStamp),
-        billedAmount:
-            (billedAmount != null ? billedAmount.value : this.billedAmount),
-        metaData: (metaData != null ? metaData.value : this.metaData));
+        orderId: (orderId != null ? orderId.value : this.orderId));
   }
 }
 

@@ -3539,7 +3539,7 @@
         ]
       }
     },
-    "/Orders/stripe/payment/success/{domainKey}/{orderId}": {
+    "/Orders/stripe/payment/success/{orderId}": {
       "get": {
         "tags": [
           "Order"
@@ -3554,13 +3554,6 @@
           "text/html"
         ],
         "parameters": [
-          {
-            "name": "domainKey",
-            "in": "path",
-            "description": "Domain Key",
-            "type": "string",
-            "required": true
-          },
           {
             "name": "orderId",
             "in": "path",
@@ -3585,7 +3578,7 @@
         }
       }
     },
-    "/Orders/stripe/payment/failure/{domainKey}/{orderId}": {
+    "/Orders/stripe/payment/failure/{orderId}": {
       "get": {
         "tags": [
           "Order"
@@ -3600,13 +3593,6 @@
           "text/html"
         ],
         "parameters": [
-          {
-            "name": "domainKey",
-            "in": "path",
-            "description": "Domain Key",
-            "type": "string",
-            "required": true
-          },
           {
             "name": "orderId",
             "in": "path",
@@ -5675,35 +5661,11 @@
     "PaidOrderRequest": {
       "type": "object",
       "required": [
-        "orgId",
-        "orderId",
-        "paymentGateway",
-        "transactionId",
-        "billedAmount"
+        "orderId"
       ],
       "properties": {
-        "orgId": {
-          "type": "string"
-        },
         "orderId": {
           "type": "string"
-        },
-        "paymentGateway": {
-          "type": "string"
-        },
-        "transactionId": {
-          "type": "string"
-        },
-        "transactionStamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "billedAmount": {
-          "type": "number",
-          "format": "double"
-        },
-        "metaData": {
-          "type": "object"
         }
       }
     },
