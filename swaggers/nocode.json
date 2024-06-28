@@ -12,7 +12,7 @@
       "name": "MIT"
     }
   },
-  "host": "lbdev.boodskap.io",
+  "host": "nocode.boodskap.io",
   "basePath": "/rest/nocode",
   "schemes": [
     "https"
@@ -3494,7 +3494,7 @@
         ]
       }
     },
-    "/Orders/stripe/payment/secrete": {
+    "/Orders/stripe/payment/secret": {
       "post": {
         "tags": [
           "Order"
@@ -3537,6 +3537,98 @@
             "authtoken": []
           }
         ]
+      }
+    },
+    "/Orders/stripe/payment/success/{domainKey}/{orderId}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "payment success",
+        "description": "payment success",
+        "operationId": "showPaymentSuccess",
+        "consumes": [
+          "text/plan"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "domainKey",
+            "in": "path",
+            "description": "Domain Key",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        }
+      }
+    },
+    "/Orders/stripe/payment/failure/{domainKey}/{orderId}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "payment failure",
+        "description": "payment failure",
+        "operationId": "showPaymentFailure",
+        "consumes": [
+          "text/plan"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "domainKey",
+            "in": "path",
+            "description": "Domain Key",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BaseRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        }
       }
     }
   },
@@ -3953,6 +4045,9 @@
         },
         "settings": {
           "$ref": "#/definitions/OrganizationSettings"
+        },
+        "currency": {
+          "type": "string"
         }
       }
     },
@@ -5509,6 +5604,9 @@
           "type": "string"
         },
         "orderStatus": {
+          "type": "string"
+        },
+        "paymentUrl": {
           "type": "string"
         }
       }

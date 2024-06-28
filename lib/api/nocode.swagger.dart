@@ -43,7 +43,7 @@ abstract class Nocode extends ChopperService {
         client: httpClient,
         authenticator: authenticator,
         errorConverter: errorConverter,
-        baseUrl: baseUrl ?? Uri.parse('http://lbdev.boodskap.io/rest/nocode'));
+        baseUrl: baseUrl ?? Uri.parse('http://nocode.boodskap.io/rest/nocode'));
     return _$Nocode(newClient);
   }
 
@@ -1817,10 +1817,52 @@ abstract class Nocode extends ChopperService {
 
   ///Create payment secret
   ///@param body
-  @Post(path: '/Orders/stripe/payment/secrete')
+  @Post(path: '/Orders/stripe/payment/secret')
   Future<chopper.Response<OrderEntityRes>> _createStripePaymentSecret({
     @Body() required StripePaymentSecretArgs? body,
     @Header('TOKEN') String? token,
+  });
+
+  ///payment success
+  ///@param domainKey Domain Key
+  ///@param orderId Order ID
+  Future<chopper.Response<BaseRes>> showPaymentSuccess({
+    required String? domainKey,
+    required String? orderId,
+  }) {
+    generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
+
+    return _showPaymentSuccess(domainKey: domainKey, orderId: orderId);
+  }
+
+  ///payment success
+  ///@param domainKey Domain Key
+  ///@param orderId Order ID
+  @Get(path: '/Orders/stripe/payment/success/{domainKey}/{orderId}')
+  Future<chopper.Response<BaseRes>> _showPaymentSuccess({
+    @Path('domainKey') required String? domainKey,
+    @Path('orderId') required String? orderId,
+  });
+
+  ///payment failure
+  ///@param domainKey Domain Key
+  ///@param orderId Order ID
+  Future<chopper.Response<BaseRes>> showPaymentFailure({
+    required String? domainKey,
+    required String? orderId,
+  }) {
+    generatedMapping.putIfAbsent(BaseRes, () => BaseRes.fromJsonFactory);
+
+    return _showPaymentFailure(domainKey: domainKey, orderId: orderId);
+  }
+
+  ///payment failure
+  ///@param domainKey Domain Key
+  ///@param orderId Order ID
+  @Get(path: '/Orders/stripe/payment/failure/{domainKey}/{orderId}')
+  Future<chopper.Response<BaseRes>> _showPaymentFailure({
+    @Path('domainKey') required String? domainKey,
+    @Path('orderId') required String? orderId,
   });
 }
 
@@ -4052,6 +4094,7 @@ class OrganizationInfo {
     this.landscapeBanner,
     this.portraitBanner,
     this.settings,
+    this.currency,
   });
 
   factory OrganizationInfo.fromJson(Map<String, dynamic> json) =>
@@ -4082,6 +4125,8 @@ class OrganizationInfo {
   final String? portraitBanner;
   @JsonKey(name: 'settings', includeIfNull: false)
   final OrganizationSettings? settings;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String? currency;
   static const fromJsonFactory = _$OrganizationInfoFromJson;
 
   @override
@@ -4115,7 +4160,10 @@ class OrganizationInfo {
                     .equals(other.portraitBanner, portraitBanner)) &&
             (identical(other.settings, settings) ||
                 const DeepCollectionEquality()
-                    .equals(other.settings, settings)));
+                    .equals(other.settings, settings)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)));
   }
 
   @override
@@ -4134,6 +4182,7 @@ class OrganizationInfo {
       const DeepCollectionEquality().hash(landscapeBanner) ^
       const DeepCollectionEquality().hash(portraitBanner) ^
       const DeepCollectionEquality().hash(settings) ^
+      const DeepCollectionEquality().hash(currency) ^
       runtimeType.hashCode;
 }
 
@@ -4149,7 +4198,8 @@ extension $OrganizationInfoExtension on OrganizationInfo {
       String? logo,
       String? landscapeBanner,
       String? portraitBanner,
-      OrganizationSettings? settings}) {
+      OrganizationSettings? settings,
+      String? currency}) {
     return OrganizationInfo(
         name: name ?? this.name,
         address: address ?? this.address,
@@ -4161,7 +4211,8 @@ extension $OrganizationInfoExtension on OrganizationInfo {
         logo: logo ?? this.logo,
         landscapeBanner: landscapeBanner ?? this.landscapeBanner,
         portraitBanner: portraitBanner ?? this.portraitBanner,
-        settings: settings ?? this.settings);
+        settings: settings ?? this.settings,
+        currency: currency ?? this.currency);
   }
 
   OrganizationInfo copyWithWrapped(
@@ -4175,7 +4226,8 @@ extension $OrganizationInfoExtension on OrganizationInfo {
       Wrapped<String?>? logo,
       Wrapped<String?>? landscapeBanner,
       Wrapped<String?>? portraitBanner,
-      Wrapped<OrganizationSettings?>? settings}) {
+      Wrapped<OrganizationSettings?>? settings,
+      Wrapped<String?>? currency}) {
     return OrganizationInfo(
         name: (name != null ? name.value : this.name),
         address: (address != null ? address.value : this.address),
@@ -4192,7 +4244,8 @@ extension $OrganizationInfoExtension on OrganizationInfo {
         portraitBanner: (portraitBanner != null
             ? portraitBanner.value
             : this.portraitBanner),
-        settings: (settings != null ? settings.value : this.settings));
+        settings: (settings != null ? settings.value : this.settings),
+        currency: (currency != null ? currency.value : this.currency));
   }
 }
 
@@ -4213,6 +4266,7 @@ class Organization {
     this.landscapeBanner,
     this.portraitBanner,
     this.settings,
+    this.currency,
     required this.id,
     required this.rtype,
     required this.createdBy,
@@ -4261,6 +4315,8 @@ class Organization {
   final String? portraitBanner;
   @JsonKey(name: 'settings', includeIfNull: false)
   final OrganizationSettings? settings;
+  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
+  final String? currency;
   @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
   final String id;
   @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
@@ -4317,6 +4373,9 @@ class Organization {
             (identical(other.settings, settings) ||
                 const DeepCollectionEquality()
                     .equals(other.settings, settings)) &&
+            (identical(other.currency, currency) ||
+                const DeepCollectionEquality()
+                    .equals(other.currency, currency)) &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.rtype, rtype) ||
@@ -4357,6 +4416,7 @@ class Organization {
       const DeepCollectionEquality().hash(landscapeBanner) ^
       const DeepCollectionEquality().hash(portraitBanner) ^
       const DeepCollectionEquality().hash(settings) ^
+      const DeepCollectionEquality().hash(currency) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(rtype) ^
       const DeepCollectionEquality().hash(createdBy) ^
@@ -4383,6 +4443,7 @@ extension $OrganizationExtension on Organization {
       String? landscapeBanner,
       String? portraitBanner,
       OrganizationSettings? settings,
+      String? currency,
       String? id,
       String? rtype,
       String? createdBy,
@@ -4405,6 +4466,7 @@ extension $OrganizationExtension on Organization {
         landscapeBanner: landscapeBanner ?? this.landscapeBanner,
         portraitBanner: portraitBanner ?? this.portraitBanner,
         settings: settings ?? this.settings,
+        currency: currency ?? this.currency,
         id: id ?? this.id,
         rtype: rtype ?? this.rtype,
         createdBy: createdBy ?? this.createdBy,
@@ -4429,6 +4491,7 @@ extension $OrganizationExtension on Organization {
       Wrapped<String?>? landscapeBanner,
       Wrapped<String?>? portraitBanner,
       Wrapped<OrganizationSettings?>? settings,
+      Wrapped<String?>? currency,
       Wrapped<String>? id,
       Wrapped<String>? rtype,
       Wrapped<String>? createdBy,
@@ -4458,6 +4521,7 @@ extension $OrganizationExtension on Organization {
             ? portraitBanner.value
             : this.portraitBanner),
         settings: (settings != null ? settings.value : this.settings),
+        currency: (currency != null ? currency.value : this.currency),
         id: (id != null ? id.value : this.id),
         rtype: (rtype != null ? rtype.value : this.rtype),
         createdBy: (createdBy != null ? createdBy.value : this.createdBy),
@@ -11676,6 +11740,7 @@ class OrderBase {
     this.paymentGateway,
     this.stripePaymentSecret,
     required this.orderStatus,
+    this.paymentUrl,
   });
 
   factory OrderBase.fromJson(Map<String, dynamic> json) =>
@@ -11726,6 +11791,8 @@ class OrderBase {
   final String? stripePaymentSecret;
   @JsonKey(name: 'orderStatus', includeIfNull: false, defaultValue: '')
   final String orderStatus;
+  @JsonKey(name: 'paymentUrl', includeIfNull: false, defaultValue: '')
+  final String? paymentUrl;
   static const fromJsonFactory = _$OrderBaseFromJson;
 
   @override
@@ -11794,7 +11861,9 @@ class OrderBase {
                     .equals(other.stripePaymentSecret, stripePaymentSecret)) &&
             (identical(other.orderStatus, orderStatus) ||
                 const DeepCollectionEquality()
-                    .equals(other.orderStatus, orderStatus)));
+                    .equals(other.orderStatus, orderStatus)) &&
+            (identical(other.paymentUrl, paymentUrl) ||
+                const DeepCollectionEquality().equals(other.paymentUrl, paymentUrl)));
   }
 
   @override
@@ -11823,6 +11892,7 @@ class OrderBase {
       const DeepCollectionEquality().hash(paymentGateway) ^
       const DeepCollectionEquality().hash(stripePaymentSecret) ^
       const DeepCollectionEquality().hash(orderStatus) ^
+      const DeepCollectionEquality().hash(paymentUrl) ^
       runtimeType.hashCode;
 }
 
@@ -11848,7 +11918,8 @@ extension $OrderBaseExtension on OrderBase {
       Object? metaData,
       String? paymentGateway,
       String? stripePaymentSecret,
-      String? orderStatus}) {
+      String? orderStatus,
+      String? paymentUrl}) {
     return OrderBase(
         orderAmount: orderAmount ?? this.orderAmount,
         reconciled: reconciled ?? this.reconciled,
@@ -11870,7 +11941,8 @@ extension $OrderBaseExtension on OrderBase {
         metaData: metaData ?? this.metaData,
         paymentGateway: paymentGateway ?? this.paymentGateway,
         stripePaymentSecret: stripePaymentSecret ?? this.stripePaymentSecret,
-        orderStatus: orderStatus ?? this.orderStatus);
+        orderStatus: orderStatus ?? this.orderStatus,
+        paymentUrl: paymentUrl ?? this.paymentUrl);
   }
 
   OrderBase copyWithWrapped(
@@ -11894,7 +11966,8 @@ extension $OrderBaseExtension on OrderBase {
       Wrapped<Object?>? metaData,
       Wrapped<String?>? paymentGateway,
       Wrapped<String?>? stripePaymentSecret,
-      Wrapped<String>? orderStatus}) {
+      Wrapped<String>? orderStatus,
+      Wrapped<String?>? paymentUrl}) {
     return OrderBase(
         orderAmount:
             (orderAmount != null ? orderAmount.value : this.orderAmount),
@@ -11933,7 +12006,8 @@ extension $OrderBaseExtension on OrderBase {
             ? stripePaymentSecret.value
             : this.stripePaymentSecret),
         orderStatus:
-            (orderStatus != null ? orderStatus.value : this.orderStatus));
+            (orderStatus != null ? orderStatus.value : this.orderStatus),
+        paymentUrl: (paymentUrl != null ? paymentUrl.value : this.paymentUrl));
   }
 }
 
@@ -11975,6 +12049,7 @@ class Order {
     this.paymentGateway,
     this.stripePaymentSecret,
     required this.orderStatus,
+    this.paymentUrl,
     required this.id,
     required this.rtype,
     required this.createdBy,
@@ -12059,6 +12134,8 @@ class Order {
   final String? stripePaymentSecret;
   @JsonKey(name: 'orderStatus', includeIfNull: false, defaultValue: '')
   final String orderStatus;
+  @JsonKey(name: 'paymentUrl', includeIfNull: false, defaultValue: '')
+  final String? paymentUrl;
   @JsonKey(name: 'id', includeIfNull: false, defaultValue: '')
   final String id;
   @JsonKey(name: 'rtype', includeIfNull: false, defaultValue: '')
@@ -12157,6 +12234,7 @@ class Order {
             (identical(other.paymentGateway, paymentGateway) || const DeepCollectionEquality().equals(other.paymentGateway, paymentGateway)) &&
             (identical(other.stripePaymentSecret, stripePaymentSecret) || const DeepCollectionEquality().equals(other.stripePaymentSecret, stripePaymentSecret)) &&
             (identical(other.orderStatus, orderStatus) || const DeepCollectionEquality().equals(other.orderStatus, orderStatus)) &&
+            (identical(other.paymentUrl, paymentUrl) || const DeepCollectionEquality().equals(other.paymentUrl, paymentUrl)) &&
             (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.rtype, rtype) || const DeepCollectionEquality().equals(other.rtype, rtype)) &&
             (identical(other.createdBy, createdBy) || const DeepCollectionEquality().equals(other.createdBy, createdBy)) &&
@@ -12206,6 +12284,7 @@ class Order {
       const DeepCollectionEquality().hash(paymentGateway) ^
       const DeepCollectionEquality().hash(stripePaymentSecret) ^
       const DeepCollectionEquality().hash(orderStatus) ^
+      const DeepCollectionEquality().hash(paymentUrl) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(rtype) ^
       const DeepCollectionEquality().hash(createdBy) ^
@@ -12253,6 +12332,7 @@ extension $OrderExtension on Order {
       String? paymentGateway,
       String? stripePaymentSecret,
       String? orderStatus,
+      String? paymentUrl,
       String? id,
       String? rtype,
       String? createdBy,
@@ -12296,6 +12376,7 @@ extension $OrderExtension on Order {
         paymentGateway: paymentGateway ?? this.paymentGateway,
         stripePaymentSecret: stripePaymentSecret ?? this.stripePaymentSecret,
         orderStatus: orderStatus ?? this.orderStatus,
+        paymentUrl: paymentUrl ?? this.paymentUrl,
         id: id ?? this.id,
         rtype: rtype ?? this.rtype,
         createdBy: createdBy ?? this.createdBy,
@@ -12341,6 +12422,7 @@ extension $OrderExtension on Order {
       Wrapped<String?>? paymentGateway,
       Wrapped<String?>? stripePaymentSecret,
       Wrapped<String>? orderStatus,
+      Wrapped<String?>? paymentUrl,
       Wrapped<String>? id,
       Wrapped<String>? rtype,
       Wrapped<String>? createdBy,
@@ -12410,6 +12492,7 @@ extension $OrderExtension on Order {
             : this.stripePaymentSecret),
         orderStatus:
             (orderStatus != null ? orderStatus.value : this.orderStatus),
+        paymentUrl: (paymentUrl != null ? paymentUrl.value : this.paymentUrl),
         id: (id != null ? id.value : this.id),
         rtype: (rtype != null ? rtype.value : this.rtype),
         createdBy: (createdBy != null ? createdBy.value : this.createdBy),

@@ -1356,7 +1356,7 @@ final class _$Nocode extends Nocode {
     required StripePaymentSecretArgs? body,
     String? token,
   }) {
-    final Uri $url = Uri.parse('/Orders/stripe/payment/secrete');
+    final Uri $url = Uri.parse('/Orders/stripe/payment/secret');
     final Map<String, String> $headers = {
       if (token != null) 'TOKEN': token,
     };
@@ -1369,5 +1369,35 @@ final class _$Nocode extends Nocode {
       headers: $headers,
     );
     return client.send<OrderEntityRes, OrderEntityRes>($request);
+  }
+
+  @override
+  Future<Response<BaseRes>> _showPaymentSuccess({
+    required String? domainKey,
+    required String? orderId,
+  }) {
+    final Uri $url =
+        Uri.parse('/Orders/stripe/payment/success/${domainKey}/${orderId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<BaseRes, BaseRes>($request);
+  }
+
+  @override
+  Future<Response<BaseRes>> _showPaymentFailure({
+    required String? domainKey,
+    required String? orderId,
+  }) {
+    final Uri $url =
+        Uri.parse('/Orders/stripe/payment/failure/${domainKey}/${orderId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<BaseRes, BaseRes>($request);
   }
 }

@@ -624,6 +624,7 @@ OrganizationInfo _$OrganizationInfoFromJson(Map<String, dynamic> json) =>
           ? null
           : OrganizationSettings.fromJson(
               json['settings'] as Map<String, dynamic>),
+      currency: json['currency'] as String? ?? '',
     );
 
 Map<String, dynamic> _$OrganizationInfoToJson(OrganizationInfo instance) {
@@ -647,6 +648,7 @@ Map<String, dynamic> _$OrganizationInfoToJson(OrganizationInfo instance) {
   writeNotNull('landscapeBanner', instance.landscapeBanner);
   writeNotNull('portraitBanner', instance.portraitBanner);
   writeNotNull('settings', instance.settings?.toJson());
+  writeNotNull('currency', instance.currency);
   return val;
 }
 
@@ -669,6 +671,7 @@ Organization _$OrganizationFromJson(Map<String, dynamic> json) => Organization(
           ? null
           : OrganizationSettings.fromJson(
               json['settings'] as Map<String, dynamic>),
+      currency: json['currency'] as String? ?? '',
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
@@ -703,6 +706,7 @@ Map<String, dynamic> _$OrganizationToJson(Organization instance) {
   writeNotNull('landscapeBanner', instance.landscapeBanner);
   writeNotNull('portraitBanner', instance.portraitBanner);
   writeNotNull('settings', instance.settings?.toJson());
+  writeNotNull('currency', instance.currency);
   val['id'] = instance.id;
   val['rtype'] = instance.rtype;
   val['createdBy'] = instance.createdBy;
@@ -2687,6 +2691,7 @@ OrderBase _$OrderBaseFromJson(Map<String, dynamic> json) => OrderBase(
       paymentGateway: json['paymentGateway'] as String? ?? '',
       stripePaymentSecret: json['stripePaymentSecret'] as String? ?? '',
       orderStatus: json['orderStatus'] as String? ?? '',
+      paymentUrl: json['paymentUrl'] as String? ?? '',
     );
 
 Map<String, dynamic> _$OrderBaseToJson(OrderBase instance) {
@@ -2720,6 +2725,7 @@ Map<String, dynamic> _$OrderBaseToJson(OrderBase instance) {
   writeNotNull('paymentGateway', instance.paymentGateway);
   writeNotNull('stripePaymentSecret', instance.stripePaymentSecret);
   val['orderStatus'] = instance.orderStatus;
+  writeNotNull('paymentUrl', instance.paymentUrl);
   return val;
 }
 
@@ -2759,6 +2765,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       paymentGateway: json['paymentGateway'] as String? ?? '',
       stripePaymentSecret: json['stripePaymentSecret'] as String? ?? '',
       orderStatus: json['orderStatus'] as String? ?? '',
+      paymentUrl: json['paymentUrl'] as String? ?? '',
       id: json['id'] as String? ?? '',
       rtype: json['rtype'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
@@ -2812,6 +2819,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('paymentGateway', instance.paymentGateway);
   writeNotNull('stripePaymentSecret', instance.stripePaymentSecret);
   val['orderStatus'] = instance.orderStatus;
+  writeNotNull('paymentUrl', instance.paymentUrl);
   val['id'] = instance.id;
   val['rtype'] = instance.rtype;
   val['createdBy'] = instance.createdBy;
