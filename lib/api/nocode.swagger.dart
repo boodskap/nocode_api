@@ -11525,7 +11525,6 @@ extension $PaidInvoiceRequestExtension on PaidInvoiceRequest {
 @JsonSerializable(explicitToJson: true)
 class OrderInfo {
   const OrderInfo({
-    this.description,
     required this.orgId,
     this.couponCode,
     this.planId,
@@ -11545,8 +11544,6 @@ class OrderInfo {
   static const toJsonFactory = _$OrderInfoToJson;
   Map<String, dynamic> toJson() => _$OrderInfoToJson(this);
 
-  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
-  final String? description;
   @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
   final String orgId;
   @JsonKey(name: 'couponCode', includeIfNull: false, defaultValue: '')
@@ -11575,9 +11572,6 @@ class OrderInfo {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is OrderInfo &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
             (identical(other.orgId, orgId) ||
                 const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.couponCode, couponCode) ||
@@ -11616,7 +11610,6 @@ class OrderInfo {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(couponCode) ^
       const DeepCollectionEquality().hash(planId) ^
@@ -11633,8 +11626,7 @@ class OrderInfo {
 
 extension $OrderInfoExtension on OrderInfo {
   OrderInfo copyWith(
-      {String? description,
-      String? orgId,
+      {String? orgId,
       String? couponCode,
       String? planId,
       int? modelCount,
@@ -11646,7 +11638,6 @@ extension $OrderInfoExtension on OrderInfo {
       int? archivalCount,
       int? dashboardCount}) {
     return OrderInfo(
-        description: description ?? this.description,
         orgId: orgId ?? this.orgId,
         couponCode: couponCode ?? this.couponCode,
         planId: planId ?? this.planId,
@@ -11661,8 +11652,7 @@ extension $OrderInfoExtension on OrderInfo {
   }
 
   OrderInfo copyWithWrapped(
-      {Wrapped<String?>? description,
-      Wrapped<String>? orgId,
+      {Wrapped<String>? orgId,
       Wrapped<String?>? couponCode,
       Wrapped<String?>? planId,
       Wrapped<int?>? modelCount,
@@ -11674,8 +11664,6 @@ extension $OrderInfoExtension on OrderInfo {
       Wrapped<int?>? archivalCount,
       Wrapped<int?>? dashboardCount}) {
     return OrderInfo(
-        description:
-            (description != null ? description.value : this.description),
         orgId: (orgId != null ? orgId.value : this.orgId),
         couponCode: (couponCode != null ? couponCode.value : this.couponCode),
         planId: (planId != null ? planId.value : this.planId),
@@ -11995,7 +11983,6 @@ extension $OrderBaseExtension on OrderBase {
 @JsonSerializable(explicitToJson: true)
 class Order {
   const Order({
-    this.description,
     required this.orgId,
     this.couponCode,
     this.planId,
@@ -12043,8 +12030,6 @@ class Order {
   static const toJsonFactory = _$OrderToJson;
   Map<String, dynamic> toJson() => _$OrderToJson(this);
 
-  @JsonKey(name: 'description', includeIfNull: false, defaultValue: '')
-  final String? description;
   @JsonKey(name: 'orgId', includeIfNull: false, defaultValue: '')
   final String orgId;
   @JsonKey(name: 'couponCode', includeIfNull: false, defaultValue: '')
@@ -12131,9 +12116,6 @@ class Order {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is Order &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
             (identical(other.orgId, orgId) ||
                 const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.couponCode, couponCode) ||
@@ -12196,8 +12178,10 @@ class Order {
                 const DeepCollectionEquality()
                     .equals(other.dataPrice, dataPrice)) &&
             (identical(other.userPrice, userPrice) ||
-                const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
-            (identical(other.archivalPrice, archivalPrice) || const DeepCollectionEquality().equals(other.archivalPrice, archivalPrice)) &&
+                const DeepCollectionEquality()
+                    .equals(other.userPrice, userPrice)) &&
+            (identical(other.archivalPrice, archivalPrice) ||
+                const DeepCollectionEquality().equals(other.archivalPrice, archivalPrice)) &&
             (identical(other.dashboardPrice, dashboardPrice) || const DeepCollectionEquality().equals(other.dashboardPrice, dashboardPrice)) &&
             (identical(other.providerId, providerId) || const DeepCollectionEquality().equals(other.providerId, providerId)) &&
             (identical(other.transactionId, transactionId) || const DeepCollectionEquality().equals(other.transactionId, transactionId)) &&
@@ -12222,7 +12206,6 @@ class Order {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(couponCode) ^
       const DeepCollectionEquality().hash(planId) ^
@@ -12268,8 +12251,7 @@ class Order {
 
 extension $OrderExtension on Order {
   Order copyWith(
-      {String? description,
-      String? orgId,
+      {String? orgId,
       String? couponCode,
       String? planId,
       int? modelCount,
@@ -12310,7 +12292,6 @@ extension $OrderExtension on Order {
       int? updatedStamp,
       String? domainKey}) {
     return Order(
-        description: description ?? this.description,
         orgId: orgId ?? this.orgId,
         couponCode: couponCode ?? this.couponCode,
         planId: planId ?? this.planId,
@@ -12354,8 +12335,7 @@ extension $OrderExtension on Order {
   }
 
   Order copyWithWrapped(
-      {Wrapped<String?>? description,
-      Wrapped<String>? orgId,
+      {Wrapped<String>? orgId,
       Wrapped<String?>? couponCode,
       Wrapped<String?>? planId,
       Wrapped<int?>? modelCount,
@@ -12396,8 +12376,6 @@ extension $OrderExtension on Order {
       Wrapped<int>? updatedStamp,
       Wrapped<String>? domainKey}) {
     return Order(
-        description:
-            (description != null ? description.value : this.description),
         orgId: (orgId != null ? orgId.value : this.orgId),
         couponCode: (couponCode != null ? couponCode.value : this.couponCode),
         planId: (planId != null ? planId.value : this.planId),
@@ -13944,7 +13922,6 @@ class StripePaymentSecretArgs {
   const StripePaymentSecretArgs({
     required this.orgId,
     required this.orderId,
-    required this.currency,
   });
 
   factory StripePaymentSecretArgs.fromJson(Map<String, dynamic> json) =>
@@ -13957,8 +13934,6 @@ class StripePaymentSecretArgs {
   final String orgId;
   @JsonKey(name: 'orderId', includeIfNull: false, defaultValue: '')
   final String orderId;
-  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
-  final String currency;
   static const fromJsonFactory = _$StripePaymentSecretArgsFromJson;
 
   @override
@@ -13968,11 +13943,7 @@ class StripePaymentSecretArgs {
             (identical(other.orgId, orgId) ||
                 const DeepCollectionEquality().equals(other.orgId, orgId)) &&
             (identical(other.orderId, orderId) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderId, orderId)) &&
-            (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)));
+                const DeepCollectionEquality().equals(other.orderId, orderId)));
   }
 
   @override
@@ -13982,27 +13953,20 @@ class StripePaymentSecretArgs {
   int get hashCode =>
       const DeepCollectionEquality().hash(orgId) ^
       const DeepCollectionEquality().hash(orderId) ^
-      const DeepCollectionEquality().hash(currency) ^
       runtimeType.hashCode;
 }
 
 extension $StripePaymentSecretArgsExtension on StripePaymentSecretArgs {
-  StripePaymentSecretArgs copyWith(
-      {String? orgId, String? orderId, String? currency}) {
+  StripePaymentSecretArgs copyWith({String? orgId, String? orderId}) {
     return StripePaymentSecretArgs(
-        orgId: orgId ?? this.orgId,
-        orderId: orderId ?? this.orderId,
-        currency: currency ?? this.currency);
+        orgId: orgId ?? this.orgId, orderId: orderId ?? this.orderId);
   }
 
   StripePaymentSecretArgs copyWithWrapped(
-      {Wrapped<String>? orgId,
-      Wrapped<String>? orderId,
-      Wrapped<String>? currency}) {
+      {Wrapped<String>? orgId, Wrapped<String>? orderId}) {
     return StripePaymentSecretArgs(
         orgId: (orgId != null ? orgId.value : this.orgId),
-        orderId: (orderId != null ? orderId.value : this.orderId),
-        currency: (currency != null ? currency.value : this.currency));
+        orderId: (orderId != null ? orderId.value : this.orderId));
   }
 }
 
