@@ -5488,15 +5488,9 @@
     "OrderInfo": {
       "type": "object",
       "required": [
-        "orgId",
-        "orderStatus",
-        "currency",
-        "currencyCode"
+        "orgId"
       ],
       "properties": {
-        "description": {
-          "type": "string"
-        },
         "orgId": {
           "type": "string"
         },
@@ -5923,17 +5917,13 @@
       "type": "object",
       "required": [
         "orgId",
-        "orderId",
-        "currency"
+        "orderId"
       ],
       "properties": {
         "orgId": {
           "type": "string"
         },
         "orderId": {
-          "type": "string"
-        },
-        "currency": {
           "type": "string"
         }
       }

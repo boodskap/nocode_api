@@ -2627,7 +2627,6 @@ Map<String, dynamic> _$PaidInvoiceRequestToJson(PaidInvoiceRequest instance) {
 }
 
 OrderInfo _$OrderInfoFromJson(Map<String, dynamic> json) => OrderInfo(
-      description: json['description'] as String? ?? '',
       orgId: json['orgId'] as String? ?? '',
       couponCode: json['couponCode'] as String? ?? '',
       planId: json['planId'] as String? ?? '',
@@ -2642,7 +2641,9 @@ OrderInfo _$OrderInfoFromJson(Map<String, dynamic> json) => OrderInfo(
     );
 
 Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -2650,8 +2651,6 @@ Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
     }
   }
 
-  writeNotNull('description', instance.description);
-  val['orgId'] = instance.orgId;
   writeNotNull('couponCode', instance.couponCode);
   writeNotNull('planId', instance.planId);
   writeNotNull('modelCount', instance.modelCount);
@@ -2726,7 +2725,6 @@ Map<String, dynamic> _$OrderBaseToJson(OrderBase instance) {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
-      description: json['description'] as String? ?? '',
       orgId: json['orgId'] as String? ?? '',
       couponCode: json['couponCode'] as String? ?? '',
       planId: json['planId'] as String? ?? '',
@@ -2770,7 +2768,9 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'orgId': instance.orgId,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -2778,8 +2778,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
     }
   }
 
-  writeNotNull('description', instance.description);
-  val['orgId'] = instance.orgId;
   writeNotNull('couponCode', instance.couponCode);
   writeNotNull('planId', instance.planId);
   writeNotNull('modelCount', instance.modelCount);
@@ -3191,7 +3189,6 @@ StripePaymentSecretArgs _$StripePaymentSecretArgsFromJson(
     StripePaymentSecretArgs(
       orgId: json['orgId'] as String? ?? '',
       orderId: json['orderId'] as String? ?? '',
-      currency: json['currency'] as String? ?? '',
     );
 
 Map<String, dynamic> _$StripePaymentSecretArgsToJson(
@@ -3199,7 +3196,6 @@ Map<String, dynamic> _$StripePaymentSecretArgsToJson(
     <String, dynamic>{
       'orgId': instance.orgId,
       'orderId': instance.orderId,
-      'currency': instance.currency,
     };
 
 PlanCurrency _$PlanCurrencyFromJson(Map<String, dynamic> json) => PlanCurrency(
