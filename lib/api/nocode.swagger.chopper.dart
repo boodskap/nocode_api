@@ -1013,6 +1013,17 @@ final class _$Nocode extends Nocode {
   }
 
   @override
+  Future<Response<PlanEntityRes>> _getPlanById({required String? planId}) {
+    final Uri $url = Uri.parse('/Plan/get/by/${planId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<PlanEntityRes, PlanEntityRes>($request);
+  }
+
+  @override
   Future<Response<PlanCurrencyListRes>> _listCurrencies() {
     final Uri $url = Uri.parse('/Plan/list/currencies');
     final Request $request = Request(

@@ -1418,6 +1418,22 @@ abstract class Nocode extends ChopperService {
     @Path('currency') required String? currency,
   });
 
+  ///Get plan by id
+  ///@param planId Plan ID
+  Future<chopper.Response<PlanEntityRes>> getPlanById(
+      {required String? planId}) {
+    generatedMapping.putIfAbsent(
+        PlanEntityRes, () => PlanEntityRes.fromJsonFactory);
+
+    return _getPlanById(planId: planId);
+  }
+
+  ///Get plan by id
+  ///@param planId Plan ID
+  @Get(path: '/Plan/get/by/{planId}')
+  Future<chopper.Response<PlanEntityRes>> _getPlanById(
+      {@Path('planId') required String? planId});
+
   ///List currencies
   Future<chopper.Response<PlanCurrencyListRes>> listCurrencies() {
     generatedMapping.putIfAbsent(
@@ -11521,8 +11537,6 @@ class OrderInfo {
     this.userCount,
     this.archivalCount,
     this.dashboardCount,
-    required this.currency,
-    required this.currencyCode,
   });
 
   factory OrderInfo.fromJson(Map<String, dynamic> json) =>
@@ -11555,10 +11569,6 @@ class OrderInfo {
   final int? archivalCount;
   @JsonKey(name: 'dashboardCount', includeIfNull: false)
   final int? dashboardCount;
-  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
-  final String currency;
-  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
-  final String currencyCode;
   static const fromJsonFactory = _$OrderInfoFromJson;
 
   @override
@@ -11598,13 +11608,7 @@ class OrderInfo {
                     .equals(other.archivalCount, archivalCount)) &&
             (identical(other.dashboardCount, dashboardCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.dashboardCount, dashboardCount)) &&
-            (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)) &&
-            (identical(other.currencyCode, currencyCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.currencyCode, currencyCode)));
+                    .equals(other.dashboardCount, dashboardCount)));
   }
 
   @override
@@ -11624,8 +11628,6 @@ class OrderInfo {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(archivalCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(currencyCode) ^
       runtimeType.hashCode;
 }
 
@@ -11642,9 +11644,7 @@ extension $OrderInfoExtension on OrderInfo {
       int? dataCount,
       int? userCount,
       int? archivalCount,
-      int? dashboardCount,
-      String? currency,
-      String? currencyCode}) {
+      int? dashboardCount}) {
     return OrderInfo(
         description: description ?? this.description,
         orgId: orgId ?? this.orgId,
@@ -11657,9 +11657,7 @@ extension $OrderInfoExtension on OrderInfo {
         dataCount: dataCount ?? this.dataCount,
         userCount: userCount ?? this.userCount,
         archivalCount: archivalCount ?? this.archivalCount,
-        dashboardCount: dashboardCount ?? this.dashboardCount,
-        currency: currency ?? this.currency,
-        currencyCode: currencyCode ?? this.currencyCode);
+        dashboardCount: dashboardCount ?? this.dashboardCount);
   }
 
   OrderInfo copyWithWrapped(
@@ -11674,9 +11672,7 @@ extension $OrderInfoExtension on OrderInfo {
       Wrapped<int?>? dataCount,
       Wrapped<int?>? userCount,
       Wrapped<int?>? archivalCount,
-      Wrapped<int?>? dashboardCount,
-      Wrapped<String>? currency,
-      Wrapped<String>? currencyCode}) {
+      Wrapped<int?>? dashboardCount}) {
     return OrderInfo(
         description:
             (description != null ? description.value : this.description),
@@ -11697,10 +11693,7 @@ extension $OrderInfoExtension on OrderInfo {
             (archivalCount != null ? archivalCount.value : this.archivalCount),
         dashboardCount: (dashboardCount != null
             ? dashboardCount.value
-            : this.dashboardCount),
-        currency: (currency != null ? currency.value : this.currency),
-        currencyCode:
-            (currencyCode != null ? currencyCode.value : this.currencyCode));
+            : this.dashboardCount));
   }
 }
 
@@ -12014,8 +12007,6 @@ class Order {
     this.userCount,
     this.archivalCount,
     this.dashboardCount,
-    required this.currency,
-    required this.currencyCode,
     required this.orderAmount,
     required this.reconciled,
     required this.processed,
@@ -12076,10 +12067,6 @@ class Order {
   final int? archivalCount;
   @JsonKey(name: 'dashboardCount', includeIfNull: false)
   final int? dashboardCount;
-  @JsonKey(name: 'currency', includeIfNull: false, defaultValue: '')
-  final String currency;
-  @JsonKey(name: 'currencyCode', includeIfNull: false, defaultValue: '')
-  final String currencyCode;
   @JsonKey(name: 'orderAmount', includeIfNull: false)
   final double orderAmount;
   @JsonKey(name: 'reconciled', includeIfNull: false)
@@ -12178,12 +12165,6 @@ class Order {
             (identical(other.dashboardCount, dashboardCount) ||
                 const DeepCollectionEquality()
                     .equals(other.dashboardCount, dashboardCount)) &&
-            (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)) &&
-            (identical(other.currencyCode, currencyCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.currencyCode, currencyCode)) &&
             (identical(other.orderAmount, orderAmount) ||
                 const DeepCollectionEquality()
                     .equals(other.orderAmount, orderAmount)) &&
@@ -12209,9 +12190,13 @@ class Order {
                 const DeepCollectionEquality()
                     .equals(other.devicePrice, devicePrice)) &&
             (identical(other.clientPrice, clientPrice) ||
-                const DeepCollectionEquality().equals(other.clientPrice, clientPrice)) &&
-            (identical(other.dataPrice, dataPrice) || const DeepCollectionEquality().equals(other.dataPrice, dataPrice)) &&
-            (identical(other.userPrice, userPrice) || const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
+                const DeepCollectionEquality()
+                    .equals(other.clientPrice, clientPrice)) &&
+            (identical(other.dataPrice, dataPrice) ||
+                const DeepCollectionEquality()
+                    .equals(other.dataPrice, dataPrice)) &&
+            (identical(other.userPrice, userPrice) ||
+                const DeepCollectionEquality().equals(other.userPrice, userPrice)) &&
             (identical(other.archivalPrice, archivalPrice) || const DeepCollectionEquality().equals(other.archivalPrice, archivalPrice)) &&
             (identical(other.dashboardPrice, dashboardPrice) || const DeepCollectionEquality().equals(other.dashboardPrice, dashboardPrice)) &&
             (identical(other.providerId, providerId) || const DeepCollectionEquality().equals(other.providerId, providerId)) &&
@@ -12249,8 +12234,6 @@ class Order {
       const DeepCollectionEquality().hash(userCount) ^
       const DeepCollectionEquality().hash(archivalCount) ^
       const DeepCollectionEquality().hash(dashboardCount) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(currencyCode) ^
       const DeepCollectionEquality().hash(orderAmount) ^
       const DeepCollectionEquality().hash(reconciled) ^
       const DeepCollectionEquality().hash(processed) ^
@@ -12297,8 +12280,6 @@ extension $OrderExtension on Order {
       int? userCount,
       int? archivalCount,
       int? dashboardCount,
-      String? currency,
-      String? currencyCode,
       double? orderAmount,
       bool? reconciled,
       bool? processed,
@@ -12341,8 +12322,6 @@ extension $OrderExtension on Order {
         userCount: userCount ?? this.userCount,
         archivalCount: archivalCount ?? this.archivalCount,
         dashboardCount: dashboardCount ?? this.dashboardCount,
-        currency: currency ?? this.currency,
-        currencyCode: currencyCode ?? this.currencyCode,
         orderAmount: orderAmount ?? this.orderAmount,
         reconciled: reconciled ?? this.reconciled,
         processed: processed ?? this.processed,
@@ -12387,8 +12366,6 @@ extension $OrderExtension on Order {
       Wrapped<int?>? userCount,
       Wrapped<int?>? archivalCount,
       Wrapped<int?>? dashboardCount,
-      Wrapped<String>? currency,
-      Wrapped<String>? currencyCode,
       Wrapped<double>? orderAmount,
       Wrapped<bool>? reconciled,
       Wrapped<bool>? processed,
@@ -12439,9 +12416,6 @@ extension $OrderExtension on Order {
         dashboardCount: (dashboardCount != null
             ? dashboardCount.value
             : this.dashboardCount),
-        currency: (currency != null ? currency.value : this.currency),
-        currencyCode:
-            (currencyCode != null ? currencyCode.value : this.currencyCode),
         orderAmount:
             (orderAmount != null ? orderAmount.value : this.orderAmount),
         reconciled: (reconciled != null ? reconciled.value : this.reconciled),
