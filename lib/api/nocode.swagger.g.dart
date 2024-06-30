@@ -2639,8 +2639,6 @@ OrderInfo _$OrderInfoFromJson(Map<String, dynamic> json) => OrderInfo(
       userCount: (json['userCount'] as num?)?.toInt(),
       archivalCount: (json['archivalCount'] as num?)?.toInt(),
       dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
-      currency: json['currency'] as String? ?? '',
-      currencyCode: json['currencyCode'] as String? ?? '',
     );
 
 Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
@@ -2664,8 +2662,6 @@ Map<String, dynamic> _$OrderInfoToJson(OrderInfo instance) {
   writeNotNull('userCount', instance.userCount);
   writeNotNull('archivalCount', instance.archivalCount);
   writeNotNull('dashboardCount', instance.dashboardCount);
-  val['currency'] = instance.currency;
-  val['currencyCode'] = instance.currencyCode;
   return val;
 }
 
@@ -2742,8 +2738,6 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       userCount: (json['userCount'] as num?)?.toInt(),
       archivalCount: (json['archivalCount'] as num?)?.toInt(),
       dashboardCount: (json['dashboardCount'] as num?)?.toInt(),
-      currency: json['currency'] as String? ?? '',
-      currencyCode: json['currencyCode'] as String? ?? '',
       orderAmount: (json['orderAmount'] as num).toDouble(),
       reconciled: json['reconciled'] as bool,
       processed: json['processed'] as bool,
@@ -2796,8 +2790,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('userCount', instance.userCount);
   writeNotNull('archivalCount', instance.archivalCount);
   writeNotNull('dashboardCount', instance.dashboardCount);
-  val['currency'] = instance.currency;
-  val['currencyCode'] = instance.currencyCode;
   val['orderAmount'] = instance.orderAmount;
   val['reconciled'] = instance.reconciled;
   val['processed'] = instance.processed;
