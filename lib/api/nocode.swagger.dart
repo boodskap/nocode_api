@@ -43,7 +43,7 @@ abstract class Nocode extends ChopperService {
         client: httpClient,
         authenticator: authenticator,
         errorConverter: errorConverter,
-        baseUrl: baseUrl ?? Uri.parse('http://nocode.boodskap.io/rest/nocode'));
+        baseUrl: baseUrl ?? Uri.parse('http://nocode.build/rest/nocode'));
     return _$Nocode(newClient);
   }
 
@@ -1519,6 +1519,31 @@ abstract class Nocode extends ChopperService {
   @Get(path: '/OrgPlan/get/{orgId}')
   Future<chopper.Response<OrgPlanEntityRes>> _getOrgPlan({
     @Path('orgId') required String? orgId,
+    @Header('TOKEN') String? token,
+  });
+
+  ///Get organization plan
+  ///@param orgId Organization ID
+  ///@param planId Organization ID
+  Future<chopper.Response<OrgPlanEntityRes>> changeOrgPlan({
+    required String? orgId,
+    required String? planId,
+    dynamic token,
+  }) {
+    generatedMapping.putIfAbsent(
+        OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
+
+    return _changeOrgPlan(
+        orgId: orgId, planId: planId, token: token?.toString());
+  }
+
+  ///Get organization plan
+  ///@param orgId Organization ID
+  ///@param planId Organization ID
+  @Get(path: '/OrgPlan/change/{orgId}/{planId}')
+  Future<chopper.Response<OrgPlanEntityRes>> _changeOrgPlan({
+    @Path('orgId') required String? orgId,
+    @Path('planId') required String? planId,
     @Header('TOKEN') String? token,
   });
 
@@ -12800,8 +12825,8 @@ class OrgPlanInfo {
     required this.purchasedDashboards,
     required this.purchasedDataPoints,
     required this.purchasedArchivals,
-    this.totalDeviceModelCount,
-    this.totalModelParametersCount,
+    required this.totalDeviceModelCount,
+    required this.totalModelParametersCount,
     required this.totalDevicesCount,
     required this.totalClientCount,
     required this.totalUserCount,
@@ -12860,9 +12885,9 @@ class OrgPlanInfo {
   @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
   final int purchasedArchivals;
   @JsonKey(name: 'totalDeviceModelCount', includeIfNull: false)
-  final int? totalDeviceModelCount;
+  final int totalDeviceModelCount;
   @JsonKey(name: 'totalModelParametersCount', includeIfNull: false)
-  final int? totalModelParametersCount;
+  final int totalModelParametersCount;
   @JsonKey(name: 'totalDevicesCount', includeIfNull: false)
   final int totalDevicesCount;
   @JsonKey(name: 'totalClientCount', includeIfNull: false)
@@ -13100,8 +13125,8 @@ extension $OrgPlanInfoExtension on OrgPlanInfo {
       Wrapped<int>? purchasedDashboards,
       Wrapped<int>? purchasedDataPoints,
       Wrapped<int>? purchasedArchivals,
-      Wrapped<int?>? totalDeviceModelCount,
-      Wrapped<int?>? totalModelParametersCount,
+      Wrapped<int>? totalDeviceModelCount,
+      Wrapped<int>? totalModelParametersCount,
       Wrapped<int>? totalDevicesCount,
       Wrapped<int>? totalClientCount,
       Wrapped<int>? totalUserCount,
@@ -13293,8 +13318,8 @@ class OrgPlan {
     required this.purchasedDashboards,
     required this.purchasedDataPoints,
     required this.purchasedArchivals,
-    this.totalDeviceModelCount,
-    this.totalModelParametersCount,
+    required this.totalDeviceModelCount,
+    required this.totalModelParametersCount,
     required this.totalDevicesCount,
     required this.totalClientCount,
     required this.totalUserCount,
@@ -13364,9 +13389,9 @@ class OrgPlan {
   @JsonKey(name: 'purchasedArchivals', includeIfNull: false)
   final int purchasedArchivals;
   @JsonKey(name: 'totalDeviceModelCount', includeIfNull: false)
-  final int? totalDeviceModelCount;
+  final int totalDeviceModelCount;
   @JsonKey(name: 'totalModelParametersCount', includeIfNull: false)
-  final int? totalModelParametersCount;
+  final int totalModelParametersCount;
   @JsonKey(name: 'totalDevicesCount', includeIfNull: false)
   final int totalDevicesCount;
   @JsonKey(name: 'totalClientCount', includeIfNull: false)
@@ -13663,8 +13688,8 @@ extension $OrgPlanExtension on OrgPlan {
       Wrapped<int>? purchasedDashboards,
       Wrapped<int>? purchasedDataPoints,
       Wrapped<int>? purchasedArchivals,
-      Wrapped<int?>? totalDeviceModelCount,
-      Wrapped<int?>? totalModelParametersCount,
+      Wrapped<int>? totalDeviceModelCount,
+      Wrapped<int>? totalModelParametersCount,
       Wrapped<int>? totalDevicesCount,
       Wrapped<int>? totalClientCount,
       Wrapped<int>? totalUserCount,

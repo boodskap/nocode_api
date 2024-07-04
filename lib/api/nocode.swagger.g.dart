@@ -2952,9 +2952,9 @@ OrgPlanInfo _$OrgPlanInfoFromJson(Map<String, dynamic> json) => OrgPlanInfo(
       purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
       purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
       purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
-      totalDeviceModelCount: (json['totalDeviceModelCount'] as num?)?.toInt(),
+      totalDeviceModelCount: (json['totalDeviceModelCount'] as num).toInt(),
       totalModelParametersCount:
-          (json['totalModelParametersCount'] as num?)?.toInt(),
+          (json['totalModelParametersCount'] as num).toInt(),
       totalDevicesCount: (json['totalDevicesCount'] as num).toInt(),
       totalClientCount: (json['totalClientCount'] as num).toInt(),
       totalUserCount: (json['totalUserCount'] as num).toInt(),
@@ -2989,6 +2989,14 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
     'purchasedDashboards': instance.purchasedDashboards,
     'purchasedDataPoints': instance.purchasedDataPoints,
     'purchasedArchivals': instance.purchasedArchivals,
+    'totalDeviceModelCount': instance.totalDeviceModelCount,
+    'totalModelParametersCount': instance.totalModelParametersCount,
+    'totalDevicesCount': instance.totalDevicesCount,
+    'totalClientCount': instance.totalClientCount,
+    'totalUserCount': instance.totalUserCount,
+    'totalDashboardCount': instance.totalDashboardCount,
+    'totalArchivalYearsCount': instance.totalArchivalYearsCount,
+    'pooledDataPointsCount': instance.pooledDataPointsCount,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -2997,14 +3005,6 @@ Map<String, dynamic> _$OrgPlanInfoToJson(OrgPlanInfo instance) {
     }
   }
 
-  writeNotNull('totalDeviceModelCount', instance.totalDeviceModelCount);
-  writeNotNull('totalModelParametersCount', instance.totalModelParametersCount);
-  val['totalDevicesCount'] = instance.totalDevicesCount;
-  val['totalClientCount'] = instance.totalClientCount;
-  val['totalUserCount'] = instance.totalUserCount;
-  val['totalDashboardCount'] = instance.totalDashboardCount;
-  val['totalArchivalYearsCount'] = instance.totalArchivalYearsCount;
-  val['pooledDataPointsCount'] = instance.pooledDataPointsCount;
   writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
   writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
   writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);
@@ -3056,9 +3056,9 @@ OrgPlan _$OrgPlanFromJson(Map<String, dynamic> json) => OrgPlan(
       purchasedDashboards: (json['purchasedDashboards'] as num).toInt(),
       purchasedDataPoints: (json['purchasedDataPoints'] as num).toInt(),
       purchasedArchivals: (json['purchasedArchivals'] as num).toInt(),
-      totalDeviceModelCount: (json['totalDeviceModelCount'] as num?)?.toInt(),
+      totalDeviceModelCount: (json['totalDeviceModelCount'] as num).toInt(),
       totalModelParametersCount:
-          (json['totalModelParametersCount'] as num?)?.toInt(),
+          (json['totalModelParametersCount'] as num).toInt(),
       totalDevicesCount: (json['totalDevicesCount'] as num).toInt(),
       totalClientCount: (json['totalClientCount'] as num).toInt(),
       totalUserCount: (json['totalUserCount'] as num).toInt(),
@@ -3103,6 +3103,14 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
     'purchasedDashboards': instance.purchasedDashboards,
     'purchasedDataPoints': instance.purchasedDataPoints,
     'purchasedArchivals': instance.purchasedArchivals,
+    'totalDeviceModelCount': instance.totalDeviceModelCount,
+    'totalModelParametersCount': instance.totalModelParametersCount,
+    'totalDevicesCount': instance.totalDevicesCount,
+    'totalClientCount': instance.totalClientCount,
+    'totalUserCount': instance.totalUserCount,
+    'totalDashboardCount': instance.totalDashboardCount,
+    'totalArchivalYearsCount': instance.totalArchivalYearsCount,
+    'pooledDataPointsCount': instance.pooledDataPointsCount,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -3111,14 +3119,6 @@ Map<String, dynamic> _$OrgPlanToJson(OrgPlan instance) {
     }
   }
 
-  writeNotNull('totalDeviceModelCount', instance.totalDeviceModelCount);
-  writeNotNull('totalModelParametersCount', instance.totalModelParametersCount);
-  val['totalDevicesCount'] = instance.totalDevicesCount;
-  val['totalClientCount'] = instance.totalClientCount;
-  val['totalUserCount'] = instance.totalUserCount;
-  val['totalDashboardCount'] = instance.totalDashboardCount;
-  val['totalArchivalYearsCount'] = instance.totalArchivalYearsCount;
-  val['pooledDataPointsCount'] = instance.pooledDataPointsCount;
   writeNotNull('canBuyDataPlan', instance.canBuyDataPlan);
   writeNotNull('canBuyArchivalPlan', instance.canBuyArchivalPlan);
   writeNotNull('canBuyClientPlan', instance.canBuyClientPlan);

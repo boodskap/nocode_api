@@ -12,7 +12,7 @@
       "name": "MIT"
     }
   },
-  "host": "nocode.boodskap.io",
+  "host": "nocode.build",
   "basePath": "/rest/nocode",
   "schemes": [
     "https"
@@ -2920,6 +2920,57 @@
         ]
       }
     },
+    "/OrgPlan/change/{orgId}/{planId}": {
+      "get": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Get organization plan",
+        "description": "Get organization plan",
+        "operationId": "changeOrgPlan",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "Organization ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        },
+        "security": [
+          {
+            "authtoken": []
+          }
+        ]
+      }
+    },
     "/OrgPlan/clean": {
       "delete": {
         "tags": [
@@ -5723,7 +5774,9 @@
         "totalUserCount",
         "totalDashboardCount",
         "totalArchivalYearsCount",
-        "pooledDataPointsCount"
+        "pooledDataPointsCount",
+        "totalDeviceModelCount",
+        "totalModelParametersCount"
       ],
       "properties": {
         "planId": {
