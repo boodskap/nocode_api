@@ -1108,6 +1108,25 @@ final class _$Nocode extends Nocode {
   }
 
   @override
+  Future<Response<OrgPlanEntityRes>> _changeOrgPlan({
+    required String? orgId,
+    required String? planId,
+    String? token,
+  }) {
+    final Uri $url = Uri.parse('/OrgPlan/change/${orgId}/${planId}');
+    final Map<String, String> $headers = {
+      if (token != null) 'TOKEN': token,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      headers: $headers,
+    );
+    return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
   Future<Response<BaseRes>> _clearOrgPlans({String? token}) {
     final Uri $url = Uri.parse('/OrgPlan/clean');
     final Map<String, String> $headers = {
