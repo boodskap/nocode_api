@@ -43,7 +43,8 @@ abstract class Nocode extends ChopperService {
         client: httpClient,
         authenticator: authenticator,
         errorConverter: errorConverter,
-        baseUrl: baseUrl ?? Uri.parse('http://nocode.build/rest/nocode'));
+        baseUrl:
+            baseUrl ?? Uri.parse('http://restdev.boodskap.io/rest/nocode'));
     return _$Nocode(newClient);
   }
 
@@ -1504,23 +1505,35 @@ abstract class Nocode extends ChopperService {
 
   ///Get organization plan
   ///@param orgId Organization ID
-  Future<chopper.Response<OrgPlanEntityRes>> getOrgPlan({
-    required String? orgId,
-    dynamic token,
-  }) {
+  Future<chopper.Response<OrgPlanEntityRes>> getOrgPlan(
+      {required String? orgId}) {
     generatedMapping.putIfAbsent(
         OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
 
-    return _getOrgPlan(orgId: orgId, token: token?.toString());
+    return _getOrgPlan(orgId: orgId);
   }
 
   ///Get organization plan
   ///@param orgId Organization ID
   @Get(path: '/OrgPlan/get/{orgId}')
-  Future<chopper.Response<OrgPlanEntityRes>> _getOrgPlan({
-    @Path('orgId') required String? orgId,
-    @Header('TOKEN') String? token,
-  });
+  Future<chopper.Response<OrgPlanEntityRes>> _getOrgPlan(
+      {@Path('orgId') required String? orgId});
+
+  ///Get organization plan
+  ///@param domainKey Domain Key
+  Future<chopper.Response<OrgPlanEntityRes>> getOrgPlanByDomainKey(
+      {required String? domainKey}) {
+    generatedMapping.putIfAbsent(
+        OrgPlanEntityRes, () => OrgPlanEntityRes.fromJsonFactory);
+
+    return _getOrgPlanByDomainKey(domainKey: domainKey);
+  }
+
+  ///Get organization plan
+  ///@param domainKey Domain Key
+  @Get(path: '/OrgPlan/get/by/domain/{domainKey}')
+  Future<chopper.Response<OrgPlanEntityRes>> _getOrgPlanByDomainKey(
+      {@Path('domainKey') required String? domainKey});
 
   ///Get organization plan
   ///@param orgId Organization ID

@@ -12,7 +12,7 @@
       "name": "MIT"
     }
   },
-  "host": "nocode.build",
+  "host": "restdev.boodskap.io",
   "basePath": "/rest/nocode",
   "schemes": [
     "https"
@@ -2912,12 +2912,46 @@
           "417": {
             "description": "Platform error"
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/OrgPlan/get/by/domain/{domainKey}": {
+      "get": {
+        "tags": [
+          "Organization Plan"
+        ],
+        "summary": "Get organization plan",
+        "description": "Get organization plan",
+        "operationId": "getOrgPlanByDomainKey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
           {
-            "authtoken": []
+            "name": "domainKey",
+            "in": "path",
+            "description": "Domain Key",
+            "type": "string",
+            "required": true
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrgPlanEntityRes"
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          },
+          "417": {
+            "description": "Platform error"
+          }
+        }
       }
     },
     "/OrgPlan/change/{orgId}/{planId}": {
