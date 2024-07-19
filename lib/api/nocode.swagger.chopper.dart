@@ -1090,19 +1090,24 @@ final class _$Nocode extends Nocode {
   }
 
   @override
-  Future<Response<OrgPlanEntityRes>> _getOrgPlan({
-    required String? orgId,
-    String? token,
-  }) {
+  Future<Response<OrgPlanEntityRes>> _getOrgPlan({required String? orgId}) {
     final Uri $url = Uri.parse('/OrgPlan/get/${orgId}');
-    final Map<String, String> $headers = {
-      if (token != null) 'TOKEN': token,
-    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
-      headers: $headers,
+    );
+    return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
+  }
+
+  @override
+  Future<Response<OrgPlanEntityRes>> _getOrgPlanByDomainKey(
+      {required String? domainKey}) {
+    final Uri $url = Uri.parse('/OrgPlan/get/by/domain/${domainKey}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
     );
     return client.send<OrgPlanEntityRes, OrgPlanEntityRes>($request);
   }
